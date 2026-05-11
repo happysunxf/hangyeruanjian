@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行业软件产品宣传页 - 设计展示</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'PingFang SC','Microsoft YaHei',sans-serif; background:#f0f2f5; color:#1a1a2e; }
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color:#fff; padding:80px 40px; text-align:center;
+  position:relative; overflow:hidden;
+}
+.hero::before {
+  content:'✦'; position:absolute; top:20%; left:10%; font-size:120px;
+  color:rgba(255,255,255,0.03);
+}
+.hero::after {
+  content:'✦'; position:absolute; bottom:10%; right:8%; font-size:80px;
+  color:rgba(255,255,255,0.03);
+}
+.badge {
+  display:inline-block; background:rgba(255,255,255,0.15); padding:5px 18px;
+  border-radius:20px; font-size:12px; letter-spacing:2px; margin-bottom:20px;
+  border:1px solid rgba(255,255,255,0.2);
+}
+h1 { font-size:42px; font-weight:700; margin-bottom:12px; }
+.sub { font-size:16px; opacity:0.7; margin-bottom:32px; }
+.stats {
+  display:flex; justify-content:center; gap:50px; margin-top:30px;
+}
+.stat-item { text-align:center; }
+.stat-num { font-size:36px; font-weight:700; color:#4fc3f7; }
+.stat-label { font-size:13px; opacity:0.6; margin-top:4px; }
+
+.container { max-width:1100px; margin:0 auto; padding:40px 24px; }
+
+.filter {
+  display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px;
+  justify-content:center;
+}
+.filter-btn {
+  padding:7px 20px; border-radius:20px; border:1px solid #ddd;
+  background:#fff; font-size:13px; cursor:pointer;
+  transition:all 0.2s; color:#666;
+}
+.filter-btn:hover, .filter-btn.active {
+  background:#16213e; color:#fff; border-color:#16213e;
+}
+
+.grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:16px;
+}
+.card {
+  background:#fff; border-radius:12px; overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  transition:transform 0.2s, box-shadow 0.2s; display:block; text-decoration:none; color:inherit;
+}
+.card:hover {
+  transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.12);
+}
+.card-header {
+  height:100px; display:flex; align-items:center;
+  justify-content:center; font-size:48px; position:relative;
+}
+.card-header::after {
+  content:''; position:absolute; bottom:0; left:0; right:0;
+  height:3px;
+}
+.card-body { padding:20px; }
+.card-name { font-size:15px; font-weight:700; margin-bottom:6px; }
+.card-product { font-size:12px; color:#888; margin-bottom:10px; }
+.card-tags { display:flex; flex-wrap:wrap; gap:5px; }
+.tag {
+  padding:3px 10px; border-radius:10px; font-size:11px;
+  background:#f0f4ff; color:#555;
+}
+.card-footer {
+  padding:12px 20px; border-top:1px solid #f5f5f5;
+  font-size:12px; color:#aaa; display:flex; justify-content:space-between;
+  align-items:center;
+}
+.card-footer span:first-child { color:#4fc3f7; }
+.footer {
+  text-align:center; padding:40px; color:#999; font-size:13px;
+  border-top:1px solid #e5e5e5; margin-top:40px;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">小B行业软件 · 产品设计展示</div>
+  <h1>行业软件产品宣传页</h1>
+  <p class="sub">20个细分行业 · 精准解决小B数字化痛点</p>
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">20</div>
+      <div class="stat-label">产品方向</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">20</div>
+      <div class="stat-label">独立页面</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">蓝海</div>
+      <div class="stat-label">竞争程度</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="filter">
+    <button class="filter-btn active" onclick="filterCards('all', this)">全部</button>
+    <button class="filter-btn" onclick="filterCards('休闲娱乐', this)">休闲娱乐</button>
+    <button class="filter-btn" onclick="filterCards('餐饮零售', this)">餐饮零售</button>
+    <button class="filter-btn" onclick="filterCards('生活服务', this)">生活服务</button>
+    <button class="filter-btn" onclick="filterCards('制造业', this)">制造业</button>
+    <button class="filter-btn" onclick="filterCards('农业服务', this)">农业服务</button>
+    <button class="filter-btn" onclick="filterCards('养老服务', this)">养老服务</button>
+    <button class="filter-btn" onclick="filterCards('跨境电商', this)">跨境电商</button>
+    <button class="filter-btn" onclick="filterCards('其他', this)">其他</button>
+  </div>
+  <div class="grid" id="grid">
+
+    <a class="card" href="剧本杀密室预约管.html" data-cat="休闲娱乐">
+      <div class="card-header" style="background:linear-gradient(135deg,#6B4EE6,#FF6B6B)">🎭</div>
+      <div class="card-body">
+        <div class="card-name">剧本杀·密室逃脱预约管理系统</div>
+        <div class="card-product">谜管家</div>
+        <div class="card-tags"><span class="tag">智能计时</span><span class="tag">自动对账</span><span class="tag">会员管理</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>休闲娱乐</span></div>
+    </a>
+
+    <a class="card" href="社区团购长方圆管.html" data-cat="餐饮零售">
+      <div class="card-header" style="background:linear-gradient(135deg,#2E7D32,#FFD700)">🛒</div>
+      <div class="card-body">
+        <div class="card-name">社区团购长方圆管理系统</div>
+        <div class="card-product">团达</div>
+        <div class="card-tags"><span class="tag">路线规划</span><span class="tag">佣金结算</span><span class="tag">预售管理</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>餐饮零售</span></div>
+    </a>
+
+    <a class="card" href="棋牌室台球厅智能.html" data-cat="休闲娱乐">
+      <div class="card-header" style="background:linear-gradient(135deg,#C62828,#FF8F00)">🎱</div>
+      <div class="card-body">
+        <div class="card-name">棋牌室·台球厅智能计费系统</div>
+        <div class="card-product">雀计通</div>
+        <div class="card-tags"><span class="tag">智能计费</span><span class="tag">水吧管理</span><span class="tag">押金监管</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>休闲娱乐</span></div>
+    </a>
+
+    <a class="card" href="丧葬殡葬用品店管.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#4A4A4A,#BDBDBD)">🕯️</div>
+      <div class="card-body">
+        <div class="card-name">丧葬·殡葬用品店管理系统</div>
+        <div class="card-product">彼岸</div>
+        <div class="card-tags"><span class="tag">祭祀提醒</span><span class="tag">库存管理</span><span class="tag">客户关怀</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="共享自习室系统.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#1565C0,#26C6DA)">📚</div>
+      <div class="card-body">
+        <div class="card-name">共享自习室系统</div>
+        <div class="card-product">享阅</div>
+        <div class="card-tags"><span class="tag">座位预约</span><span class="tag">会员预付</span><span class="tag">数据看板</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="剧本朗读室小剧场.html" data-cat="休闲娱乐">
+      <div class="card-header" style="background:linear-gradient(135deg,#6A1B9A,#E91E63)">🎙️</div>
+      <div class="card-body">
+        <div class="card-name">剧本朗读室·小剧场管理系统</div>
+        <div class="card-product">幕间</div>
+        <div class="card-tags"><span class="tag">排期管理</span><span class="tag">票务系统</span><span class="tag">观众CRM</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>休闲娱乐</span></div>
+    </a>
+
+    <a class="card" href="农村红白喜事一条.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#BF360C,#FFAB91)">🍽️</div>
+      <div class="card-body">
+        <div class="card-name">农村红白喜事一条龙管理系统</div>
+        <div class="card-product">乡宴通</div>
+        <div class="card-tags"><span class="tag">档期管理</span><span class="tag">采购清单</span><span class="tag">成本核算</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="轻型MES系统小.html" data-cat="制造业">
+      <div class="card-header" style="background:linear-gradient(135deg,#00695C,#00BFA5)">🏭</div>
+      <div class="card-body">
+        <div class="card-name">轻型MES系统（小微工厂）</div>
+        <div class="card-product">智造宝</div>
+        <div class="card-tags"><span class="tag">工序管理</span><span class="tag">计件工资</span><span class="tag">质量追溯</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>制造业</span></div>
+    </a>
+
+    <a class="card" href="宠物墓园管理系统.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#8D6E63,#FFCC80)">🐾</div>
+      <div class="card-body">
+        <div class="card-name">宠物墓园管理系统</div>
+        <div class="card-product">宠念</div>
+        <div class="card-tags"><span class="tag">墓位销售</span><span class="tag">祭祀提醒</span><span class="tag">情感维系</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="小区垃圾智能分类.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#2E7D32,#8BC34A)">♻️</div>
+      <div class="card-body">
+        <div class="card-name">小区垃圾智能分类督导系统</div>
+        <div class="card-product">分环宝</div>
+        <div class="card-tags"><span class="tag">满桶报警</span><span class="tag">智能排班</span><span class="tag">积分兑换</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="小型律师事务所案.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#1A237E,#3F51B5)">⚖️</div>
+      <div class="card-body">
+        <div class="card-name">小型律师事务所案源管理系统</div>
+        <div class="card-product">案易达</div>
+        <div class="card-tags"><span class="tag">案源管理</span><span class="tag">跟进提醒</span><span class="tag">成果展示</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="剧本作者版权登记.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#E65100,#FFB300)">📝</div>
+      <div class="card-body">
+        <div class="card-name">剧本作者版权登记与分发系统</div>
+        <div class="card-product">剧本保</div>
+        <div class="card-tags"><span class="tag">版权存证</span><span class="tag">分润结算</span><span class="tag">侵权监测</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="社区早餐店卤味摊.html" data-cat="餐饮零售">
+      <div class="card-header" style="background:linear-gradient(135deg,#E65100,#FF5722)">🥟</div>
+      <div class="card-body">
+        <div class="card-name">社区早餐店·卤味摊管理系统</div>
+        <div class="card-product">铺货通</div>
+        <div class="card-tags"><span class="tag">配方管理</span><span class="tag">微信接单</span><span class="tag">营销发券</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>餐饮零售</span></div>
+    </a>
+
+    <a class="card" href="共享茶室共享会议.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#4E342E,#A1887F)">🏠</div>
+      <div class="card-body">
+        <div class="card-name">共享茶室·共享会议室管理系统</div>
+        <div class="card-product">时租宝</div>
+        <div class="card-tags"><span class="tag">门禁计费</span><span class="tag">预付监管</span><span class="tag">淡时促销</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="校园零食外卖配送.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#FF5722,#FF9800)">🍱</div>
+      <div class="card-body">
+        <div class="card-name">校园零食外卖配送管理系统</div>
+        <div class="card-product">校趣送</div>
+        <div class="card-tags"><span class="tag">智能派单</span><span class="tag">薪酬结算</span><span class="tag">投诉闭环</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="农村土地流转农机.html" data-cat="农业服务">
+      <div class="card-header" style="background:linear-gradient(135deg,#33691E,#8BC34A)">🌾</div>
+      <div class="card-body">
+        <div class="card-name">农村土地流转·农机共享平台</div>
+        <div class="card-product">田易达</div>
+        <div class="card-tags"><span class="tag">土地匹配</span><span class="tag">农机调度</span><span class="tag">费用结算</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>农业服务</span></div>
+    </a>
+
+    <a class="card" href="小型养老院日间照.html" data-cat="养老服务">
+      <div class="card-header" style="background:linear-gradient(135deg,#AD1457,#F48FB1)">👴</div>
+      <div class="card-body">
+        <div class="card-name">小型养老院·日间照料管理系统</div>
+        <div class="card-product">颐康</div>
+        <div class="card-tags"><span class="tag">健康档案</span><span class="tag">用药提醒</span><span class="tag">家属通知</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>养老服务</span></div>
+    </a>
+
+    <a class="card" href="皮具护理改衣店接.html" data-cat="生活服务">
+      <div class="card-header" style="background:linear-gradient(135deg,#5D4037,#A1887F)">👜</div>
+      <div class="card-body">
+        <div class="card-name">皮具护理·改衣店接单系统</div>
+        <div class="card-product">革艺</div>
+        <div class="card-tags"><span class="tag">二维码凭证</span><span class="tag">进度追踪</span><span class="tag">会员积分</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>生活服务</span></div>
+    </a>
+
+    <a class="card" href="情趣用品无人售货.html" data-cat="其他">
+      <div class="card-header" style="background:linear-gradient(135deg,#880E4F,#E91E63)">🔞</div>
+      <div class="card-body">
+        <div class="card-name">情趣用品无人售货店管理系统</div>
+        <div class="card-product">秘站</div>
+        <div class="card-tags"><span class="tag">设备监控</span><span class="tag">补货提醒</span><span class="tag">会员CRM</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>其他</span></div>
+    </a>
+
+    <a class="card" href="跨境电商选品跟卖.html" data-cat="跨境电商">
+      <div class="card-header" style="background:linear-gradient(135deg,#0D47A1,#2979FF)">🌐</div>
+      <div class="card-body">
+        <div class="card-name">跨境电商选品·跟卖监控系统</div>
+        <div class="card-product">跨境眼</div>
+        <div class="card-tags"><span class="tag">数据选品</span><span class="tag">跟卖监控</span><span class="tag">批量上下架</span></div>
+      </div>
+      <div class="card-footer"><span>查看页面 →</span><span>跨境电商</span></div>
+    </a>
+
+  </div>
+</div>
+
+<div class="footer">
+  <p>© 2026 小B行业软件解决方案 · 所有设计作品保留权利</p>
+</div>
+
+<script>
+function filterCards(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
