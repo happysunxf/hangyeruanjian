@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智造宝 - 行业软件解决方案</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'PingFang SC','Microsoft YaHei',sans-serif; background:#f5f6fa; color:#333; }
+.header {
+  background: linear-gradient(135deg, #00695C 0%, #00BFA5 100%);
+  color:#fff; padding:60px 40px 80px; text-align:center; position:relative; overflow:hidden;
+}
+.header::before {
+  content:''; position:absolute; top:-50%; right:-20%; width:500px; height:500px;
+  background:rgba(255,255,255,0.1); border-radius:50%;
+}
+.header::after {
+  content:''; position:absolute; bottom:-30%; left:-10%; width:400px; height:400px;
+  background:rgba(255,255,255,0.08); border-radius:50%;
+}
+.icon { font-size:64px; margin-bottom:20px; }
+.badge { 
+  display:inline-block; background:rgba(255,255,255,0.2); padding:6px 20px; 
+  border-radius:20px; font-size:13px; margin-bottom:16px; letter-spacing:1px;
+}
+.h1 { font-size:36px; font-weight:700; margin-bottom:12px; line-height:1.3; }
+.sub { opacity:0.9; font-size:16px; margin-bottom:30px; }
+.price-tag {
+  display:inline-block; background:#fff; color:#333; padding:10px 24px;
+  border-radius:8px; font-size:14px; font-weight:600; box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+.container { max-width:960px; margin:0 auto; padding:0 20px; }
+.card {
+  background:#fff; border-radius:16px; padding:32px; margin-bottom:20px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+.section-title {
+  font-size:20px; font-weight:700; margin-bottom:16px;
+  padding-left:12px; border-left:4px solid #00695C;
+}
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.pain-item {
+  background:#fafafa; padding:16px; border-radius:10px;
+  border-left:3px solid #00695C; font-size:14px; line-height:1.7;
+}
+.func-tags {
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.func-tag {
+  background:linear-gradient(135deg, #00695C22, #00BFA522);
+  color:#333; padding:6px 14px; border-radius:20px;
+  font-size:13px; border:1px solid #00695C44;
+}
+.highlight-list { list-style:none; }
+.highlight-item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:14px 0; border-bottom:1px solid #f0f0f0;
+}
+.highlight-item:last-child { border-bottom:none; }
+.hl-num {
+  width:28px; height:28px; min-width:28px; border-radius:50%;
+  background:linear-gradient(135deg, #00695C, #00BFA5);
+  color:#fff; font-size:13px; font-weight:700; display:flex;
+  align-items:center; justify-content:center;
+}
+.hl-text { font-size:14px; line-height:1.6; padding-top:4px; }
+.crowd-section {
+  background:linear-gradient(135deg, #00695C11, #00BFA511);
+  border-radius:12px; padding:24px; border:1px solid #00695C22;
+}
+.crowd-label { font-size:12px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.crowd-value { font-size:15px; font-weight:600; color:#333; }
+.cta-section {
+  background:linear-gradient(135deg, #00695C 0%, #00BFA5 100%);
+  border-radius:16px; padding:48px 32px; text-align:center; color:#fff; margin:20px 0;
+}
+.cta-title { font-size:28px; font-weight:700; margin-bottom:10px; }
+.cta-sub { font-size:14px; opacity:0.9; margin-bottom:28px; }
+.cta-btn {
+  display:inline-block; background:#fff; color:#333; padding:14px 40px;
+  border-radius:8px; font-size:15px; font-weight:600; text-decoration:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.15);
+}
+.footer {
+  text-align:center; padding:30px; color:#999; font-size:13px;
+}
+.price-row {
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+}
+.price-label { font-size:12px; color:#888; }
+.price-val { font-size:14px; font-weight:600; color:#00695C; }
+@media(max-width:640px) {
+  .h1 { font-size:26px; }
+  .two-col { grid-template-columns:1fr; }
+  .header { padding:40px 20px 60px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="icon">🏭</div>
+  <div class="badge">制造业</div>
+  <h1 class="h1">智造宝<br><span style="font-size:20px;font-weight:400;opacity:0.9">行业软件解决方案</span></h1>
+  <p class="sub">轻型MES系统小微工厂</p>
+  <div class="price-tag">💰 SaaS年费5000-15000元（按席位）</div>
+</div>
+
+<div class="container" style="margin-top:-30px;">
+  <div class="card">
+    <div class="section-title">😣 行业痛点</div>
+    <div class="pain-item">小工厂用Excel排产；工序进度不透明；计件工资计算麻烦；采购库存混乱；质量追溯靠纸</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">👥 目标客群</div>
+    <div class="crowd-section">
+      <div class="crowd-label">精准定位</div>
+      <div class="crowd-value">50-200人小微加工厂（零配件/包装/食品）</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">✨ 核心功能</div>
+    <div class="func-tags">
+      <span class="func-tag">工序管理</span> <span class="func-tag">计件工资</span> <span class="func-tag">生产报工</span> <span class="func-tag">采购库存</span> <span class="func-tag">质量追溯</span> <span class="func-tag">数据看板</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">💡 产品亮点</div>
+    <ul class="highlight-list">
+      
+      <li class="highlight-item">
+        <span class="hl-num">1</span>
+        <span class="hl-text">工序进度实时追踪，交付可承诺</span>
+      </li>
+      <li class="highlight-item">
+        <span class="hl-num">2</span>
+        <span class="hl-text">计件工资自动计算，零误差</span>
+      </li>
+      <li class="highlight-item">
+        <span class="hl-num">3</span>
+        <span class="hl-text">来料报工双追溯，品质有保障</span>
+      </li>
+      <li class="highlight-item">
+        <span class="hl-num">4</span>
+        <span class="hl-text">生产数据大屏，看一眼全知道</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="section-title">💵 收费模式</div>
+    <div class="price-row">
+      <span class="price-label">参考价格</span>
+      <span class="price-val">SaaS年费5000-15000元（按席位）</span>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <div class="cta-title">立即开始数字化升级</div>
+    <div class="cta-sub">7天上手，30天见证效果提升</div>
+    <a href="#" class="cta-btn">预约演示</a>
+  </div>
+</div>
+
+<div class="footer">
+  <p>© 2026 智造宝 · 专注小B行业软件解决方案</p>
+</div>
+
+</body>
+</html>
