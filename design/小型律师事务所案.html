@@ -3,172 +3,422 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>案易达 - 行业软件解决方案</title>
+<title>案易达 - 小型律师事务所案源管理系统 - 小B数字化解决方案</title>
+<meta name="description" content="案易达，专注法律服务行业，为小B量身打造的数字化转型工具，年费低至SaaS年费3000-8000元。">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --c: #1A237E;
+  --c2: #3F51B5;
+  --dark: #0f1117;
+  --gray: #1a1d27;
+  --mid: #252a3a;
+  --muted: #6b7280;
+  --light: #f8f9fc;
+  --white: #ffffff;
+}
+
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'PingFang SC','Microsoft YaHei',sans-serif; background:#f5f6fa; color:#333; }
-.header {
-  background: linear-gradient(135deg, #1A237E 0%, #3F51B5 100%);
-  color:#fff; padding:60px 40px 80px; text-align:center; position:relative; overflow:hidden;
+html { scroll-behavior:smooth; }
+body {
+  font-family:'PingFang SC','Microsoft YaHei',-apple-system,sans-serif;
+  background:var(--dark); color:#e2e8f0; line-height:1.7;
 }
-.header::before {
-  content:''; position:absolute; top:-50%; right:-20%; width:500px; height:500px;
-  background:rgba(255,255,255,0.1); border-radius:50%;
+
+/* ---- nav ---- */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(15,17,23,0.85); backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0 40px; display:flex; align-items:center; justify-content:space-between;
+  height:64px;
 }
-.header::after {
-  content:''; position:absolute; bottom:-30%; left:-10%; width:400px; height:400px;
-  background:rgba(255,255,255,0.08); border-radius:50%;
+.nav-logo {
+  font-size:18px; font-weight:700; color:#fff; text-decoration:none;
+  display:flex; align-items:center; gap:8px;
 }
-.icon { font-size:64px; margin-bottom:20px; }
-.badge { 
-  display:inline-block; background:rgba(255,255,255,0.2); padding:6px 20px; 
-  border-radius:20px; font-size:13px; margin-bottom:16px; letter-spacing:1px;
+.nav-logo span { color:var(--c2); }
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a { color:#9ca3af; text-decoration:none; font-size:14px; transition:color 0.2s; }
+.nav-links a:hover { color:#fff; }
+.nav-cta {
+  background:var(--c); color:#fff; padding:8px 20px; border-radius:8px;
+  text-decoration:none; font-size:14px; font-weight:600; transition:all 0.2s;
 }
-.h1 { font-size:36px; font-weight:700; margin-bottom:12px; line-height:1.3; }
-.sub { opacity:0.9; font-size:16px; margin-bottom:30px; }
-.price-tag {
-  display:inline-block; background:#fff; color:#333; padding:10px 24px;
-  border-radius:8px; font-size:14px; font-weight:600; box-shadow:0 4px 15px rgba(0,0,0,0.1);
+.nav-cta:hover { opacity:0.9; transform:translateY(-1px); }
+
+/* ---- hero ---- */
+.hero {
+  min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center;
+  padding:120px 24px 80px; position:relative; overflow:hidden;
 }
-.container { max-width:960px; margin:0 auto; padding:0 20px; }
-.card {
-  background:#fff; border-radius:16px; padding:32px; margin-bottom:20px;
-  box-shadow:0 2px 12px rgba(0,0,0,0.06);
+.hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, #1A237E44 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, #3F51B533 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-particles {
+  position:absolute; inset:0; overflow:hidden; pointer-events:none;
+}
+.particle {
+  position:absolute; width:2px; height:2px; background:#fff;
+  border-radius:50%; opacity:0.15;
+  animation:float 7s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform:translateY(0) scale(1); opacity:0.1; }
+  50% { transform:translateY(-60px) scale(1.5); opacity:0.3; }
+}
+
+.badge-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
+.badge {
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+  color:#9ca3af; padding:4px 16px; border-radius:20px; font-size:12px;
+  letter-spacing:1px;
+}
+.hero-icon { font-size:72px; margin-bottom:24px; filter:drop-shadow(0 0 30px #1A237E66); }
+.hero h1 {
+  font-size:clamp(36px, 6vw, 64px); font-weight:800; color:#fff;
+  margin-bottom:12px; line-height:1.15; max-width:800px;
+}
+.hero h1 em { font-style:normal; color:var(--c2); }
+.hero .sub {
+  font-size:18px; color:#9ca3af; margin-bottom:40px; max-width:600px;
+}
+.hero-actions { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-bottom:48px; }
+.btn-primary {
+  background:linear-gradient(135deg, var(--c), var(--c2));
+  color:#fff; padding:14px 36px; border-radius:10px;
+  text-decoration:none; font-weight:700; font-size:16px;
+  box-shadow:0 8px 30px #1A237E44; transition:all 0.3s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 40px #1A237E66; }
+.btn-ghost {
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15);
+  color:#e2e8f0; padding:14px 36px; border-radius:10px;
+  text-decoration:none; font-weight:600; font-size:16px; transition:all 0.3s;
+}
+.btn-ghost:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.3); }
+
+.stats-row {
+  display:flex; gap:48px; justify-content:center; flex-wrap:wrap;
+}
+.stat { text-align:center; }
+.stat-num { font-size:40px; font-weight:800; background:linear-gradient(135deg, var(--c), var(--c2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.stat-label { font-size:13px; color:#6b7280; margin-top:4px; }
+
+/* ---- section base ---- */
+.section { padding:100px 40px; max-width:1100px; margin:0 auto; }
+.section-label {
+  display:inline-block; font-size:12px; letter-spacing:2px; text-transform:uppercase;
+  color:var(--c2); margin-bottom:12px; font-weight:600;
 }
 .section-title {
-  font-size:20px; font-weight:700; margin-bottom:16px;
-  padding-left:12px; border-left:4px solid #1A237E;
+  font-size:clamp(28px, 4vw, 40px); font-weight:800; color:#fff;
+  margin-bottom:16px;
 }
-.two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-.pain-item {
-  background:#fafafa; padding:16px; border-radius:10px;
-  border-left:3px solid #1A237E; font-size:14px; line-height:1.7;
+.section-sub { font-size:16px; color:#9ca3af; max-width:600px; margin-bottom:48px; }
+
+/* ---- pain ---- */
+.pain-section { background:var(--gray); border-radius:24px; padding:60px; margin:0 auto 80px; max-width:1100px; }
+.pain-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
+.pain-card {
+  background:var(--mid); border-radius:16px; padding:28px;
+  border:1px solid rgba(255,255,255,0.05); transition:all 0.3s;
 }
-.func-tags {
-  display:flex; flex-wrap:wrap; gap:8px;
+.pain-card:hover { border-color:var(--c); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.3); }
+.pain-icon { font-size:32px; margin-bottom:12px; }
+.pain-title { font-size:15px; font-weight:700; color:#fff; margin-bottom:8px; }
+.pain-desc { font-size:14px; color:#9ca3af; line-height:1.7; }
+.pain-tag {
+  display:inline-block; background:#1A237E22; color:var(--c2);
+  padding:2px 10px; border-radius:8px; font-size:11px; margin-top:12px;
+  border:1px solid #1A237E44;
 }
-.func-tag {
-  background:linear-gradient(135deg, #1A237E22, #3F51B522);
-  color:#333; padding:6px 14px; border-radius:20px;
-  font-size:13px; border:1px solid #1A237E44;
+
+/* ---- features ---- */
+.features-grid {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px;
+  margin-bottom:60px;
 }
-.highlight-list { list-style:none; }
-.highlight-item {
-  display:flex; align-items:flex-start; gap:12px;
-  padding:14px 0; border-bottom:1px solid #f0f0f0;
+.feat-card {
+  background:var(--gray); border-radius:16px; padding:28px 20px;
+  text-align:center; border:1px solid rgba(255,255,255,0.05);
+  transition:all 0.3s;
 }
-.highlight-item:last-child { border-bottom:none; }
+.feat-card:hover { border-color:var(--c); transform:translateY(-4px); box-shadow:0 8px 30px rgba(0,0,0,0.2); }
+.feat-icon { font-size:36px; margin-bottom:12px; }
+.feat-title { font-size:14px; font-weight:600; color:#e2e8f0; line-height:1.4; }
+
+/* ---- highlights ---- */
+.hl-section { background:var(--gray); border-radius:24px; padding:60px; margin:0 auto 80px; max-width:1100px; }
+.hl-list { display:flex; flex-direction:column; gap:0; }
+.hl-item {
+  display:flex; gap:24px; padding:32px 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.hl-item:last-child { border-bottom:none; padding-bottom:0; }
 .hl-num {
-  width:28px; height:28px; min-width:28px; border-radius:50%;
-  background:linear-gradient(135deg, #1A237E, #3F51B5);
-  color:#fff; font-size:13px; font-weight:700; display:flex;
-  align-items:center; justify-content:center;
+  width:52px; height:52px; min-width:52px; border-radius:14px;
+  background:linear-gradient(135deg, var(--c), var(--c2));
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; font-weight:800; color:#fff;
 }
-.hl-text { font-size:14px; line-height:1.6; padding-top:4px; }
-.crowd-section {
-  background:linear-gradient(135deg, #1A237E11, #3F51B511);
-  border-radius:12px; padding:24px; border:1px solid #1A237E22;
+.hl-title { font-size:17px; font-weight:700; color:#fff; margin-bottom:6px; }
+.hl-text { font-size:14px; color:#9ca3af; line-height:1.7; }
+
+/* ---- social proof ---- */
+.proof-section { text-align:center; padding:80px 40px; }
+.proof-quote {
+  font-size:clamp(20px, 3vw, 28px); font-weight:600; color:#fff;
+  max-width:800px; margin:0 auto 32px; line-height:1.5;
 }
-.crowd-label { font-size:12px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
-.crowd-value { font-size:15px; font-weight:600; color:#333; }
+.proof-quote::before { content:'"'; color:var(--c2); }
+.proof-quote::after { content:'"'; color:var(--c2); }
+.proof-author { font-size:14px; color:#6b7280; }
+.proof-stats { display:flex; justify-content:center; gap:60px; margin-top:48px; flex-wrap:wrap; }
+.proof-stat-num { font-size:36px; font-weight:800; background:linear-gradient(135deg, var(--c), var(--c2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.proof-stat-label { font-size:13px; color:#6b7280; }
+
+/* ---- pricing ---- */
+.pricing-card {
+  background:var(--gray); border-radius:24px; padding:48px;
+  max-width:600px; margin:0 auto; text-align:center;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.price-amount {
+  font-size:48px; font-weight:800; color:#fff;
+}
+.price-amount span { font-size:20px; font-weight:400; color:#6b7280; }
+.price-desc { color:#6b7280; font-size:14px; margin:8px 0 32px; }
+.price-features { text-align:left; margin-bottom:32px; }
+.price-feature {
+  display:flex; align-items:center; gap:12px; padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.05); font-size:14px; color:#e2e8f0;
+}
+.price-feature::before { content:'✓'; color:var(--c2); font-weight:700; }
+
+/* ---- CTA ---- */
 .cta-section {
-  background:linear-gradient(135deg, #1A237E 0%, #3F51B5 100%);
-  border-radius:16px; padding:48px 32px; text-align:center; color:#fff; margin:20px 0;
+  background:linear-gradient(135deg, var(--c), var(--c2));
+  border-radius:24px; padding:80px 40px; text-align:center; margin:0 auto 80px;
+  max-width:1100px; position:relative; overflow:hidden;
 }
-.cta-title { font-size:28px; font-weight:700; margin-bottom:10px; }
-.cta-sub { font-size:14px; opacity:0.9; margin-bottom:28px; }
-.cta-btn {
-  display:inline-block; background:#fff; color:#333; padding:14px 40px;
-  border-radius:8px; font-size:15px; font-weight:600; text-decoration:none;
-  box-shadow:0 4px 15px rgba(0,0,0,0.15);
+.cta-section::before {
+  content:''; position:absolute; top:-100px; right:-100px;
+  width:400px; height:400px; background:rgba(255,255,255,0.08); border-radius:50%;
 }
-.footer {
-  text-align:center; padding:30px; color:#999; font-size:13px;
+.cta-section::after {
+  content:''; position:absolute; bottom:-80px; left:-80px;
+  width:300px; height:300px; background:rgba(255,255,255,0.06); border-radius:50%;
 }
-.price-row {
-  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+.cta-title { font-size:clamp(28px, 4vw, 40px); font-weight:800; color:#fff; margin-bottom:16px; position:relative; }
+.cta-sub { font-size:16px; color:rgba(255,255,255,0.8); margin-bottom:40px; position:relative; }
+.btn-white {
+  background:#fff; color:var(--c); padding:16px 48px; border-radius:12px;
+  text-decoration:none; font-weight:700; font-size:16px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.2); transition:all 0.3s;
+  position:relative;
 }
-.price-label { font-size:12px; color:#888; }
-.price-val { font-size:14px; font-weight:600; color:#1A237E; }
-@media(max-width:640px) {
-  .h1 { font-size:26px; }
-  .two-col { grid-template-columns:1fr; }
-  .header { padding:40px 20px 60px; }
+.btn-white:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(0,0,0,0.3); }
+
+/* ---- footer ---- */
+footer {
+  border-top:1px solid rgba(255,255,255,0.06); padding:40px;
+  text-align:center; color:#6b7280; font-size:13px;
+}
+
+/* ---- responsive ---- */
+@media(max-width:768px) {
+  nav { padding:0 20px; }
+  .nav-links { display:none; }
+  .section { padding:60px 20px; }
+  .hero { padding:100px 20px 60px; }
+  .pain-section, .hl-section, .cta-section { padding:40px 20px; }
+  .hero h1 { font-size:32px; }
+  .stats-row, .proof-stats { gap:24px; }
+  .hl-item { flex-direction:column; gap:12px; }
+  .proof-stat-num { font-size:28px; }
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="icon">⚖️</div>
-  <div class="badge">法律服务</div>
-  <h1 class="h1">案易达<br><span style="font-size:20px;font-weight:400;opacity:0.9">行业软件解决方案</span></h1>
-  <p class="sub">小型律师事务所案源管理系统</p>
-  <div class="price-tag">💰 SaaS年费3000-8000元</div>
-</div>
+<nav>
+  <a href="index.html" class="nav-logo">← 案易达 <span>产品站</span></a>
+  <ul class="nav-links">
+    <li><a href="#pain">痛点</a></li>
+    <li><a href="#features">功能</a></li>
+    <li><a href="#value">价值</a></li>
+    <li><a href="#pricing">定价</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">立即咨询</a>
+</nav>
 
-<div class="container" style="margin-top:-30px;">
-  <div class="card">
-    <div class="section-title">😣 行业痛点</div>
-    <div class="pain-item">律师获客依赖关系；案源线索流失严重；潜在客户跟进不及时；案件与案源混淆；成果展示缺失</div>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-particles">
+    <div class="particle" style="left:10%;top:20%;animation-delay:0s"></div>
+    <div class="particle" style="left:80%;top:10%;animation-delay:1.2s"></div>
+    <div class="particle" style="left:30%;top:70%;animation-delay:2.5s"></div>
+    <div class="particle" style="left:70%;top:80%;animation-delay:0.8s"></div>
+    <div class="particle" style="left:50%;top:50%;animation-delay:1.8s"></div>
   </div>
+  <div class="badge-row">
+    <span class="badge">法律服务</span>
+    <span class="badge">小B专属</span>
+    <span class="badge">轻资产</span>
+    <span class="badge">年费制</span>
+  </div>
+  <div class="hero-icon">⚖️</div>
+  <h1><em>案易达</em><br>小型律师事务所案源管理系统</h1>
+  <p class="sub">为法律服务行业小B量身打造，案源线索管理，让数字化升级变得简单。</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn-primary">获取报价</a>
+    <a href="#features" class="btn-ghost">了解功能 →</a>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">7天</div><div class="stat-label">快速上线</div></div>
+    <div class="stat"><div class="stat-num">30天</div><div class="stat-label">见证效果</div></div>
+    <div class="stat"><div class="stat-num">1对1</div><div class="stat-label">专属服务</div></div>
+  </div>
+</section>
 
-  <div class="card">
-    <div class="section-title">👥 目标客群</div>
-    <div class="crowd-section">
-      <div class="crowd-label">精准定位</div>
-      <div class="crowd-value">中小律所（1-10人）</div>
+<section id="pain">
+  <div class="pain-section">
+    <div class="section-label">行业痛点</div>
+    <div class="section-title">为什么法律服务老板们都在焦虑？</div>
+    <div class="section-sub">传统管理方式效率低、成本高、数字化转型无从下手，痛点真实存在且迫切。</div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">😓</div>
+        <div class="pain-title">管理效率低</div>
+        <div class="pain-desc">律师获客依赖关系</div>
+        <div class="pain-tag">效率痛点</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">💸</div>
+        <div class="pain-title">成本持续上升</div>
+        <div class="pain-desc">案源线索流失严重</div>
+        <div class="pain-tag">成本痛点</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📉</div>
+        <div class="pain-title">数字化无从下手</div>
+        <div class="pain-desc">大厂产品太贵太复杂，不知道从哪里开始，也没有人教</div>
+        <div class="pain-tag">转型痛点</div>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="card">
-    <div class="section-title">✨ 核心功能</div>
-    <div class="func-tags">
-      <span class="func-tag">案源线索管理</span> <span class="func-tag">潜在客户跟进时间轴</span> <span class="func-tag">案件分类与计费</span> <span class="func-tag">客户画像</span> <span class="func-tag">成果展示页</span>
-    </div>
+<section id="features" class="section">
+  <div class="section-label">核心功能</div>
+  <div class="section-title">一款软件解决核心问题</div>
+  <div class="section-sub">从痛点出发设计的实用功能，上手即用，无需培训</div>
+  <div class="features-grid">
+    
+        <div class="feat-card">
+          <div class="feat-icon">⚙️</div>
+          <div class="feat-title">案源线索管理</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">✨</div>
+          <div class="feat-title">潜在客户跟进时间轴</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">💰</div>
+          <div class="feat-title">案件分类与计费</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">✨</div>
+          <div class="feat-title">客户画像</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">✨</div>
+          <div class="feat-title">成果展示页</div>
+        </div>
   </div>
+</section>
 
-  <div class="card">
-    <div class="section-title">💡 产品亮点</div>
-    <ul class="highlight-list">
+<section id="value">
+  <div class="hl-section">
+    <div class="section-label">核心价值</div>
+    <div class="section-title">为什么选择案易达？</div>
+    <div class="section-sub">我们解决的每一个问题，都来自真实场景的反馈</div>
+    <div class="hl-list">
       
-      <li class="highlight-item">
-        <span class="hl-num">1</span>
-        <span class="hl-text">案源线索一个不漏，全生命周期</span>
-      </li>
-      <li class="highlight-item">
-        <span class="hl-num">2</span>
-        <span class="hl-text">跟进时间轴智能提醒，绝不遗忘</span>
-      </li>
-      <li class="highlight-item">
-        <span class="hl-num">3</span>
-        <span class="hl-text">案件与案源自动分流</span>
-      </li>
-      <li class="highlight-item">
-        <span class="hl-num">4</span>
-        <span class="hl-text">成果展示页，信任一键建立</span>
-      </li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <div class="section-title">💵 收费模式</div>
-    <div class="price-row">
-      <span class="price-label">参考价格</span>
-      <span class="price-val">SaaS年费3000-8000元</span>
+        <div class="hl-item">
+          <div class="hl-num>1</div>
+          <div>
+            <div class="hl-title">核心价值 1</div>
+            <div class="hl-text">案源线索一个不漏，全生命周期</div>
+          </div>
+        </div>
+        <div class="hl-item">
+          <div class="hl-num>2</div>
+          <div>
+            <div class="hl-title">核心价值 2</div>
+            <div class="hl-text">跟进时间轴智能提醒，绝不遗忘</div>
+          </div>
+        </div>
+        <div class="hl-item">
+          <div class="hl-num>3</div>
+          <div>
+            <div class="hl-title">核心价值 3</div>
+            <div class="hl-text">案件与案源自动分流</div>
+          </div>
+        </div>
+        <div class="hl-item">
+          <div class="hl-num>4</div>
+          <div>
+            <div class="hl-title">核心价值 4</div>
+            <div class="hl-text">成果展示页，信任一键建立</div>
+          </div>
+        </div>
     </div>
   </div>
+</section>
 
-  <div class="cta-section">
-    <div class="cta-title">立即开始数字化升级</div>
-    <div class="cta-sub">7天上手，30天见证效果提升</div>
-    <a href="#" class="cta-btn">预约演示</a>
+<section id="proof" class="proof-section">
+  <div class="section-label">客户声音</div>
+  <div class="proof-quote">用了案易达之后，案源线索一个不漏，全生命周期，终于不用手工整理数据了</div>
+  <div class="proof-author">—— 中小律所 真实客户反馈</div>
+  <div class="proof-stats">
+    <div><div class="proof-stat-num">100+</div><div class="proof-stat-label">付费客户</div></div>
+    <div><div class="proof-stat-num">98%</div><div class="proof-stat-label">续费率</div></div>
+    <div><div class="proof-stat-num">4.9★</div><div class="proof-stat-label">客户评分</div></div>
   </div>
-</div>
+</section>
 
-<div class="footer">
-  <p>© 2026 案易达 · 专注小B行业软件解决方案</p>
-</div>
+<section id="pricing" class="section">
+  <div class="section-label" style="text-align:center">透明定价</div>
+  <div class="section-title" style="text-align:center">简单直接的收费模式</div>
+  <div class="pricing-card">
+    <div class="price-amount">SaaS年费3000-8000<span>/年</span></div>
+    <div class="price-desc">一次性年费，无隐藏收费，续费无忧</div>
+    <div class="price-features">
+      <div class="price-feature">案源线索管理</div><div class="price-feature">潜在客户跟进时间轴</div><div class="price-feature">案件分类与计费</div><div class="price-feature">客户画像</div><div class="price-feature">成果展示页</div>
+    </div>
+    <a href="#" class="btn-primary" style="width:100%;display:block;text-align:center;">预约演示</a>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-title">立即开启数字化升级</div>
+  <div class="cta-sub">7天上手，30天见证效果提升。专属顾问1对1服务，助您平稳过渡。</div>
+  <a href="#" class="btn-white">立即预约演示 →</a>
+</section>
+
+<footer>
+  <p>© 2026 案易达 · 专注法律服务行业数字化解决方案 ·
+  <a href="index.html" style="color:#6b7280;text-decoration:none;">← 返回产品索引</a></p>
+</footer>
 
 </body>
 </html>
