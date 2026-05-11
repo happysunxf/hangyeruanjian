@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案易达 - 行业软件解决方案</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'PingFang SC','Microsoft YaHei',sans-serif; background:#f5f6fa; color:#333; }
+.header {
+  background: linear-gradient(135deg, #1A237E 0%, #3F51B5 100%);
+  color:#fff; padding:60px 40px 80px; text-align:center; position:relative; overflow:hidden;
+}
+.header::before {
+  content:''; position:absolute; top:-50%; right:-20%; width:500px; height:500px;
+  background:rgba(255,255,255,0.1); border-radius:50%;
+}
+.header::after {
+  content:''; position:absolute; bottom:-30%; left:-10%; width:400px; height:400px;
+  background:rgba(255,255,255,0.08); border-radius:50%;
+}
+.icon { font-size:64px; margin-bottom:20px; }
+.badge { 
+  display:inline-block; background:rgba(255,255,255,0.2); padding:6px 20px; 
+  border-radius:20px; font-size:13px; margin-bottom:16px; letter-spacing:1px;
+}
+.h1 { font-size:36px; font-weight:700; margin-bottom:12px; line-height:1.3; }
+.sub { opacity:0.9; font-size:16px; margin-bottom:30px; }
+.price-tag {
+  display:inline-block; background:#fff; color:#333; padding:10px 24px;
+  border-radius:8px; font-size:14px; font-weight:600; box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+.container { max-width:960px; margin:0 auto; padding:0 20px; }
+.card {
+  background:#fff; border-radius:16px; padding:32px; margin-bottom:20px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+.section-title {
+  font-size:20px; font-weight:700; margin-bottom:16px;
+  padding-left:12px; border-left:4px solid #1A237E;
+}
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.pain-item {
+  background:#fafafa; padding:16px; border-radius:10px;
+  border-left:3px solid #1A237E; font-size:14px; line-height:1.7;
+}
+.func-tags {
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.func-tag {
+  background:linear-gradient(135deg, #1A237E22, #3F51B522);
+  color:#333; padding:6px 14px; border-radius:20px;
+  font-size:13px; border:1px solid #1A237E44;
+}
+.highlight-list { list-style:none; }
+.highlight-item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:14px 0; border-bottom:1px solid #f0f0f0;
+}
+.highlight-item:last-child { border-bottom:none; }
+.hl-num {
+  width:28px; height:28px; min-width:28px; border-radius:50%;
+  background:linear-gradient(135deg, #1A237E, #3F51B5);
+  color:#fff; font-size:13px; font-weight:700; display:flex;
+  align-items:center; justify-content:center;
+}
+.hl-text { font-size:14px; line-height:1.6; padding-top:4px; }
+.crowd-section {
+  background:linear-gradient(135deg, #1A237E11, #3F51B511);
+  border-radius:12px; padding:24px; border:1px solid #1A237E22;
+}
+.crowd-label { font-size:12px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.crowd-value { font-size:15px; font-weight:600; color:#333; }
+.cta-section {
+  background:linear-gradient(135deg, #1A237E 0%, #3F51B5 100%);
+  border-radius:16px; padding:48px 32px; text-align:center; color:#fff; margin:20px 0;
+}
+.cta-title { font-size:28px; font-weight:700; margin-bottom:10px; }
+.cta-sub { font-size:14px; opacity:0.9; margin-bottom:28px; }
+.cta-btn {
+  display:inline-block; background:#fff; color:#333; padding:14px 40px;
+  border-radius:8px; font-size:15px; font-weight:600; text-decoration:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.15);
+}
+.footer {
+  text-align:center; padding:30px; color:#999; font-size:13px;
+}
+.price-row {
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+}
+.price-label { font-size:12px; color:#888; }
+.price-val { font-size:14px; font-weight:600; color:#1A237E; }
+@media(max-width:640px) {
+  .h1 { font-size:26px; }
+  .two-col { grid-template-columns:1fr; }
+  .header { padding:40px 20px 60px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="icon">⚖️</div>
+  <div class="badge">法律服务</div>
+  <h1 class="h1">案易达<br><span style="font-size:20px;font-weight:400;opacity:0.9">行业软件解决方案</span></h1>
+  <p class="sub">小型律师事务所案源管理系统</p>
+  <div class="price-tag">💰 SaaS年费3000-8000元</div>
+</div>
+
+<div class="container" style="margin-top:-30px;">
+  <div class="card">
+    <div class="section-title">😣 行业痛点</div>
+    <div class="pain-item">律师获客依赖关系；案源线索流失严重；潜在客户跟进不及时；案件与案源混淆；成果展示缺失</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">👥 目标客群</div>
+    <div class="crowd-section">
+      <div class="crowd-label">精准定位</div>
+      <div class="crowd-value">中小律所（1-10人）</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">✨ 核心功能</div>
+    <div class="func-tags">
+      <span class="func-tag">案源线索管理</span> <span class="func-tag">潜在客户跟进时间轴</span> <span class="func-tag">案件分类与计费</span> <span class="func-tag">客户画像</span> <span class="func-tag">成果展示页</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">💡 产品亮点</div>
+    <ul class="highlight-list">
+      
+      <li class="highlight-item">
+        <span class="hl-num">1</span>
+        <span class="hl-text">案源线索一个不漏，全生命周期</span>
+      </li>
+      <li class="highlight-item">
+        <span class="hl-num">2</span>
+        <span class="hl-text">跟进时间轴智能提醒，绝不遗忘</span>
+      </li>
+      <li class="highlight-item">
+        <span class="hl-num">3</span>
+        <span class="hl-text">案件与案源自动分流</span>
+      </li>
+      <li class="highlight-item">
+        <span class="hl-num">4</span>
+        <span class="hl-text">成果展示页，信任一键建立</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="section-title">💵 收费模式</div>
+    <div class="price-row">
+      <span class="price-label">参考价格</span>
+      <span class="price-val">SaaS年费3000-8000元</span>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <div class="cta-title">立即开始数字化升级</div>
+    <div class="cta-sub">7天上手，30天见证效果提升</div>
+    <a href="#" class="cta-btn">预约演示</a>
+  </div>
+</div>
+
+<div class="footer">
+  <p>© 2026 案易达 · 专注小B行业软件解决方案</p>
+</div>
+
+</body>
+</html>
