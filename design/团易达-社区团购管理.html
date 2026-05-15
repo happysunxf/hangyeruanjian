@@ -4,357 +4,371 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>团易达 - 社区团购管理系统</title>
-<meta name="description" content="团易达，专注社区团购。团长管理、佣金自动结算、路线规划、预售统计、爆品推送。SaaS年费3000-8000元。">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #061a0a;
-  --surface: #0d2b12;
-  --card: #122b18;
-  --card-hover: #163520;
-  --neon-green: #4ade80;
-  --neon-yellow: #facc15;
-  --neon-lime: #a3e635;
-  --text: #e8f5e9;
-  --text-muted: #6b9b7a;
-  --border: rgba(74,222,128,0.15);
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body {
-  font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  overflow-x: hidden;
-}
-
-/* ---- 网格背景 ---- */
-.grid-bg {
-  position: fixed; top:0; left:0; width:100%; height:100%;
-  pointer-events:none; z-index:0;
-  background-image:
-    linear-gradient(rgba(74,222,128,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(74,222,128,0.04) 1px, transparent 1px);
-  background-size:60px 60px;
-  animation: gridBlink 6s ease-in-out infinite;
-}
-@keyframes gridBlink {
-  0%,100% { opacity:0.4; }
-  50% { opacity:0.8; }
-}
-
-/* ---- 导航 ---- */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(6,26,10,0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 64px;
-}
-.nav-logo { font-size: 20px; font-weight: 900; color: #fff; text-decoration: none; letter-spacing: 2px; }
-.nav-logo span { color: var(--neon-green); text-shadow: 0 0 20px var(--neon-green); }
-.nav-links { display: flex; gap: 32px; list-style: none; }
-.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
-.nav-links a:hover { color: var(--neon-green); }
-.nav-cta {
-  background: linear-gradient(135deg, var(--neon-green), var(--neon-lime));
-  color: #061a0a; padding: 8px 24px; border-radius: 8px;
-  text-decoration: none; font-size: 14px; font-weight: 700;
-  box-shadow: 0 0 20px rgba(74,222,128,0.4);
-  transition: all 0.3s;
-}
-.nav-cta:hover { box-shadow: 0 0 30px rgba(74,222,128,0.6); transform: translateY(-2px); }
-
-/* ---- Hero ---- */
-.hero {
-  position: relative; min-height: 100vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 120px 24px 80px;
-  overflow: hidden;
-}
-.hero-glow {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(74,222,128,0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(74,222,128,0.1);
-  border: 1px solid rgba(74,222,128,0.3);
-  padding: 6px 20px; border-radius: 20px;
-  font-size: 12px; color: var(--neon-green);
-  letter-spacing: 3px; text-transform: uppercase;
-  margin-bottom: 28px;
-  position: relative; z-index: 2;
-}
-.hero-title {
-  font-size: clamp(48px, 8vw, 88px);
-  font-weight: 900;
-  background: linear-gradient(135deg, #fff 0%, var(--neon-green) 50%, var(--neon-yellow) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.1;
-  margin-bottom: 16px;
-  position: relative; z-index: 2;
-}
-.hero-sub {
-  font-size: 18px; color: var(--text-muted);
-  margin-bottom: 40px; max-width: 520px;
-  position: relative; z-index: 2;
-}
-.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 2; }
-.btn-primary {
-  background: linear-gradient(135deg, var(--neon-green), var(--neon-lime));
-  color: #061a0a; padding: 14px 36px; border-radius: 10px;
-  text-decoration: none; font-weight: 700; font-size: 15px;
-  box-shadow: 0 0 30px rgba(74,222,128,0.4);
-  transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-primary:hover { box-shadow: 0 0 50px rgba(74,222,128,0.6); transform: translateY(-2px); }
-.btn-secondary {
-  border: 1px solid var(--border);
-  color: var(--text); padding: 14px 36px; border-radius: 10px;
-  text-decoration: none; font-weight: 600; font-size: 15px;
-  transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-secondary:hover { background: var(--card); border-color: var(--neon-green); }
-
-/* ---- 客户痛点 ---- */
-.section-pain { padding: 80px 24px; position: relative; z-index: 1; }
-.section-label { text-align: center; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--neon-green); margin-bottom: 12px; }
-.section-title { text-align: center; font-size: clamp(28px, 4vw, 40px); font-weight: 800; margin-bottom: 16px; }
-.section-sub { text-align: center; color: var(--text-muted); max-width: 560px; margin: 0 auto 48px; font-size: 16px; }
-.pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; max-width: 1000px; margin: 0 auto; }
-.pain-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 28px;
-  transition: all 0.3s;
-}
-.pain-card:hover { background: var(--card-hover); border-color: rgba(74,222,128,0.3); transform: translateY(-4px); }
-.pain-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; background: rgba(74,222,128,0.1); }
-.pain-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #fff; }
-.pain-desc { font-size: 13px; color: var(--text-muted); line-height: 1.8; }
-
-/* ---- 功能模块 ---- */
-.section-features { padding: 80px 24px; position: relative; z-index: 1; }
-.features-header { text-align: center; margin-bottom: 56px; }
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
-.feature-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 32px;
-  position: relative; overflow: hidden;
-  transition: all 0.3s;
-}
-.feature-card::before {
-  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-  background: linear-gradient(90deg, var(--neon-green), var(--neon-yellow));
-  opacity: 0; transition: opacity 0.3s;
-}
-.feature-card:hover::before { opacity: 1; }
-.feature-card:hover { background: var(--card-hover); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
-.feature-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; }
-.fi-green { background: rgba(74,222,128,0.12); }
-.fi-yellow { background: rgba(250,204,21,0.12); }
-.fi-lime { background: rgba(163,230,53,0.12); }
-.fi-emerald { background: rgba(16,185,129,0.12); }
-.feature-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; color: #fff; }
-.feature-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
-.feature-detail { font-size: 12px; color: var(--neon-green); display: flex; align-items: center; gap: 6px; }
-
-/* ---- 数据 ---- */
-.section-stats { padding: 60px 24px; position: relative; z-index: 1; }
-.stats-track { max-width: 900px; margin: 0 auto; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; text-align: center; }
-.stat-num { font-size: 40px; font-weight: 900; background: linear-gradient(135deg, var(--neon-green), var(--neon-yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2; }
-.stat-label { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
-
-/* ---- 定价 ---- */
-.section-pricing { padding: 80px 24px; position: relative; z-index: 1; }
-.pricing-card {
-  max-width: 480px; margin: 0 auto;
-  background: var(--card); border: 1px solid rgba(74,222,128,0.3);
-  border-radius: 24px; padding: 48px; text-align: center;
-  position: relative; overflow: hidden;
-}
-.pricing-card::before {
-  content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-  background: conic-gradient(from 0deg, transparent, rgba(74,222,128,0.1), transparent, rgba(250,204,21,0.1), transparent);
-  animation: rotateBorder 8s linear infinite;
-}
-@keyframes rotateBorder { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.pricing-inner { position: relative; z-index: 2; }
-.pricing-tag { display: inline-block; background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.3); padding: 4px 16px; border-radius: 20px; font-size: 11px; color: var(--neon-green); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
-.pricing-price { font-size: 48px; font-weight: 900; color: #fff; margin-bottom: 8px; }
-.pricing-price span { font-size: 18px; font-weight: 500; color: var(--text-muted); }
-.pricing-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
-.pricing-features { list-style: none; text-align: left; margin-bottom: 32px; }
-.pricing-features li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; display: flex; align-items: center; gap: 10px; }
-.pricing-features li::before { content: '✓'; color: var(--neon-green); font-weight: 700; flex-shrink: 0; }
-.btn-pricing {
-  width: 100%; padding: 14px;
-  background: linear-gradient(135deg, var(--neon-green), var(--neon-lime));
-  color: #061a0a; border: none; border-radius: 10px;
-  font-size: 16px; font-weight: 700; cursor: pointer;
-  box-shadow: 0 0 30px rgba(74,222,128,0.4);
-  transition: all 0.3s;
-}
-.btn-pricing:hover { box-shadow: 0 0 50px rgba(74,222,128,0.6); transform: translateY(-2px); }
-
-footer { text-align: center; padding: 48px 24px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
-
-@media (max-width: 768px) {
-  nav { padding: 0 20px; } .nav-links { display: none; }
-  .hero { padding: 100px 20px 60px; } .hero-title { font-size: 42px; }
-  .section-pain, .section-features, .section-pricing { padding: 60px 20px; }
-  .pricing-card { padding: 32px 24px; } .stats-track { padding: 32px 24px; }
-}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--main-green:#2d8c3c;--light-green:#4ade80;--dark-green:#1a5c2a;--accent-orange:#f97316;--accent-yellow:#fbbf24;--text-dark:#1f2937;--text-gray:#6b7280;--bg-light:#f0fdf4;--card-bg:#ffffff;--card-border:#d1fae5}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-light);color:var(--text-dark);min-height:100vh}
+.header{background:linear-gradient(135deg,var(--main-green),var(--dark-green));color:#fff;padding:60px 0;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat}
+.header-content{position:relative;z-index:1}
+.header h1{font-size:clamp(36px,8vw,72px);font-weight:900;margin-bottom:15px;letter-spacing:-1px}
+.header-subtitle{font-size:clamp(16px,2.5vw,24px);opacity:0.9;font-weight:300;max-width:600px;margin:0 auto 30px}
+.header-stats{display:flex;gap:50px;justify-content:center;flex-wrap:wrap}
+.stat-box{text-align:center}
+.stat-number{font-size:42px;font-weight:700;display:block}
+.stat-label{font-size:13px;text-transform:uppercase;letter-spacing:1px;opacity:0.8}
+.container{max-width:1400px;margin:0 auto;padding:0 20px}
+.nav-bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:20px;background:#fff;border-bottom:1px solid var(--card-border)}
+.nav-item{padding:10px 24px;border-radius:50px;text-decoration:none;color:var(--text-dark);font-size:14px;font-weight:500;transition:all 0.3s}
+.nav-item:hover,.nav-item.active{background:var(--main-green);color:#fff}
+.section{padding:80px 0}
+.section-title{font-size:clamp(28px,4vw,42px);font-weight:700;text-align:center;margin-bottom:15px;color:var(--text-dark)}
+.section-desc{font-size:16px;color:var(--text-gray);text-align:center;max-width:600px;margin:0 auto 50px}
+.main-layout{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:30px}
+.panel{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:30px;box-shadow:0 4px 20px rgba(0,0,0,0.05)}
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:25px;padding-bottom:15px;border-bottom:1px solid var(--card-border)}
+.panel-title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px}
+.panel-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--main-green),var(--light-green));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.panel-badge{background:var(--light-green);color:var(--dark-green);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.timeline{position:relative;padding-left:30px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--main-green),var(--light-green))}
+.timeline-item{position:relative;margin-bottom:25px}
+.timeline-item::before{content:'';position:absolute;left:-34px;top:5px;width:12px;height:12px;background:var(--main-green);border-radius:50%;border:3px solid var(--bg-light)}
+.timeline-content{background:var(--bg-light);padding:15px 20px;border-radius:12px}
+.timeline-title{font-size:15px;font-weight:600;margin-bottom:5px}
+.timeline-text{font-size:13px;color:var(--text-gray);line-height:1.6}
+.data-panel{background:linear-gradient(135deg,var(--main-green),var(--dark-green));border-radius:20px;padding:40px;color:#fff}
+.data-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+.data-card{text-align:center;padding:20px;background:rgba(255,255,255,0.1);border-radius:15px}
+.data-icon{font-size:36px;margin-bottom:10px}
+.data-number{font-size:36px;font-weight:700;display:block}
+.data-label{font-size:13px;opacity:0.8;margin-top:5px}
+.pain-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;max-width:1200px;margin:0 auto}
+.pain-card{background:#fff;border:1px solid var(--card-border);border-radius:20px;padding:30px;position:relative;overflow:hidden}
+.pain-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent-orange)}
+.pain-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--accent-orange),var(--accent-yellow));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:15px}
+.pain-title{font-size:17px;font-weight:700;margin-bottom:10px}
+.pain-text{font-size:14px;color:var(--text-gray);line-height:1.7}
+.feature-section{background:#fff}
+.feature-group{margin-bottom:60px}
+.feature-group:last-child{margin-bottom:0}
+.feature-group-title{display:flex;align-items:center;gap:15px;margin-bottom:30px}
+.feature-group-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--main-green),var(--light-green));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.feature-group-name{font-size:24px;font-weight:700}
+.feature-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.feature-card{background:var(--bg-light);border:1px solid var(--card-border);border-radius:16px;padding:25px;transition:all 0.3s}
+.feature-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.1)}
+.feature-card-header{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.feature-num{width:30px;height:30px;background:var(--main-green);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.feature-name{font-size:17px;font-weight:600}
+.feature-intro{font-size:14px;color:var(--text-gray);line-height:1.7;margin-bottom:15px}
+.feature-list{list-style:none}
+.feature-list li{position:relative;padding-left:18px;margin-bottom:8px;font-size:13px;line-height:1.6}
+.feature-list li::before{content:'→';position:absolute;left:0;color:var(--main-green);font-weight:700}
+.feature-list li strong{color:var(--main-green)}
+.value-cards{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px}
+.value-card{background:#fff;border:2px solid var(--card-border);border-radius:20px;padding:35px;text-align:center;transition:all 0.3s}
+.value-card:hover{border-color:var(--main-green);transform:translateY(-5px)}
+.value-icon{font-size:42px;margin-bottom:15px}
+.value-number{font-size:48px;font-weight:800;color:var(--main-green);display:block}
+.value-label{font-size:15px;font-weight:600;margin-top:10px}
+.value-detail{font-size:13px;color:var(--text-gray);margin-top:8px}
+.case-cards{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.case-card{background:#fff;border:1px solid var(--card-border);border-radius:20px;padding:30px;position:relative}
+.case-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--main-green),var(--light-green),var(--accent-orange))}
+.case-header{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+.case-avatar{width:50px;height:50px;background:linear-gradient(135deg,var(--main-green),var(--light-green));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff}
+.case-meta{}
+.case-name{font-size:18px;font-weight:700}
+.case-location{font-size:13px;color:var(--text-gray)}
+.case-context{padding:15px;background:var(--bg-light);border-radius:12px;border-left:3px solid var(--accent-orange);margin-bottom:15px}
+.case-context strong{color:var(--accent-orange)}
+.case-result{display:flex;align-items:center;gap:10px;padding:12px 15px;background:linear-gradient(135deg,rgba(45,140,60,0.1),rgba(74,222,128,0.1));border-radius:10px;border:1px solid var(--card-border)}
+.case-result-icon{}
+.case-result-text{font-size:14px;color:var(--main-green);font-weight:500}
+.cta-section{padding:100px 0;text-align:center;background:linear-gradient(135deg,var(--bg-light),#fff)}
+.cta-box{max-width:700px;margin:0 auto;padding:50px;background:#fff;border:2px solid var(--main-green);border-radius:25px;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-30px;right:-30px;width:150px;height:150px;background:linear-gradient(135deg,var(--light-green),transparent);border-radius:50%;opacity:0.3}
+.cta-title{font-size:clamp(24px,4vw,36px);font-weight:700;margin-bottom:15px;position:relative}
+.cta-desc{font-size:16px;color:var(--text-gray);line-height:1.7;margin-bottom:30px;position:relative}
+.cta-buttons{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;position:relative}
+.btn{padding:14px 35px;border-radius:50px;font-size:15px;font-weight:600;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:linear-gradient(135deg,var(--main-green),var(--dark-green));color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(45,140,60,0.3)}
+.btn-secondary{background:#fff;color:var(--main-green);border:2px solid var(--main-green)}
+.btn-secondary:hover{background:var(--bg-light)}
+.footer{padding:40px 0;text-align:center;border-top:1px solid var(--card-border);background:#fff}
+.footer-text{font-size:13px;color:var(--text-gray)}
+@media(max-width:768px){.main-layout{grid-template-columns:1fr}.data-grid{grid-template-columns:1fr 1fr}.case-cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="grid-bg"></div>
-
-<nav>
-  <a href="index.html" class="nav-logo">团<span>易达</span></a>
-  <ul class="nav-links">
-    <li><a href="#pain">痛点</a></li>
-    <li><a href="#features">功能</a></li>
-    <li><a href="#pricing">定价</a></li>
-  </ul>
-  <a href="#pricing" class="nav-cta">立即试用</a>
-</nav>
-
-<section class="hero" id="home">
-  <div class="hero-glow"></div>
-  <div class="hero-badge">🛒 社区团购管理</div>
-  <h1 class="hero-title">团易达</h1>
-  <p class="hero-sub">让团长轻松管团、佣金秒结、路线自动规划——社区团购的账目和人效，从此不再糊涂</p>
-  <div class="hero-actions">
-    <a href="#pricing" class="btn-primary">免费试用14天 →</a>
-    <a href="#features" class="btn-secondary">了解功能</a>
-  </div>
+<header class="header">
+<div class="header-content container">
+<h1>团易达</h1>
+<p class="header-subtitle">社区团购管理平台 · 团长管理+供应链+佣金结算<br>让团购运营更高效，让每一位团长都能安心赚钱</p>
+<div class="header-stats">
+<div class="stat-box"><span class="stat-number">95%</span><span class="stat-label">佣金结算效率提升</span></div>
+<div class="stat-box"><span class="stat-number">60%</span><span class="stat-label">爆品售罄率提升</span></div>
+<div class="stat-box"><span class="stat-number">40%</span><span class="stat-label">团长流失率降低</span></div>
+</div>
+</div>
+</header>
+<nav class="nav-bar"><a href="#pain" class="nav-item">行业痛点</a><a href="#feature" class="nav-item">核心功能</a><a href="#value" class="nav-item">价值数据</a><a href="#case" class="nav-item">场景案例</a></nav>
+<section id="pain" class="section">
+<div class="container">
+<div class="section-title">那些让人头疼的时刻</div>
+<div class="section-desc">每个团购负责人都在经历的场景，看看有没有戳中你</div>
+<div class="pain-cards">
+<div class="pain-card">
+<div class="pain-icon">💰</div>
+<h3 class="pain-title">佣金算错3毛钱，团长群里骂了1小时</h3>
+<p class="pain-text">"某团长卖了100份麻薯，提成算错3毛钱，团长在群里骂了1个小时，还影响其他团长的积极性。"Excel算佣金太容易出错，10个团长每人几百笔订单，用Excel对账不仅费时，还经常算错。一句"你少给我3毛钱"背后是整个团队的信任危机。</p>
+</div>
+<div class="pain-card">
+<div class="pain-icon">📦</div>
+<h3 class="pain-title">爆品备了50份结果只卖了20份</h3>
+<p class="pain-text">"某爆品备了50份结果只卖了20份，剩下的¥800元全砸手里，还占冷库空间。"爆品备货全凭感觉，好的话一天卖光，不好的话压货好几天。草莓这种时令水果尤其难控制，备多了浪费，备少了不够卖，白白流失客户。</p>
+</div>
+<div class="pain-card">
+<div class="pain-icon">🚗</div>
+<h3 class="pain-title">配送路线绕了10公里，油费多花¥150</h3>
+<p class="pain-text">"配送路线不合理，送完最后一个小区绕了10公里，油费多花了¥150。"没有规划配送路线的时候，都是凭经验送货。结果要么绕路，要么路线混乱，油费蹭蹭往上涨。一圈跑下来多花100多块油钱。</p>
+</div>
+<div class="pain-card">
+<div class="pain-icon">👥</div>
+<h3 class="pain-title">团长突然说不干，客户关系全丢了</h3>
+<p class="pain-text">"某团长突然说不干了，他手里200个客户关系全丢了，之前的培养成本全打水漂。"花了大半年培养的团长，说不干就不干，客户全跟着走了。培养一个团长至少要3个月以上积累，这些成本全打了水漂。</p>
+</div>
+</div>
+</div>
 </section>
-
-<section class="section-pain" id="pain">
-  <div class="section-label">真实痛点</div>
-  <h2 class="section-title">社区团购的团长们，都在头疼什么？</h2>
-  <p class="section-sub">我们走访了20+社区团购点，总结出最影响赚钱的几个问题</p>
-  <div class="pain-grid">
-    <div class="pain-card">
-      <div class="pain-icon">🧾</div>
-      <div class="pain-title">佣金算错，团长积极性下降</div>
-      <div class="pain-desc">按件提成、按比例阶梯、不同商品不同佣金——月底人工算账算到半夜，还经常算错，团长觉得自己被亏待，下个月就不干了</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">📦</div>
-      <div class="pain-title">提货乱成一锅粥</div>
-      <div class="pain-desc">100份团购商品到了，几十个邻居同时来取货，没有分时段通知，大家都挤在一起等，团长嗓子都喊哑了，还被投诉"乱"</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">📊</div>
-      <div class="pain-title">预售数据全靠猜</div>
-      <div class="pain-desc">每次开团前不知道报多少份，备多了浪费，备少了客户流失。没有数据支撑，全凭团长"经验"，经验往往不准</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">🗺️</div>
-      <div class="pain-title">配送路线靠脑子记</div>
-      <div class="pain-desc">小区几十栋楼，送货路线全在团长脑子里。换了团长或者订单多了，根本安排不过来，配送效率极低</div>
-    </div>
-  </div>
+<section id="feature" class="section feature-section">
+<div class="container">
+<div class="section-title">专为社区团购设计的数字化工具</div>
+<div class="section-desc">从团长招募到佣金结算，每个环节都有对应的解决方案</div>
+<div class="main-layout">
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title"><div class="panel-icon">👑</div>团长管理</div>
+<span class="panel-badge">核心模块</span>
+</div>
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">招募海报：扫码即可申请成为团长</div>
+<div class="timeline-text">生成带参数的招募二维码，扫码即可申请成为团长。系统自动审核，3个工作日内反馈结果。团长报名信息自动录入系统，无需手动登记。</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">团长等级：三级体系激励持续出单</div>
+<div class="timeline-text">试用期（0-50单，佣金85折）→ 正式团长（50-200单，全额佣金）→ 金牌团长（200单以上，佣金110%+优先选品权）。等级越高权益越多，激励团长持续出单。</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">佣金规则设置：灵活配置多</div>
+<div class="timeline-text">支持按件计佣（每单¥2）和按金额计佣（销售额5%）两种模式。爆品单独设置提高佣金比例（如8%），激励团长推广高毛利商品。</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">团长工作台：一目了然</div>
+<div class="timeline-text">团长在小程序查看今日订单/佣金余额/客户列表。支持佣金一键提现，审核后24小时到账。团长可随时查看自己的业绩排名。</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">团长群发：信息一键触达</div>
+<div class="timeline-text">总部可向所有团长推送商品通知/活动信息，支持文字+图片。团长一键转发朋友圈，无需手动编辑文案。</div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title"><div class="panel-icon">📦</div>供应链管理</div>
+</div>
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">商品上架：一键发布预售</div>
+<div class="timeline-text">设置商品名称/图片/原价/拼团价/限购数量，生成预售链接。支持库存上限设置，防止超卖。商品信息一次录入，多渠道一键分享。</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">限购设置：防止一人囤货</div>
+<div class="timeline-text">每人限拍3份，防止一人囤货。支持IP限制防刷单，同一IP最多购买5份。系统自动校验，超限自动拒绝下单。</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">尾款管理：定金锁定库存</div>
+<div class="timeline-text">定金¥10锁定，尾款¥35到货前支付。可查看尾款支付率（低于80%预警），避免因尾款不付导致库存积压。</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-content">
+<div class="timeline-title">库存锁定：超售自动退款</div>
+<div class="timeline-text">下单即锁库存，超售自动退款并短信通知顾客。比如备货100份实售120份，自动退20份款，¥200立即原路退回。</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="data-panel">
+<div class="data-grid">
+<div class="data-card"><div class="data-icon">📊</div><span class="data-number">10</span><p class="data-label">活跃团长数</p></div>
+<div class="data-card"><div class="data-icon">🛒</div><span class="data-number">2,847</span><p class="data-label">本月订单量</p></div>
+<div class="data-card"><div class="data-icon">💵</div><span class="data-number">¥89,320</span><p class="data-label">本月销售额</p></div>
+<div class="data-card"><div class="data-icon">💰</div><span class="data-number">¥4,466</span><p class="data-label">待结算佣金</p></div>
+</div>
+</div>
+</div>
 </section>
-
-<section class="section-features" id="features">
-  <div class="features-header">
-    <div class="section-label">核心功能</div>
-    <h2 class="section-title">每一个功能，都对应一个真实场景</h2>
-    <p class="section-sub">不是功能堆砌，是实实在在帮团长少踩坑、多赚钱</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon fi-green">👥</div>
-      <div class="feature-title">团长管理</div>
-      <div class="feature-desc">录入团长信息，设定佣金规则：按件、按比例、阶梯式，系统自动算出每个团长该拿多少钱。月底一键导出，秒结佣金</div>
-      <div class="feature-detail">佣金规则自定义 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-yellow">💰</div>
-      <div class="feature-title">佣金自动结算</div>
-      <div class="feature-desc">订单完成后自动按规则计算佣金金额，支持微信/支付宝批量转账。团长对金额有疑义？随时查看每单明细</div>
-      <div class="feature-detail">微信自动发佣 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-lime">🗺️</div>
-      <div class="feature-title">配送路线规划</div>
-      <div class="feature-desc">输入提货点坐标，自动生成最优路线。分单后给每个客户推送提货时段，避免扎堆。团长拿着手机按路线送就行</div>
-      <div class="feature-detail">一键规划配送路线 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-yellow">📊</div>
-      <div class="feature-title">预售统计看板</div>
-      <div class="feature-desc">每个团的商品报名数量实时更新，到达预设阈值自动提醒"爆单预警"。历史数据沉淀，帮助下次备货决策</div>
-      <div class="feature-detail">爆单阈值提醒 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-lime">🔥</div>
-      <div class="feature-title">爆品推送</div>
-      <div class="feature-desc">总部选定爆品，一键推送至所有团长群。爆品图文素材自动生成，团长直接转发。提升爆品曝光和下单转化</div>
-      <div class="feature-detail">素材一键生成 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-emerald">📱</div>
-      <div class="feature-title">团长手机端</div>
-      <div class="feature-desc">团长在微信小程序里查佣金、看订单、回客户，无需下载任何App。上了年纪的团长也能3分钟上手</div>
-      <div class="feature-detail">微信小程序即可 →</div>
-    </div>
-  </div>
+<section class="section">
+<div class="container">
+<div class="feature-group">
+<div class="feature-group-title">
+<div class="feature-group-icon">🚚</div>
+<h3 class="feature-group-name">路线规划</h3>
+</div>
+<div class="feature-cards">
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">地图标记小区</h4></div>
+<p class="feature-intro">后台标记所有配送小区位置，生成可视化地图，标记小区负责人联系方式。配送员可一键导航到目的地，再也不用问路。</p>
+<ul class="feature-list"><li><strong>小区标注：</strong>在地图上标记所有配送点，生成可视化路线图</li><li><strong>负责人联系：</strong>每个小区记录负责人电话，一键拨打</li><li><strong>配送备注：</strong>记录小区特殊要求，如"只能晚上送"</li><li><strong>地图导出：</strong>支持导出各区域配送地图，方便司机参考</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">智能排线</h4></div>
+<p class="feature-intro">根据订单分布自动计算最优路线，减少绕路，支持手动调整路线顺序。系统给出的路线方案比人工规划节省20%以上里程。</p>
+<ul class="feature-list"><li><strong>最优路线：</strong>算法自动计算最短配送路线</li><li><strong>手动调整：</strong>支持拖拽调整站点顺序，适应实际需求</li><li><li><strong>里程预估：</strong>显示总配送里程和预计耗时</li><li><strong>油耗计算：</strong>根据里程计算油耗成本</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">配送时间预估</h4></div>
+<p class="feature-intro">显示每个小区的预计送达时间，比如"第1站锦绣花园10:30，第2站和谐里10:45"。顾客可查看预计送达时间，提升体验。</p>
+<ul class="feature-list"><li><strong>时间预估：</strong>每个站点显示预计到达时间</li><li><strong>顾客通知：</strong>配送出发时自动通知顾客</li><li><strong>实时跟踪：</strong>顾客可在小程序实时查看配送位置</li><li><strong>延误预警：</strong>如果延误超过10分钟自动通知顾客</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">4</span><h4 class="feature-name">司机端APP</h4></div>
+<p class="feature-intro">司机接收配送任务，支持抢单（司机自己选）和派单（总部指定），配送完成自动记录。结算运费有据可依。</p>
+<ul class="feature-list"><li><strong>任务接收：</strong>司机在APP查看待配送任务列表</li><li><strong>抢单模式：</strong>司机可自己抢喜欢的路线</li><li><strong>派单模式：</strong>总部直接指定司机配送</li><li><strong>完成确认：</strong>送达后司机点击确认，系统自动记录</li></ul>
+</div>
+</div>
+</div>
+<div class="feature-group">
+<div class="feature-group-title">
+<div class="feature-group-icon">💵</div>
+<h3 class="feature-group-name">佣金结算</h3>
+</div>
+<div class="feature-cards">
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">佣金设置</h4></div>
+<p class="feature-intro">默认按金额5%结算，可为爆品单独设置提高佣金比例（比如8%），激励团长推广。佣金比例可按商品单独设置，灵活多变。</p>
+<ul class="feature-list"><li><strong>默认比例：</strong>全店统一佣金比例5%</li><li><strong>爆品提高：</strong>爆品可单独设置8%甚至10%</li><li><strong>阶梯佣金：</strong>订单量越高佣金比例越高</li><li><strong>团长专属：</strong>为金牌团长提供额外佣金加成</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">对账周期</h4></div>
+<p class="feature-intro">周结（每周一结算）/双周结/月结三种模式，支持手动结算和自动结算。团长可清晰看到每一笔佣金的来源和计算方式。</p>
+<ul class="feature-list"><li><strong>周结模式：</strong>每周一结算上周佣金</li><li><strong>双周结：</strong>每两周结算一次</li><li><strong>月结模式：</strong>每月末统一结算</li><li><strong>自动结算：</strong>到达结算日自动计算并通知</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">提现审核</h4></div>
+<p class="feature-intro">团长申请提现后，总部审核通过方可到账，防止刷单。审核周期≤48小时，审核通过后24小时内到账。</p>
+<ul class="feature-list"><li><strong>申请提现：</strong>团长在小程序一键申请提现</li><li><strong>审核机制：</strong>总部审核通过后才打款</li><li><strong>防刷单：</strong>异常订单自动标记，人工审核</li><li><strong>到账通知：</strong>到账后自动通知团长</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">4</span><h4 class="feature-name">佣金报表</h4></div>
+<p class="feature-intro">每月自动生成团长佣金明细表，包含订单数/销售额/佣金金额，支持导出Excel。财务报表一键生成，对账不再繁琐。</p>
+<ul class="feature-list"><li><strong>明细导出：</strong>支持导出Excel格式佣金报表</li><li><strong>订单明细：</strong>每笔订单单独列出，含商品/数量/金额</li><li><strong>统计汇总：</strong>自动汇总本月佣金总额</li><li><strong>历史查询：</strong>可查询任意时间段的佣金记录</li></ul>
+</div>
+</div>
+</div>
+<div class="feature-group">
+<div class="feature-group-title">
+<div class="feature-group-icon">📣</div>
+<h3 class="feature-group-name">爆品推送</h3>
+</div>
+<div class="feature-cards">
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">专题页生成</h4></div>
+<p class="feature-intro">一键生成带活动氛围的预售专题页，支持自定义背景图+标题。团长可直接分享专题页到朋友圈，无需自己设计。</p>
+<ul class="feature-list"><li><strong>模板选择：</strong>多种专题页模板可选</li><li><strong>自定义背景：</strong>上传自定义背景图</li><li><strong>一键生成：</strong>选择模板后自动生成专题页</li><li><strong>分享链接：</strong>生成带小程序码的分享链接</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">朋友圈素材</h4></div>
+<p class="feature-intro">自动生成带小程序码的宣传图片，团长保存转发。支持生成9张图，满足朋友圈连续分享需求。素材精美专业，提升转化。</p>
+<ul class="feature-list"><li><strong>自动生成：</strong>根据商品信息自动生成宣传图</li><li><strong>小程序码：</strong>每张图自动附带小程序码</li><li><li><strong>9图连发：</strong>支持生成9张一组的朋友圈素材</li><li><strong>模板多样：</strong>多种风格模板可选</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">预售达标提醒</h4></div>
+<p class="feature-intro">当预售量达到预设阈值50%/80%/100%时自动推送提醒。实时监控销售进度，精准把握开团时机。</p>
+<ul class="feature-list"><li><strong>进度监控：</strong>实时显示当前预售进度</li><li><strong>阈值提醒：</strong>达到50%/80%/100%自动推送提醒</li><li><strong>团长效通知：</strong>团长手机收到销售进度通知</li><li><strong>数据统计：</strong>统计各商品的销售转化率</li></ul>
+</div>
+<div class="feature-card">
+<div class="feature-card-header"><span class="feature-num">4</span><h4 class="feature-name">数据看板</h4></div>
+<p class="feature-intro">实时显示今日/本周/本月销售额、订单量、团长数、客单价，支持筛选日期。数据一目了然，决策有据可依。</p>
+<ul class="feature-list"><li><strong>核心指标：</strong>销售额/订单量/团长数/客单价</li><li><strong>日期筛选：</strong>按今日/本周/本月/自定义筛选</li><li><li><strong>趋势图表：</strong>自动生成销售趋势图表</li><li><strong>导出功能：</strong>数据报表支持导出</li></ul>
+</div>
+</div>
+</div>
+</div>
 </section>
-
-<section class="section-stats">
-  <div class="stats-track">
-    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">覆盖团长数</div></div>
-    <div class="stat-item"><div class="stat-num">12万</div><div class="stat-label">月均订单数</div></div>
-    <div class="stat-item"><div class="stat-num">99.2%</div><div class="stat-label">佣金结算准确率</div></div>
-    <div class="stat-item"><div class="stat-num">35%</div><div class="stat-label">配送效率提升</div></div>
-  </div>
+<section id="value" class="section">
+<div class="container">
+<div class="section-title">真实可量化的改变</div>
+<div class="section-desc">用数据说话，看看上线后实际带来了什么效果</div>
+<div class="value-cards">
+<div class="value-card">
+<div class="value-icon">⏱️</div>
+<span class="value-number">95%</span>
+<p class="value-label">佣金结算时间减少</p>
+<p class="value-detail">原来每月2天 → 现在10分钟</p>
+</div>
+<div class="value-card">
+<div class="value-icon">📦</div>
+<span class="value-number">60%</span>
+<p class="value-label">爆品售罄率提升</p>
+<p class="value-detail">提前锁定库存+达标提醒</p>
+</div>
+<div class="value-card">
+<div class="value-icon">👥</div>
+<span class="value-number">40%</span>
+<p class="value-label">团长流失率降低</p>
+<p class="value-detail">等级体系+佣金准时到账</p>
+</div>
+</div>
+</div>
 </section>
-
-<section class="section-pricing" id="pricing">
-  <div class="section-label">定价方案</div>
-  <h2 class="section-title">简单透明，没有套路</h2>
-  <div class="pricing-card">
-    <div class="pricing-inner">
-      <div class="pricing-tag">SaaS · 云端部署</div>
-      <div class="pricing-price">¥3000<span> / 年</span></div>
-      <p class="pricing-desc">基础版 · 适合1-10名团长</p>
-      <ul class="pricing-features">
-        <li>团长管理 + 佣金规则配置</li>
-        <li>佣金自动结算 + 微信批量发佣</li>
-        <li>预售统计看板</li>
-        <li>配送路线规划</li>
-        <li>团长手机端（小程序）</li>
-        <li>微信群推送素材</li>
-      </ul>
-      <button class="btn-pricing">立即免费试用14天</button>
-    </div>
-  </div>
-  <p class="section-sub" style="margin-top:24px;">另有 ¥5000 / 年 专业版（含爆品推送、多网点管理）<br>¥8000 / 年 连锁版（不限团长数 + 专属客服）</p>
+<section id="case" class="section" style="background:#fff">
+<div class="container">
+<div class="section-title">真实客户的使用体验</div>
+<div class="section-desc">听听他们怎么说</div>
+<div class="case-cards">
+<div class="case-card">
+<div class="case-header"><div class="case-avatar">王</div><div class="case-meta"><h4 class="case-name">王经理</h4><p class="case-location">成都 · 10个团长</p></div></div>
+<div class="case-context"><strong>以前的情况：</strong>用Excel算佣金，每月花2天对账。10个团长每人几百笔订单，佣金计算太复杂，经常算错，团长有意见。后来花了一整天才对出来，还差了几块钱不知道哪里出错。</div>
+<div class="case-result"><span class="case-result-icon">✅</span><span class="case-result-text">上线团易达后，佣金自动结算10分钟搞定，从未出错</span></div>
+</div>
+<div class="case-card">
+<div class="case-header"><div class="case-avatar">张</div><div class="case-meta"><h4 class="case-name">张总</h4><p class="case-location">长沙 · 社区团购群</p></div></div>
+<div class="case-context"><strong>以前的情况：</strong>卖草莓备货100份，结果来了120份订单。不知道超了多少，超售怎么处理，后来才知道有些顾客下了单但没付款，库存乱成一团。</div>
+<div class="case-result"><span class="case-result-icon">✅</span><span class="case-result-text">用了库存锁定功能，超售的20份自动退款，省了大麻烦</span></div>
+</div>
+</div>
+</div>
 </section>
-
-<footer>
-  <p>© 2026 团易达 · 让社区团购不再算账算到半夜</p>
-</footer>
-
-<script>
-document.querySelectorAll('a[href^="#"]').forEach(function(a){
-  a.addEventListener('click',function(e){
-    var target = document.querySelector(this.getAttribute('href'));
-    if(target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
-  });
-});
-</script>
-</body>
-</html>
+<section class="cta-section">
+<div class="container">
+<div class="cta-box">
+<h2 class="cta-title">让团购运营更高效</h2>
+<p class="cta-desc">从团长招募到佣金结算，团易达帮你搞定所有运营细节<br>专注做好选品和服务，其他交给我们</p>
+<div class="cta-buttons"><a href="#" class="btn btn-primary">立即咨询了解</a><a href="#" class="btn btn-secondary">预约演示</a></div>
+</div>
+</div>
+</section>
+<footer class="footer"><p class="footer-text">© 2025 团易达 - 社区团购管理系统 · 让团购更简单</p></footer>
+</body></html>
