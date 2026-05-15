@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>幕间 - 剧本朗读室小剧场管理系统</title>
+<meta name="description" content="幕间，专注剧本朗读室小剧场。排期管理、票务分发、观众CRM、座位管理。SaaS年费3000-6000元。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1a0610;
+  --surface: #2d0e1a;
+  --card: #3d1225;
+  --card-hover: #4d1530;
+  --stage-red: #e91e63;
+  --dark-gold: #b8860b;
+  --text: #fce4ec;
+  --text-muted: #9a6080;
+  --border: rgba(233,30,99,0.15);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif; background:var(--bg); color:var(--text); line-height:1.7; overflow-x:hidden; }
+
+/* ---- 聚光灯效果 ---- */
+.spotlight-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+.spotlight {
+  position:absolute; width:200px; height:200px;
+  background:radial-gradient(circle,rgba(233,30,99,0.12) 0%,transparent 70%);
+  animation: spotlightMove 10s ease-in-out infinite;
+}
+@keyframes spotlightMove {
+  0%,100% { transform:translate(0,0); }
+  25% { transform:translate(100px,-50px); }
+  50% { transform:translate(-50px,100px); }
+  75% { transform:translate(-100px,-50px); }
+}
+
+/* ---- 导航 ---- */
+nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(26,6,16,0.85); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+.nav-logo { font-size:20px; font-weight:900; color:#fff; text-decoration:none; letter-spacing:2px; }
+.nav-logo span { color:var(--stage-red); text-shadow:0 0 20px var(--stage-red); }
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a { color:var(--text-muted); text-decoration:none; font-size:14px; transition:color 0.2s; }
+.nav-links a:hover { color:var(--stage-red); }
+.nav-cta { background:linear-gradient(135deg,var(--stage-red),var(--dark-gold)); color:#fff; padding:8px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:700; box-shadow:0 0 20px rgba(233,30,99,0.4); transition:all 0.3s; }
+.nav-cta:hover { box-shadow:0 0 30px rgba(233,30,99,0.6); transform:translateY(-2px); }
+
+/* ---- Hero ---- */
+.hero { position:relative; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px 24px 80px; overflow:hidden; }
+.hero-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:700px; height:700px; background:radial-gradient(circle,rgba(233,30,99,0.08) 0%,transparent 70%); pointer-events:none; }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(233,30,99,0.1); border:1px solid rgba(233,30,99,0.3); padding:6px 20px; border-radius:20px; font-size:12px; color:var(--stage-red); letter-spacing:3px; text-transform:uppercase; margin-bottom:28px; position:relative; z-index:2; }
+.hero-title { font-size:clamp(48px,8vw,88px); font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--stage-red) 50%,var(--dark-gold) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.1; margin-bottom:16px; position:relative; z-index:2; }
+.hero-sub { font-size:18px; color:var(--text-muted); margin-bottom:40px; max-width:520px; position:relative; z-index:2; }
+.hero-actions { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; position:relative; z-index:2; }
+.btn-primary { background:linear-gradient(135deg,var(--stage-red),var(--dark-gold)); color:#fff; padding:14px 36px; border-radius:10px; text-decoration:none; font-weight:700; font-size:15px; box-shadow:0 0 30px rgba(233,30,99,0.4); transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
+.btn-primary:hover { box-shadow:0 0 50px rgba(233,30,99,0.6); transform:translateY(-2px); }
+.btn-secondary { border:1px solid var(--border); color:var(--text); padding:14px 36px; border-radius:10px; text-decoration:none; font-weight:600; font-size:15px; transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
+.btn-secondary:hover { background:var(--card); border-color:var(--stage-red); }
+
+/* ---- 客户痛点 ---- */
+.section-pain { padding:80px 24px; position:relative; z-index:1; }
+.section-label { text-align:center; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--stage-red); margin-bottom:12px; }
+.section-title { text-align:center; font-size:clamp(28px,4vw,40px); font-weight:800; margin-bottom:16px; }
+.section-sub { text-align:center; color:var(--text-muted); max-width:560px; margin:0 auto 48px; font-size:16px; }
+.pain-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; max-width:1000px; margin:0 auto; }
+.pain-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px; transition:all 0.3s; }
+.pain-card:hover { background:var(--card-hover); border-color:rgba(233,30,99,0.3); transform:translateY(-4px); }
+.pain-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:16px; background:rgba(233,30,99,0.1); }
+.pain-title { font-size:15px; font-weight:700; margin-bottom:8px; color:#fff; }
+.pain-desc { font-size:13px; color:var(--text-muted); line-height:1.8; }
+
+/* ---- 功能模块 ---- */
+.section-features { padding:80px 24px; position:relative; z-index:1; }
+.features-header { text-align:center; margin-bottom:56px; }
+.features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; max-width:1100px; margin:0 auto; }
+.feature-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px; position:relative; overflow:hidden; transition:all 0.3s; }
+.feature-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:3px; background:linear-gradient(90deg,var(--stage-red),var(--dark-gold)); opacity:0; transition:opacity 0.3s; }
+.feature-card:hover::before { opacity:1; }
+.feature-card:hover { background:var(--card-hover); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.4); }
+.feature-icon { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:20px; }
+.fi-red { background:rgba(233,30,99,0.12); }
+.fi-gold { background:rgba(184,134,11,0.12); }
+.fi-pink { background:rgba(240,98,115,0.12); }
+.fi-purple { background:rgba(156,39,176,0.12); }
+.feature-title { font-size:17px; font-weight:700; margin-bottom:10px; color:#fff; }
+.feature-desc { font-size:14px; color:var(--text-muted); line-height:1.8; margin-bottom:16px; }
+.feature-detail { font-size:12px; color:var(--stage-red); display:flex; align-items:center; gap:6px; }
+
+/* ---- 数据 ---- */
+.section-stats { padding:60px 24px; position:relative; z-index:1; }
+.stats-track { max-width:900px; margin:0 auto; background:var(--card); border:1px solid var(--border); border-radius:20px; padding:48px; display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:32px; text-align:center; }
+.stat-num { font-size:40px; font-weight:900; background:linear-gradient(135deg,var(--stage-red),var(--dark-gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2; }
+.stat-label { font-size:13px; color:var(--text-muted); margin-top:6px; }
+
+/* ---- 定价 ---- */
+.section-pricing { padding:80px 24px; position:relative; z-index:1; }
+.pricing-card { max-width:480px; margin:0 auto; background:var(--card); border:1px solid rgba(233,30,99,0.3); border-radius:24px; padding:48px; text-align:center; position:relative; overflow:hidden; }
+.pricing-card::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:conic-gradient(from 0deg,transparent,rgba(233,30,99,0.1),transparent,rgba(184,134,11,0.1),transparent); animation:rotateBorder 8s linear infinite; }
+@keyframes rotateBorder { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+.pricing-inner { position:relative; z-index:2; }
+.pricing-tag { display:inline-block; background:rgba(233,30,99,0.15); border:1px solid rgba(233,30,99,0.3); padding:4px 16px; border-radius:20px; font-size:11px; color:var(--stage-red); letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
+.pricing-price { font-size:48px; font-weight:900; color:#fff; margin-bottom:8px; }
+.pricing-price span { font-size:18px; font-weight:500; color:var(--text-muted); }
+.pricing-desc { color:var(--text-muted); font-size:14px; margin-bottom:32px; }
+.pricing-features { list-style:none; text-align:left; margin-bottom:32px; }
+.pricing-features li { padding:10px 0; border-bottom:1px solid var(--border); font-size:14px; display:flex; align-items:center; gap:10px; }
+.pricing-features li::before { content:'✓'; color:var(--stage-red); font-weight:700; flex-shrink:0; }
+.btn-pricing { width:100%; padding:14px; background:linear-gradient(135deg,var(--stage-red),var(--dark-gold)); color:#fff; border:none; border-radius:10px; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 0 30px rgba(233,30,99,0.4); transition:all 0.3s; }
+.btn-pricing:hover { box-shadow:0 0 50px rgba(233,30,99,0.6); transform:translateY(-2px); }
+
+footer { text-align:center; padding:48px 24px; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); position:relative; z-index:1; }
+
+@media (max-width:768px) { nav{padding:0 20px;} .nav-links{display:none;} .hero{padding:100px 20px 60px;} .hero-title{font-size:42px;} .section-pain,.section-features,.section-pricing{padding:60px 20px;} .pricing-card{padding:32px 24px;} .stats-track{padding:32px 24px;} }
+</style>
+</head>
+<body>
+
+<div class="spotlight-container" id="spots"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">幕<span>间</span></a>
+  <ul class="nav-links">
+    <li><a href="#pain">痛点</a></li>
+    <li><a href="#features">功能</a></li>
+    <li><a href="#pricing">定价</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">立即试用</a>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">🎙️ 剧本朗读室小剧场</div>
+  <h1 class="hero-title">幕间</h1>
+  <p class="hero-sub">排期不再撞车、票务自动分发、观众CRM留得住——小剧场的每一场演出，都值得被认真对待</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn-primary">免费试用14天 →</a>
+    <a href="#features" class="btn-secondary">了解功能</a>
+  </div>
+</section>
+
+<section class="section-pain" id="pain">
+  <div class="section-label">真实痛点</div>
+  <h2 class="section-title">剧本朗读室和小剧场的运营者们在头疼什么？</h2>
+  <p class="section-sub">我们走访了8+小剧场，总结出最影响票房和体验的几个问题</p>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">📅</div>
+      <div class="pain-title">排期撞车，场地时间冲突</div>
+      <div class="pain-desc">同一时段两个剧组都想用场地，靠Excel或者脑子记根本理不清。排好了发现冲突，还要打电话协调改时间，麻烦一堆</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🎫</div>
+      <div class="pain-title">票务分发靠手工，统计对不上</div>
+      <div class="pain-desc">每场演出几十张票，线上渠道、线下窗口、朋友赠票各一批。手动记录容易出错，演出结束还不知道到底来了多少人</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">👥</div>
+      <div class="pain-title">观众买完票就走，下次演出联系不上</div>
+      <div class="pain-desc">公众号留了联系方式，但买过票的观众根本没有画像。不知道哪些是老观众、哪些是新人，下次推票不知道该推给谁</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🪑</div>
+      <div class="pain-title">座位管理混乱，好位置被占用</div>
+      <div class="pain-desc">几十个座位，哪个被预订了、哪个是空着的，管理员靠喊。VIP位置经常被熟人不经预约直接占，真正的购票观众反而没位置</div>
+    </div>
+  </div>
+</section>
+
+<section class="section-features" id="features">
+  <div class="features-header">
+    <div class="section-label">核心功能</div>
+    <h2 class="section-title">每一个功能，都对应一个真实场景</h2>
+    <p class="section-sub">不是功能堆砌，是时实在在帮剧场少踩坑、多卖票</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon fi-red">📅</div>
+      <div class="feature-title">排期管理</div>
+      <div class="feature-desc">日历视图展示场地使用情况，拖动即可安排演出时间。同一时段冲突自动标红提示。剧组、演员、时间一目了然</div>
+      <div class="feature-detail">冲突自动检测 →</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon fi-gold">🎫</div>
+      <div class="feature-title">票务分发</div>
+      <div class="feature-desc">多渠道票务统一管理：线上、窗口、赠票分别录入，实时同步剩余票数。支持二维码电子票，扫一下即可入场核销</div>
+      <div class="feature-detail">电子票+核销 →</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon fi-pink">👥</div>
+      <div class="feature-title">观众CRM</div>
+      <div class="feature-desc">每次购票记录自动沉淀至观众档案。标记"常客""新观众"，下次演出时对不同群体推送不同票价，提高上座率</div>
+      <div class="feature-detail">观众分层运营 →</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon fi-purple">🪑</div>
+      <div class="feature-title">座位管理</div>
+      <div class="feature-desc">座位图可视化，选座精确到单个位置。支持预订、占座、预留多种状态。好位置必须购票才能锁定，不用再被人情绑架</div>
+      <div class="feature-detail">可视化座位图 →</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon fi-red">📊</div>
+      <div class="feature-title">演出数据报表</div>
+      <div class="feature-desc">每场演出的票房、上座率、观众来源渠道自动生成报表。帮助了解哪个类型的戏最受欢迎，为下一季选剧提供依据</div>
+      <div class="feature-detail">数据驱动选剧 →</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon fi-gold">📱</div>
+      <div class="feature-title">观众端小程序</div>
+      <div class="feature-desc">观众通过微信小程序查看排期、选座购票、管理自己的票夹。推送演出信息给已购票观众，不用担心信息传达不到</div>
+      <div class="feature-detail">微信小程序即可 →</div>
+    </div>
+  </div>
+</section>
+
+<section class="section-stats">
+  <div class="stats-track">
+    <div class="stat-item"><div class="stat-num">150+</div><div class="stat-label">服务小剧场</div></div>
+    <div class="stat-item"><div class="stat-num">5万+</div><div class="stat-label">累计票务分发</div></div>
+    <div class="stat-item"><div class="stat-num">92%</div><div class="stat-label">上座率提升</div></div>
+    <div class="stat-item"><div class="stat-num">28%</div><div class="stat-label">复购观众提升</div></div>
+  </div>
+</section>
+
+<section class="section-pricing" id="pricing">
+  <div class="section-label">定价方案</div>
+  <h2 class="section-title">简单透明，没有套路</h2>
+  <div class="pricing-card">
+    <div class="pricing-inner">
+      <div class="pricing-tag">SaaS · 云端部署</div>
+      <div class="pricing-price">¥3000<span> / 年</span></div>
+      <p class="pricing-desc">基础版 · 适合1-3家门店</p>
+      <ul class="pricing-features">
+        <li>排期管理（日历视图）</li>
+        <li>票务分发与电子票核销</li>
+        <li>观众CRM</li>
+        <li>座位可视化（精确到座）</li>
+        <li>演出数据报表</li>
+        <li>观众端微信小程序</li>
+      </ul>
+      <button class="btn-pricing">立即免费试用14天</button>
+    </div>
+  </div>
+  <p class="section-sub" style="margin-top:24px;">另有 ¥5000 / 年 专业版（含多剧场管理、营销工具）</p>
+</section>
+
+<footer>
+  <p>© 2026 幕间 · 小剧场的每一场演出，都值得被认真对待</p>
+</footer>
+
+<script>
+(function(){
+  var c = document.getElementById('spots');
+  for(var i=0;i<4;i++){
+    var s = document.createElement('div');
+    s.className = 'spotlight';
+    s.style.cssText = [
+      'left:'+(20+i*25)+'%',
+      'top:'+(20+i*20)+'%',
+      'animation-duration:'+(8+i*3)+'s',
+      'animation-delay:'+(i*2)+'s'
+    ].join(';');
+    c.appendChild(s);
+  }
+})();
+document.querySelectorAll('a[href^="#"]').forEach(function(a){ a.addEventListener('click',function(e){ var target = document.querySelector(this.getAttribute('href')); if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); } }); });
+</script>
+</body>
+</html>
