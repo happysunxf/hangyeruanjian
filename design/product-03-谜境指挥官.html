@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>谜境指挥官 - 沉浸式娱乐运营引擎</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--c:#2d1b69;--a:#00f5d4;--g:linear-gradient(135deg, #2d1b69 0%, #00f5d4 50%, #7b2ff7 100%);--text:#e8e8e8;--text-muted:#9ca3af;--surface:#0d1117;--card-bg:#161b27;--card-border:#263040;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--surface);color:var(--text);line-height:1.6;overflow-x:hidden;}
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:var(--g);}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 40%, rgba(255,255,255,0.1) 0%, transparent 60%),radial-gradient(ellipse 60% 80% at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);pointer-events:none;}
+.hero-pattern{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);background-size:60px 60px;pointer-events:none;}
+.hero-float{position:absolute;border-radius:50%;filter:blur(80px);animation:float 8s ease-in-out infinite;}
+.hf1{width:500px;height:500px;background:var(--a);top:-150px;right:-150px;animation-delay:0s;opacity:0.2;}
+.hf2{width:400px;height:400px;background:var(--c);bottom:-100px;left:-100px;animation-delay:-3s;opacity:0.2;}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(20px,-30px) scale(1.05);}66%{transform:translate(-10px,20px) scale(0.95);}}
+.hero-inner{max-width:1200px;margin:0 auto;padding:80px 40px;position:relative;z-index:2;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.14);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.2);padding:8px 18px;border-radius:50px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);margin-bottom:30px;animation:fadeUp 0.6s ease both;}
+.hero-icon{font-size:28px;}
+.hero-content{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.hero-left{animation:fadeUp 0.6s 0.1s ease both;}
+.hero-right{animation:fadeUp 0.6s 0.2s ease both;}
+.hero-eyebrow{font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;opacity:0.65;margin-bottom:16px;}
+.hero-title{font-size:clamp(52px,7vw,90px);font-weight:900;line-height:1.0;letter-spacing:-3px;margin-bottom:8px;}
+.hero-subtitle{font-size:clamp(18px,2.5vw,26px);font-weight:300;opacity:0.85;margin-bottom:20px;}
+.hero-tagline{font-size:18px;font-weight:600;color:var(--a);margin-bottom:36px;letter-spacing:0.5px;}
+.hero-pain{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:24px 28px;backdrop-filter:blur(8px);margin-bottom:40px;}
+.hero-pain-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:0.5;margin-bottom:10px;}
+.hero-pain-text{font-size:15px;line-height:1.75;opacity:0.9;}
+.hero-cta-group{display:flex;gap:14px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;border-radius:12px;font-size:14px;font-weight:600;text-decoration:none;transition:all 0.25s;cursor:pointer;border:none;}
+.btn-primary{background:#fff;color:var(--c);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(255,255,255,0.25);}
+.btn-ghost{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);}
+.btn-ghost:hover{background:rgba(255,255,255,0.2);transform:translateY(-2px);}
+.hero-card-stack{position:relative;width:100%;max-width:420px;margin:0 auto;}
+.hc-main{background:rgba(255,255,255,0.1);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.18);border-radius:28px;padding:40px 44px;position:relative;z-index:2;}
+.hc-tag{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:0.6;margin-bottom:16px;}
+.hc-title{font-size:28px;font-weight:700;margin-bottom:16px;}
+.hc-price{font-size:52px;font-weight:900;color:var(--a);line-height:1;margin-bottom:6px;}
+.hc-price-unit{font-size:15px;font-weight:400;opacity:0.7;}
+.hc-hardware{font-size:12px;opacity:0.55;margin-top:14px;}
+.hc-float-card{position:absolute;background:rgba(0,0,0,0.5);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:14px 18px;font-size:12px;z-index:3;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.hc-f1{top:-24px;right:-36px;animation:float 6s ease-in-out infinite;}
+.hc-f2{bottom:-24px;left:-36px;animation:float 6s -2s ease-in-out infinite;}
+.hc-float-dot{width:8px;height:8px;border-radius:50%;background:var(--a);flex-shrink:0;}
+.stats-bar{background:linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);border-top:1px solid rgba(255,255,255,0.05);padding:60px 0;}
+.stats-inner{max-width:1000px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.stat-item{text-align:center;padding:28px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:20px;transition:all 0.3s;}
+.stat-item:hover{background:rgba(255,255,255,0.08);transform:translateY(-4px);border-color:rgba(255,255,255,0.12);}
+.stat-val{font-size:34px;font-weight:900;line-height:1.1;margin-bottom:8px;}
+.stat-name{font-size:12px;color:var(--text-muted);font-weight:500;}
+.pain-section{max-width:1100px;margin:0 auto;padding:100px 40px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.pain-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--a);margin-bottom:20px;}
+.pain-title{font-size:clamp(30px,4vw,44px);font-weight:800;line-height:1.15;margin-bottom:24px;}
+.pain-desc{font-size:16px;color:var(--text-muted);line-height:1.85;margin-bottom:32px;}
+.persona-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:28px;}
+.persona-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.45;margin-bottom:12px;}
+.persona-name{font-size:17px;font-weight:600;color:var(--a);}
+.persona-visual{display:flex;justify-content:center;align-items:center;font-size:130px;filter:drop-shadow(0 0 40px rgba(255,255,255,0.1));}
+.features-section{max-width:1200px;margin:0 auto;padding:0 40px 100px;}
+.section-header{text-align:center;margin-bottom:60px;padding-top:60px;}
+.section-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--a);margin-bottom:16px;}
+.section-title{font-size:clamp(30px,4vw,46px);font-weight:800;line-height:1.15;}
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.feat-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:28px 32px;display:flex;gap:20px;transition:all 0.3s;cursor:default;opacity:0;animation:fadeUp 0.5s ease forwards;}
+.feat-card:hover{border-color:var(--a);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.5);}
+.feat-icon{flex-shrink:0;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;}
+.feat-dot{width:12px;height:12px;border-radius:50%;}
+.feat-body h3{font-size:16px;font-weight:700;margin-bottom:6px;}
+.feat-body p{font-size:13px;color:var(--text-muted);line-height:1.75;}
+.pricing-section{background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 100%);border-top:1px solid rgba(255,255,255,0.05);padding:100px 40px;}
+.pricing-inner{max-width:700px;margin:0 auto;text-align:center;}
+.pricing-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--a);margin-bottom:20px;}
+.pricing-amount{font-size:clamp(52px,10vw,88px);font-weight:900;line-height:1;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.pricing-unit{font-size:15px;color:var(--text-muted);margin-bottom:48px;}
+.pricing-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;text-align:left;}
+.price-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:28px;transition:all 0.3s;}
+.price-card:hover{border-color:var(--a);transform:translateY(-2px);}
+.price-card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.45;margin-bottom:12px;}
+.price-card-val{font-size:22px;font-weight:700;margin-bottom:6px;}
+.price-card-note{font-size:12px;color:var(--text-muted);line-height:1.5;}
+.footer{border-top:1px solid rgba(255,255,255,0.05);padding:48px 40px;text-align:center;}
+.footer-brand{font-size:22px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.footer-link{color:var(--a);text-decoration:none;font-size:14px;font-weight:500;}
+.footer-copy{font-size:12px;color:var(--text-muted);margin-top:14px;}
+.back-link{position:fixed;top:24px;left:24px;z-index:100;background:rgba(0,0,0,0.65);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:10px 20px;display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-size:13px;font-weight:500;transition:all 0.2s;}
+.back-link:hover{background:rgba(0,0,0,0.85);transform:translateY(-1px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:900px){.hero-content{grid-template-columns:1fr;gap:40px}.hero-visual{display:none}.hero{min-height:auto;padding:120px 0 80px}.pain-section{grid-template-columns:1fr;gap:40px;padding:60px 24px}.persona-visual{display:none}.pricing-cards{grid-template-columns:1fr}.feat-grid{grid-template-columns:1fr}.stats-inner{grid-template-columns:1fr;padding:0 24px}}
+</style>
+</head>
+<body>
+<a href="index.html" class="back-link">&#8592; 产品中心</a>
+<section class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-float hf1"></div>
+  <div class="hero-float hf2"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-badge"><span class="hero-icon">🎭</span> 剧本杀店/密室逃脱</div>
+        <div class="hero-eyebrow">Product Case</div>
+        <h1 class="hero-title">谜境指挥官</h1>
+        <p class="hero-subtitle">沉浸式娱乐运营引擎</p>
+        <div class="hero-tagline">&ldquo;每个谜题，都有最优解&rdquo;</div>
+        <div class="hero-pain">
+          <div class="hero-pain-label">Core Pain Points</div>
+          <div class="hero-pain-text">预约撞单、剧本版权不清、DM排班难、会员复购低</div>
+        </div>
+        <div class="hero-cta-group">
+          <a href="#" class="btn btn-primary">获取方案 &#8594;</a>
+          <a href="#features" class="btn btn-ghost">查看功能</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-card-stack">
+          <div class="hc-main">
+            <div class="hc-tag">年度 SaaS 授权</div>
+            <div class="hc-title">谜境指挥官</div>
+            <div class="hc-price">0.6万<span class="hc-price-unit">/年</span></div>
+            <div class="hc-hardware">&#128230; NFC标签 + 智能锁×若干</div>
+          </div>
+          <div class="hc-float-card hc-f1">
+            <span class="hc-float-dot"></span>已服务 100,000+ 门店
+          </div>
+          <div class="hc-float-card hc-f2">
+            <span class="hc-float-dot" style="background:#38ef7d"></span>7天快速上线
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-val" style="color:#00f5d4">60%</div><div class="stat-name">复购率提升</div></div><div class="stat-item"><div class="stat-val" style="color:#00f5d4">80%</div><div class="stat-name">排班时间节省</div></div><div class="stat-item"><div class="stat-val" style="color:#00f5d4">0起</div><div class="stat-name">版权纠纷</div></div>
+  </div>
+</div>
+<section class="pain-section">
+  <div>
+    <div class="pain-label">Why 谜境指挥官?</div>
+    <h2 class="pain-title">为什么你需要谜境指挥官？</h2>
+    <p class="pain-desc">预约撞单、剧本版权不清、DM排班难、会员复购低</p>
+    <div class="persona-card">
+      <div class="persona-label">Target User Persona</div>
+      <div class="persona-name">剧本杀/密室店主</div>
+    </div>
+  </div>
+  <div class="persona-visual">🎭</div>
+</section>
+<section class="features-section" id="features">
+  <div class="section-header">
+    <div class="section-eyebrow">Core Functions</div>
+    <h2 class="section-title">核心功能全景</h2>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card" style="animation-delay:0ms">
+  <div class="feat-icon"><span class="feat-dot" style="background:#00f5d4;box-shadow:0 0 14px #00f5d4"></span></div>
+  <div class="feat-body">
+    <h3>全预约台</h3>
+    <p>时段精准到15分钟，NPC角色分配、道具状态实时同步，场次0撞车</p>
+  </div>
+</div><div class="feat-card" style="animation-delay:80ms">
+  <div class="feat-icon"><span class="feat-dot" style="background:#00f5d4;box-shadow:0 0 14px #00f5d4"></span></div>
+  <div class="feat-body">
+    <h3>剧本版权链</h3>
+    <p>授权信息上链存证，剧本采购/借用/转让全程可追溯，版权清晰</p>
+  </div>
+</div><div class="feat-card" style="animation-delay:160ms">
+  <div class="feat-icon"><span class="feat-dot" style="background:#00f5d4;box-shadow:0 0 14px #00f5d4"></span></div>
+  <div class="feat-body">
+    <h3>DM星穹</h3>
+    <p>DM档期/擅长剧本/评分全记录，排班时间轴一键生成</p>
+  </div>
+</div><div class="feat-card" style="animation-delay:240ms">
+  <div class="feat-icon"><span class="feat-dot" style="background:#00f5d4;box-shadow:0 0 14px #00f5d4"></span></div>
+  <div class="feat-body">
+    <h3>沉浸式大屏</h3>
+    <p>房间内投影联动，剧情提示、音效、灯光一体化控制</p>
+  </div>
+</div><div class="feat-card" style="animation-delay:320ms">
+  <div class="feat-icon"><span class="feat-dot" style="background:#00f5d4;box-shadow:0 0 14px #00f5d4"></span></div>
+  <div class="feat-body">
+    <h3>会员剧本本</h3>
+    <p>玩家游戏记录、推理能力雷达图、偏好类型分析，复购率提升60%</p>
+  </div>
+</div><div class="feat-card" style="animation-delay:400ms">
+  <div class="feat-icon"><span class="feat-dot" style="background:#00f5d4;box-shadow:0 0 14px #00f5d4"></span></div>
+  <div class="feat-body">
+    <h3>智能存包柜</h3>
+    <p>扫码开柜，随身物品无忧，游戏更沉浸</p>
+  </div>
+</div>
+  </div>
+</section>
+<section class="pricing-section">
+  <div class="pricing-inner">
+    <div class="pricing-label">Investment Plan</div>
+    <div class="pricing-amount">0.6万</div>
+    <div class="pricing-unit">/年 · 含服务与持续升级</div>
+    <div class="pricing-cards">
+      <div class="price-card">
+        <div class="price-card-title">Software License</div>
+        <div class="price-card-val">0.6万/年</div>
+        <div class="price-card-note">全功能网页端使用</div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-title">Hardware</div>
+        <div class="price-card-val">NFC标签 + 智能锁</div>
+        <div class="price-card-note">若干</div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="footer">
+  <div class="footer-brand">🎭 谜境指挥官</div>
+  <a href="https://github.com/happysunxf/hermes" class="footer-link" target="_blank">查看完整方案 &#8594;</a>
+  <div class="footer-copy">&copy; 2026 Hermes &middot; 小B端软件产品矩阵 &middot; 谜境指挥官 v2.0</div>
+</footer>
+</body>
+</html>
