@@ -1,269 +1,1034 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智造宝 - 轻型MES系统</title>
-<meta name="description" content="智造宝，专注小微工厂。工序管理、计件工资计算、质量追溯、报工记录、设备状态。SaaS年费5000-10000元。">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智造宝 - 轻型MES系统 | 小微工厂数字化转型利器</title>
+    <style>
+
 :root {
-  --bg: #080c14;
-  --surface: #0d1520;
-  --card: #111c2c;
-  --card-hover: #152235;
-  --silver: #90a4ae;
-  --tech-blue: #29b6f6;
-  --neon-blue: #18ffff;
-  --text: #e3f2fd;
-  --text-muted: #5a7a9a;
-  --border: rgba(41,182,246,0.15);
+    --bg-primary: #1a1e2e;
+    --bg-secondary: #212738;
+    --bg-card: #2a3045;
+    --accent-blue: #4a9eff;
+    --accent-cyan: #00d4ff;
+    --accent-green: #00e676;
+    --accent-orange: #ff9800;
+    --accent-red: #ff5252;
+    --accent-purple: #9c27b0;
+    --text-primary: #e8eaf0;
+    --text-secondary: #8b92a8;
+    --border-color: #3a4060;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body { font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif; background:var(--bg); color:var(--text); line-height:1.7; overflow-x:hidden; }
-
-/* ---- 流水线流动动画 ---- */
-.line-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
-.line {
-  position:absolute; height:2px;
-  background:linear-gradient(90deg,transparent,var(--tech-blue),transparent);
-  opacity:0.15; animation: lineFlow 6s linear infinite;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
 }
-@keyframes lineFlow {
-  0% { transform:translateX(-100%); }
-  100% { transform:translateX(200%); }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.hero {
+    background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #0d1626 100%);
+    padding: 80px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(74,158,255,0.08) 0%, transparent 70%);
+    animation: pulse 6s ease-in-out infinite;
+}
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+    animation: pulse 8s ease-in-out infinite reverse;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+.hero-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+}
+.hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #fff 0%, var(--accent-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+}
+.hero-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin-bottom: 36px;
+    position: relative;
+    z-index: 1;
+}
+.hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+.hero-stat { text-align: left; }
+.hero-stat .num { font-size: 36px; font-weight: 800; color: var(--accent-cyan); }
+.hero-stat .label { font-size: 13px; color: var(--text-secondary); }
+.nav-bar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.nav-inner { display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 0 20px; }
+.nav-item {
+    padding: 16px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.nav-item:hover, .nav-item.active {
+    color: var(--accent-cyan);
+    border-bottom-color: var(--accent-cyan);
+}
+.section { padding: 70px 0; }
+.section-title { text-align: center; margin-bottom: 50px; }
+.section-title h2 { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+.section-title p { font-size: 15px; color: var(--text-secondary); }
+.section-title .tag {
+    display: inline-block;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+    border-radius: 2px;
+    margin-bottom: 16px;
+}
+.pain-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.pain-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+.pain-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(74,158,255,0.15);
+}
+.pain-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--accent-red), var(--accent-orange));
+}
+.pain-icon {
+    width: 44px; height: 44px;
+    background: rgba(255,82,82,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+}
+.pain-card h3 { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 10px; }
+.pain-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+.feat-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.feat-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s;
+}
+.feat-block:hover { border-color: var(--accent-blue); box-shadow: var(--shadow); }
+.feat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.feat-icon {
+    width: 50px; height: 50px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+.fi-blue { background: rgba(74,158,255,0.15); }
+.fi-cyan { background: rgba(0,212,255,0.15); }
+.fi-green { background: rgba(0,230,118,0.15); }
+.fi-orange { background: rgba(255,152,0,0.15); }
+.fi-purple { background: rgba(156,39,176,0.15); }
+.fi-red { background: rgba(255,82,82,0.15); }
+.feat-title h3 { font-size: 18px; font-weight: 700; color: #fff; }
+.feat-title span { font-size: 12px; color: var(--text-secondary); }
+.sub-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.sub-item:last-child { border-bottom: none; }
+.sub-item::before {
+    content: "▸";
+    color: var(--accent-cyan);
+    font-size: 12px;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+.sub-item strong { color: var(--accent-cyan); font-size: 14px; }
+.sub-item span { font-size: 14px; color: var(--text-secondary); }
+.proc-section {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    padding: 70px 0;
+}
+.kan-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
+.kanban-board {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+}
+.kanban-title {
+    font-size: 16px; font-weight: 600; color: #fff;
+    margin-bottom: 20px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; gap: 8px;
+}
+.kanban-title::before {
+    content: "";
+    width: 8px; height: 8px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.kanban-columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.kanban-col { background: var(--bg-secondary); border-radius: 10px; padding: 12px; min-height: 320px; }
+.kanban-col-title {
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 8px 0; text-align: center;
+    border-radius: 6px; margin-bottom: 12px;
+}
+.col-waiting { background: rgba(255,152,0,0.2); color: var(--accent-orange); }
+.col-progress { background: rgba(74,158,255,0.2); color: var(--accent-blue); }
+.col-done { background: rgba(0,230,118,0.2); color: var(--accent-green); }
+.kanban-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+.kanban-card:hover { border-color: var(--accent-blue); }
+.kanban-card .meta { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+.kanban-card .worker { color: var(--accent-cyan); font-size: 12px; margin-top: 2px; }
+.kanban-card .tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    margin-top: 4px;
+}
+.tag-urgent { background: rgba(255,82,82,0.2); color: var(--accent-red); }
+.tag-normal { background: rgba(74,158,255,0.2); color: var(--accent-blue); }
+.chart-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+}
+.chart-panel h4 { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.chart-bar { margin-bottom: 16px; }
+.chart-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 13px; color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+.chart-bar-track { height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
+.chart-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+.fill-blue { background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
+.fill-green { background: linear-gradient(90deg, #00c853, #00e676); }
+.fill-orange { background: linear-gradient(90deg, #ff6d00, #ff9800); }
+.chart-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.chart-legend-item {
+    display: flex; align-items: center;
+    gap: 8px; font-size: 13px;
+    color: var(--text-secondary);
+}
+.chart-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+.chart-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; }
+.chart-cell { background: var(--bg-secondary); border-radius: 8px; padding: 14px; text-align: center; }
+.chart-cell .value { font-size: 22px; font-weight: 700; color: var(--accent-cyan); }
+.chart-cell .label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.value-section {
+    background: linear-gradient(135deg, #0d1626, #1a2332);
+    padding: 70px 0;
+}
+.value-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.value-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.value-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+}
+.value-card .number {
+    font-size: 40px; font-weight: 800;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+.value-card .desc { font-size: 14px; color: var(--text-secondary); }
+.compare-section { padding: 70px 0; }
+.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 16px;
+    overflow: hidden;
+}
+.compare-table thead th {
+    background: var(--bg-secondary);
+    padding: 16px 20px;
+    font-size: 14px; font-weight: 600;
+    color: #fff;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+.compare-table tbody td {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table tbody tr:hover td { background: rgba(74,158,255,0.04); }
+.compare-table .check { color: var(--accent-green); font-weight: 700; }
+.compare-table .cross { color: var(--accent-red); font-weight: 700; }
+.case-section { background: var(--bg-secondary); padding: 70px 0; }
+.case-card {
+    background: linear-gradient(135deg, var(--bg-card), #1e2538);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+.case-avatar {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+.case-name { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.case-location { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+.case-quote { font-size: 16px; color: var(--text-secondary); line-height: 1.9; font-style: italic; }
+.case-result { background: var(--bg-secondary); border-radius: 16px; padding: 28px; }
+.case-result h4 {
+    font-size: 14px; font-weight: 600; color: var(--accent-cyan);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+.case-result-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.case-result-item:last-child { border-bottom: none; }
+.case-result-item .label { font-size: 14px; color: var(--text-secondary); }
+.case-result-item .value { font-size: 14px; font-weight: 700; color: var(--accent-cyan); }
+.case-result-item .value.old { color: var(--text-secondary); text-decoration: line-through; }
+.cta-section {
+    background: linear-gradient(135deg, #0d1626, #1a2840);
+    padding: 80px 0;
+    text-align: center;
+}
+.cta-section h2 { font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+.cta-section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 36px; }
+.cta-btn {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+    color: #fff; font-size: 16px; font-weight: 700;
+    padding: 16px 48px; border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: none; cursor: pointer;
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(74,158,255,0.4); }
+.footer {
+    background: var(--bg-secondary);
+    padding: 30px 0;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+}
+@media (max-width: 768px) {
+    .hero h1 { font-size: 32px; }
+    .pain-grid, .feat-layout, .kan-layout, .case-card { grid-template-columns: 1fr; }
+    .value-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-stats { gap: 20px; }
 }
 
-/* ---- 导航 ---- */
-nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(8,12,20,0.85); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px; }
-.nav-logo { font-size:20px; font-weight:900; color:#fff; text-decoration:none; letter-spacing:2px; }
-.nav-logo span { color:var(--tech-blue); text-shadow:0 0 20px var(--tech-blue); }
-.nav-links { display:flex; gap:32px; list-style:none; }
-.nav-links a { color:var(--text-muted); text-decoration:none; font-size:14px; transition:color 0.2s; }
-.nav-links a:hover { color:var(--tech-blue); }
-.nav-cta { background:linear-gradient(135deg,var(--tech-blue),var(--neon-blue)); color:#080c14; padding:8px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:700; box-shadow:0 0 20px rgba(41,182,246,0.4); transition:all 0.3s; }
-.nav-cta:hover { box-shadow:0 0 30px rgba(41,182,246,0.6); transform:translateY(-2px); }
-
-/* ---- Hero ---- */
-.hero { position:relative; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px 24px 80px; overflow:hidden; }
-.hero-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:700px; height:700px; background:radial-gradient(circle,rgba(41,182,246,0.08) 0%,transparent 70%); pointer-events:none; }
-.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(41,182,246,0.1); border:1px solid rgba(41,182,246,0.3); padding:6px 20px; border-radius:20px; font-size:12px; color:var(--tech-blue); letter-spacing:3px; text-transform:uppercase; margin-bottom:28px; position:relative; z-index:2; }
-.hero-title { font-size:clamp(48px,8vw,88px); font-weight:900; background:linear-gradient(135deg,#fff 0%,var(--tech-blue) 50%,var(--neon-blue) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.1; margin-bottom:16px; position:relative; z-index:2; }
-.hero-sub { font-size:18px; color:var(--text-muted); margin-bottom:40px; max-width:520px; position:relative; z-index:2; }
-.hero-actions { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; position:relative; z-index:2; }
-.btn-primary { background:linear-gradient(135deg,var(--tech-blue),var(--neon-blue)); color:#080c14; padding:14px 36px; border-radius:10px; text-decoration:none; font-weight:700; font-size:15px; box-shadow:0 0 30px rgba(41,182,246,0.4); transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
-.btn-primary:hover { box-shadow:0 0 50px rgba(41,182,246,0.6); transform:translateY(-2px); }
-.btn-secondary { border:1px solid var(--border); color:var(--text); padding:14px 36px; border-radius:10px; text-decoration:none; font-weight:600; font-size:15px; transition:all 0.3s; display:inline-flex; align-items:center; gap:8px; }
-.btn-secondary:hover { background:var(--card); border-color:var(--tech-blue); }
-
-/* ---- 客户痛点 ---- */
-.section-pain { padding:80px 24px; position:relative; z-index:1; }
-.section-label { text-align:center; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:var(--tech-blue); margin-bottom:12px; }
-.section-title { text-align:center; font-size:clamp(28px,4vw,40px); font-weight:800; margin-bottom:16px; }
-.section-sub { text-align:center; color:var(--text-muted); max-width:560px; margin:0 auto 48px; font-size:16px; }
-.pain-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; max-width:1000px; margin:0 auto; }
-.pain-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px; transition:all 0.3s; }
-.pain-card:hover { background:var(--card-hover); border-color:rgba(41,182,246,0.3); transform:translateY(-4px); }
-.pain-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:16px; background:rgba(41,182,246,0.1); }
-.pain-title { font-size:15px; font-weight:700; margin-bottom:8px; color:#fff; }
-.pain-desc { font-size:13px; color:var(--text-muted); line-height:1.8; }
-
-/* ---- 功能模块 ---- */
-.section-features { padding:80px 24px; position:relative; z-index:1; }
-.features-header { text-align:center; margin-bottom:56px; }
-.features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; max-width:1100px; margin:0 auto; }
-.feature-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px; position:relative; overflow:hidden; transition:all 0.3s; }
-.feature-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:3px; background:linear-gradient(90deg,var(--tech-blue),var(--neon-blue)); opacity:0; transition:opacity 0.3s; }
-.feature-card:hover::before { opacity:1; }
-.feature-card:hover { background:var(--card-hover); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.4); }
-.feature-icon { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:20px; }
-.fi-blue { background:rgba(41,182,246,0.12); }
-.fi-cyan { background:rgba(24,255,255,0.08); }
-.fi-silver { background:rgba(144,164,174,0.12); }
-.fi-indigo { background:rgba(63,81,181,0.12); }
-.feature-title { font-size:17px; font-weight:700; margin-bottom:10px; color:#fff; }
-.feature-desc { font-size:14px; color:var(--text-muted); line-height:1.8; margin-bottom:16px; }
-.feature-detail { font-size:12px; color:var(--tech-blue); display:flex; align-items:center; gap:6px; }
-
-/* ---- 数据 ---- */
-.section-stats { padding:60px 24px; position:relative; z-index:1; }
-.stats-track { max-width:900px; margin:0 auto; background:var(--card); border:1px solid var(--border); border-radius:20px; padding:48px; display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:32px; text-align:center; }
-.stat-num { font-size:40px; font-weight:900; background:linear-gradient(135deg,var(--tech-blue),var(--neon-blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2; }
-.stat-label { font-size:13px; color:var(--text-muted); margin-top:6px; }
-
-/* ---- 定价 ---- */
-.section-pricing { padding:80px 24px; position:relative; z-index:1; }
-.pricing-card { max-width:480px; margin:0 auto; background:var(--card); border:1px solid rgba(41,182,246,0.3); border-radius:24px; padding:48px; text-align:center; position:relative; overflow:hidden; }
-.pricing-card::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:conic-gradient(from 0deg,transparent,rgba(41,182,246,0.1),transparent,rgba(24,255,255,0.1),transparent); animation:rotateBorder 8s linear infinite; }
-@keyframes rotateBorder { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
-.pricing-inner { position:relative; z-index:2; }
-.pricing-tag { display:inline-block; background:rgba(41,182,246,0.15); border:1px solid rgba(41,182,246,0.3); padding:4px 16px; border-radius:20px; font-size:11px; color:var(--tech-blue); letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
-.pricing-price { font-size:48px; font-weight:900; color:#fff; margin-bottom:8px; }
-.pricing-price span { font-size:18px; font-weight:500; color:var(--text-muted); }
-.pricing-desc { color:var(--text-muted); font-size:14px; margin-bottom:32px; }
-.pricing-features { list-style:none; text-align:left; margin-bottom:32px; }
-.pricing-features li { padding:10px 0; border-bottom:1px solid var(--border); font-size:14px; display:flex; align-items:center; gap:10px; }
-.pricing-features li::before { content:'✓'; color:var(--tech-blue); font-weight:700; flex-shrink:0; }
-.btn-pricing { width:100%; padding:14px; background:linear-gradient(135deg,var(--tech-blue),var(--neon-blue)); color:#080c14; border:none; border-radius:10px; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 0 30px rgba(41,182,246,0.4); transition:all 0.3s; }
-.btn-pricing:hover { box-shadow:0 0 50px rgba(41,182,246,0.6); transform:translateY(-2px); }
-
-footer { text-align:center; padding:48px 24px; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); position:relative; z-index:1; }
-
-@media (max-width:768px) { nav{padding:0 20px;} .nav-links{display:none;} .hero{padding:100px 20px 60px;} .hero-title{font-size:42px;} .section-pain,.section-features,.section-pricing{padding:60px 20px;} .pricing-card{padding:32px 24px;} .stats-track{padding:32px 24px;} }
-</style>
+    </style>
 </head>
 <body>
 
-<div class="line-container" id="lines"></div>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="hero-badge">轻型MES · 专为小微工厂设计</div>
+            <h1>智造宝 · 轻型MES系统</h1>
+            <p class="hero-sub">
+                10人起的小型工厂，也能用上专业的生产管理系统。扫码报工、计件工资、质量追溯，
+                一套系统全搞定，让您的工厂从"Excel+纸笔"升级到数字化时代。
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="num">85%</div>
+                    <div class="label">对账时间减少</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">0起</div>
+                    <div class="label">计件工资纠纷</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">5分钟</div>
+                    <div class="label">质量追溯响应</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">10人+</div>
+                    <div class="label">即可启用</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<nav>
-  <a href="index.html" class="nav-logo">智<span>造宝</span></a>
-  <ul class="nav-links">
-    <li><a href="#pain">痛点</a></li>
-    <li><a href="#features">功能</a></li>
-    <li><a href="#pricing">定价</a></li>
-  </ul>
-  <a href="#pricing" class="nav-cta">立即试用</a>
-</nav>
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <div class="nav-inner">
+            <div class="nav-item active">概述</div>
+            <div class="nav-item">行业痛点</div>
+            <div class="nav-item">核心功能</div>
+            <div class="nav-item">工序看板</div>
+            <div class="nav-item">价值数据</div>
+            <div class="nav-item">对比表格</div>
+            <div class="nav-item">客户案例</div>
+        </div>
+    </div>
 
-<section class="hero" id="home">
-  <div class="hero-glow"></div>
-  <div class="hero-badge">🏭 小微工厂轻型MES</div>
-  <h1 class="hero-title">智造宝</h1>
-  <p class="hero-sub">工序实时追踪、计件工资秒算、质量双追溯——小微工厂的生产管理，终于可以向大厂看齐</p>
-  <div class="hero-actions">
-    <a href="#pricing" class="btn-primary">免费试用14天 →</a>
-    <a href="#features" class="btn-secondary">了解功能</a>
-  </div>
-</section>
+    <!-- Pain Points Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>行业痛点</h2>
+                <p>传统小微工厂的生产管理，靠的是老板的经验和工人的自觉。当规模稍微扩大，各种问题就暴露出来了</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="pain-icon">📝</div>
+                    <h3>王师傅 · 10人工厂报工之苦</h3>
+                    <p>王师傅在深圳开了一家小型五金加工厂，10个工人。每天下午工人下工后，
+                    都要手写纸条报工——今天做了哪些件、花了多长时间。月底统计时，王师傅要花整整3天时间，
+                    把几百张纸条一张张加起来。中间如果有字迹不清楚、或者工人记错了，那更是无从查证。
+                    这3天的时间，王师傅本可以用来接单、验货、跑客户。10个人的小厂尚且如此，
+                    要是20人、30人，那更是不可想象。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">🧮</div>
+                    <h3>李工 · 阶梯计件工资的难题</h3>
+                    <p>李工是计件工人，工资按阶梯单价计算：0到100件每件2元，100到300件每件2.5元，
+                    300件以上每件3元。月底算工资时，王师傅要逐个工人的工票翻出来，逐件核对数量，
+                    再按阶梯区间分别乘以单价，最后加总。手工算经常出错——要么把阶梯区间搞混，
+                    要么计算时小数点点错。工人觉得算少了，老板觉得被占便宜，双方心里都有一本糊涂账。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">🔍</div>
+                    <h3>张总 · 质量问题查不出源头</h3>
+                    <p>张总做塑胶制品，一批货发到客户那里被投诉有气泡问题，客户要求退换。
+                    张总把货从客户那里拉回来，想查是哪里出了问题。他找了车间主管、找了各个工序的工人，
+                    折腾了2天，最后还是不知道是哪道工序、哪个工人操作不当导致的问题。
+                    因为每一道工序的原料来源、操作记录都没有，追溯无从做起。最终只能自认倒霉，全部重做，损失惨重。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">🔧</div>
+                    <h3>刘老板 · 维修费用比利润还高</h3>
+                    <p>刘老板的工厂有6台加工设备，每台都是核心资产。但机器坏了，他不知道是正常磨损老化，
+                    还是工人操作不当导致的。每次维修师傅上门，动辄500元起步，贵的上千。
+                    年底一算维修账单，发现维修费比全年的利润还高。刘老板想控制成本，
+                    但没有任何数据支撑——机器运行了多久、谁经常用、哪个部件最容易坏，全是糊涂账。</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<section class="section-pain" id="pain">
-  <div class="section-label">真实痛点</div>
-  <h2 class="section-title">小微工厂的老板们，都在头疼什么？</h2>
-  <p class="section-sub">我们走访了20+小微工厂，总结出最影响交付和利润的几个问题</p>
-  <div class="pain-grid">
-    <div class="pain-card">
-      <div class="pain-icon">📋</div>
-      <div class="pain-title">工序进度靠吼，月底才知道delay了</div>
-      <div class="pain-desc">车间里哪道工序完成了、哪道还在做、谁耽误了，全靠车间主任吼。客户问交期，管理层只能说"大概月底"，心里没底</div>
+    <!-- Core Features Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>核心功能</h2>
+                <p>智造宝为小微工厂量身打造，每一个功能都解决一个真实的生产管理问题</p>
+            </div>
+            <div class="feat-layout">
+                <!-- Feature 1: 工序管理 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-blue">⚙️</div>
+                        <div class="feat-title">
+                            <h3>工序管理</h3>
+                            <span>灵活配置生产工序</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>自定义工序名称</strong>
+                        <span>支持添加、编辑、删除工序，每个工序可单独命名，贴合您工厂的实际生产流程，
+                        例如"冲压"、"折弯"、"焊接"、"喷涂"均可自定义，工序名称不受限制。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>标准工时和单价配置</strong>
+                        <span>每个工序可设置标准工时（完成一件需要多少分钟）和标准单价（每件多少钱）。
+                        系统自动按工序记录工时，为计件工资提供精准数据依据。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>工序状态实时显示</strong>
+                        <span>在工序看板上，每个工位当前是空闲、工作中还是已完成，都能实时看到。
+                        老板不用下车间，坐在办公室里就能掌握所有工位的生产状态和进度。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>工序优先级和排序</strong>
+                        <span>可以设置每个工序的生产顺序，系统自动按优先级排列。当紧急订单插入时，
+                        直接调整优先级，系统自动重新排布后续工序，确保重要订单优先完成。</span>
+                    </div>
+                </div>
+                <!-- Feature 2: 扫码报工 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-cyan">📱</div>
+                        <div class="feat-title">
+                            <h3>扫码报工</h3>
+                            <span>工位码一扫，即时报工</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>工位码扫码自助报工</strong>
+                        <span>每个工位贴一张二维码，工人开工时用微信扫一下，选择"开始"，
+                        完工时再扫一下选择"完成"。全程无需填写任何表格，系统自动记录开始时间、结束时间、完成数量。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>报工时间精确到秒</strong>
+                        <span>扫码时间由系统自动生成，精确到秒，不可篡改。彻底解决了工人手工记录时间
+                        字迹潦草、事后涂改的问题，为工资核算提供可信依据，杜绝时间争议。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>代他人报工</strong>
+                        <span>当某个工人临时离岗，同事可以扫码后选择"代XX报工"，记录实际干活的人。
+                        系统会自动标注报工人和实际工人两人信息，避免人员临时调动导致报工记录缺失。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>审核与调整</strong>
+                        <span>报工数据提交后，组长或老板可以在系统里审核，发现数量有误可直接修改并注明原因。
+                        操作全程留痕，确保数据准确性的同时保留修改轨迹。</span>
+                    </div>
+                </div>
+                <!-- Feature 3: 计件工资计算 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-green">💰</div>
+                        <div class="feat-title">
+                            <h3>计件工资计算</h3>
+                            <span>阶梯单价一键算清</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>阶梯单价自动计算</strong>
+                        <span>只需在系统里配置好阶梯规则（比如0-100件2元/件，100-300件2.5元/件，300件以上3元/件），
+                        系统自动按实际完成数量套用对应阶梯，自动算出每个工人的应发工资，无需人工计算。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>月末报表一键生成</strong>
+                        <span>每月最后一天，系统自动生成所有工人的计件工资报表，包括每个工人的各工序完成数量、
+                        分阶梯工资明细、合计金额。支持一键导出Excel，打印出来直接发工资。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>工人端自助查看</strong>
+                        <span>工人关注公众号后，可以随时查看自己的本月已完成工票、工资明细、当前排名。
+                        不需要找老板查，自己的账自己清楚，减少不必要的猜疑和摩擦。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>请假记录与扣减</strong>
+                        <span>系统支持录入请假记录，自动从月度计件统计中扣除对应工作量的预期值，
+                        方便对比实际产出与应发工资。临时请假也不再是糊涂账，月底对账有理有据。</span>
+                    </div>
+                </div>
+                <!-- Feature 4: 质量追溯 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-orange">🔍</div>
+                        <div class="feat-title">
+                            <h3>质量追溯</h3>
+                            <span>一物一码，全程可溯</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>一物一码</strong>
+                        <span>每批次产品生产时，系统自动生成批次码，贴在产品或工单上。
+                        从第一道工序到最后一道工序，每个环节的操作人员、时间、原料批次全部记录在案，形成完整生产档案。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>质量问题定位到工序和工人</strong>
+                        <span>当出现质量问题时，输入批次码，系统立即显示这个批次经过了哪些工序、
+                        由哪些工人在什么时间操作过。定位时间从2天缩短到5分钟，责任清晰，奖惩有据。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>原料溯源</strong>
+                        <span>每一批次产品所使用的原料来源（供应商、采购日期、批次号）全部可查。
+                        当客户问起原料来源时，一键即可调出，为产品质量提供可信背书，也方便应对质量投诉。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>不良品记录与分析</strong>
+                        <span>工人可在系统中直接录入不良品记录（不良类型、不良数量、产生工序）。
+                        月度汇总后，系统自动统计各工序的不良率，用数据发现质量问题的高发工序，推动工艺改进。</span>
+                    </div>
+                </div>
+                <!-- Feature 5: 设备状态监控 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-purple">📊</div>
+                        <div class="feat-title">
+                            <h3>设备状态监控</h3>
+                            <span>设备运行，尽在掌握</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>设备状态实时显示</strong>
+                        <span>为每台设备配备状态标签（运行中、空闲中、故障中、维护中）。
+                        工人在系统中扫码报工时，系统自动关联设备状态，老板在工序看板上即可看到所有设备的实时运行情况。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>故障自动告警</strong>
+                        <span>当设备出现故障，工人或维修人员可以在系统中提交故障报告，
+                        系统自动推送通知给老板和相关人员。故障时间和原因全程记录，为后续分析提供数据支撑。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>维修记录存档</strong>
+                        <span>每一次维修（故障描述、维修师傅、维修费用、更换零件）都在系统中留档。
+                        年底汇总维修记录，可以清楚看到每台设备的维修频次和费用，为设备更新换代提供决策依据。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>保养提醒</strong>
+                        <span>系统根据设备使用时长或日历，自动提醒到期保养。
+                        设置好保养周期（比如每500工时保养一次），系统会在到期前3天提醒，
+                        避免因疏于保养导致设备故障，减少非计划停机。</span>
+                    </div>
+                </div>
+                <!-- Feature 6: BI经营报表 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-red">📈</div>
+                        <div class="feat-title">
+                            <h3>BI经营报表</h3>
+                            <span>数据驱动，科学决策</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>每日产出统计</strong>
+                        <span>系统自动汇总每天各工序的产出数量、不良品数量、完成率。
+                        用图表直观展示每日产出趋势，帮助老板快速判断生产节奏是否正常，及时发现异常波动并调整。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>不良品分析</strong>
+                        <span>按工序、按工人、按时间段多维度统计不良品分布。
+                        哪些工序不良率最高、哪个工人出问题最多、哪个时间段最容易出质量事故——数据说话，改进有方向。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>工人效率排行</strong>
+                        <span>系统自动计算每个工人的日均产出、人均不良率。
+                        帮助管理者发现哪些工人效率高、哪些工序是瓶颈，从而优化人员配置和工序安排，提升整体产能。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>设备利用率</strong>
+                        <span>系统自动统计每台设备的开机时长、运行时长、停机时长，计算设备利用率。
+                        通过分析设备利用率，找出产能瓶颈，判断是否需要增加设备或调整排班。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="pain-card">
-      <div class="pain-icon">💰</div>
-      <div class="pain-title">计件工资算到半夜，还总出错</div>
-      <div class="pain-desc">每个月每个工人做了多少件、每件多少钱、良品率扣多少，全靠统计员按计算器。月底发工资总有人质疑算错了</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">🔍</div>
-      <div class="pain-title">质量出问题了，查不出谁负责</div>
-      <div class="pain-desc">成品发现质量问题，不知道是哪批原材料的问题、哪个工人的操作问题。无法追溯，只能整批报废，损失全部自己扛</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">📊</div>
-      <div class="pain-title">设备停了不知道，等着等人来修</div>
-      <div class="pain-desc">机器报警了，工人不知道找谁；设备坏了一天后才发现。维修不及时，每停机一小时都是钱</div>
-    </div>
-  </div>
-</section>
 
-<section class="section-features" id="features">
-  <div class="features-header">
-    <div class="section-label">核心功能</div>
-    <h2 class="section-title">每一个功能，都对应一个真实场景</h2>
-    <p class="section-sub">不是功能堆砌，是实实在在帮工厂少踩坑、多赚钱</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon fi-blue">⚙️</div>
-      <div class="feature-title">工序管理</div>
-      <div class="feature-desc">录入产品工艺路线（哪几道工序、每道由谁负责），报工时按工序流转。哪道已完成、哪道在进行中，屏幕上实时可见</div>
-      <div class="feature-detail">工序状态实时可见 →</div>
+    <!-- Process Kanban Section -->
+    <div class="proc-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>工序看板</h2>
+                <p>实时掌握每个工位的生产状态，让管理一目了然</p>
+            </div>
+            <div class="kan-layout">
+                <div class="kanban-board">
+                    <div class="kanban-title">今日工序看板</div>
+                    <div class="kanban-columns">
+                        <div class="kanban-col">
+                            <div class="kanban-col-title col-waiting">等待中</div>
+                            <div class="kanban-card">
+                                订单#2201 金属支架<br>
+                                工序：冲压<br>
+                                数量：200件
+                                <div class="worker">操作员：王师傅</div>
+                                <div class="meta">预计完工：14:30</div>
+                                <span class="tag tag-urgent">紧急</span>
+                            </div>
+                            <div class="kanban-card">
+                                订单#2203 塑料外壳<br>
+                                工序：折弯<br>
+                                数量：150件
+                                <div class="worker">操作员：李工</div>
+                                <div class="meta">预计完工：16:00</div>
+                                <span class="tag tag-normal">正常</span>
+                            </div>
+                            <div class="kanban-card">
+                                订单#2205 连接件<br>
+                                工序：焊接<br>
+                                数量：80件
+                                <div class="worker">操作员：赵师傅</div>
+                                <div class="meta">预计完工：17:30</div>
+                            </div>
+                        </div>
+                        <div class="kanban-col">
+                            <div class="kanban-col-title col-progress">进行中</div>
+                            <div class="kanban-card">
+                                订单#2198 底座<br>
+                                工序：喷涂<br>
+                                数量：300件
+                                <div class="worker">操作员：张师傅</div>
+                                <div class="meta">已进行：45分钟 / 共90分钟</div>
+                                <span class="tag tag-normal">进行中</span>
+                            </div>
+                            <div class="kanban-card">
+                                订单#2200 支架<br>
+                                工序：冲压<br>
+                                数量：120件
+                                <div class="worker">操作员：王师傅</div>
+                                <div class="meta">已进行：20分钟 / 共60分钟</div>
+                            </div>
+                        </div>
+                        <div class="kanban-col">
+                            <div class="kanban-col-title col-done">已完成</div>
+                            <div class="kanban-card">
+                                订单#2195 螺丝<br>
+                                工序：冲压<br>
+                                数量：500件
+                                <div class="worker">操作员：赵师傅</div>
+                                <div class="meta">完成时间：10:15</div>
+                                <span class="tag tag-normal">完成</span>
+                            </div>
+                            <div class="kanban-card">
+                                订单#2196 面板<br>
+                                工序：折弯<br>
+                                数量：200件
+                                <div class="worker">操作员：李工</div>
+                                <div class="meta">完成时间：11:30</div>
+                            </div>
+                            <div class="kanban-card">
+                                订单#2197 外壳<br>
+                                工序：焊接<br>
+                                数量：100件
+                                <div class="worker">操作员：张师傅</div>
+                                <div class="meta">完成时间：13:45</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-panel">
+                    <h4>今日产出概览</h4>
+                    <div class="chart-bar">
+                        <div class="chart-bar-label">
+                            <span>冲压工序</span>
+                            <span>156件 / 目标200件</span>
+                        </div>
+                        <div class="chart-bar-track">
+                            <div class="chart-bar-fill fill-blue" style="width:78%"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-bar-label">
+                            <span>折弯工序</span>
+                            <span>180件 / 目标200件</span>
+                        </div>
+                        <div class="chart-bar-track">
+                            <div class="chart-bar-fill fill-green" style="width:90%"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-bar-label">
+                            <span>焊接工序</span>
+                            <span>95件 / 目标150件</span>
+                        </div>
+                        <div class="chart-bar-track">
+                            <div class="chart-bar-fill fill-orange" style="width:63%"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-bar-label">
+                            <span>喷涂工序</span>
+                            <span>220件 / 目标300件</span>
+                        </div>
+                        <div class="chart-bar-track">
+                            <div class="chart-bar-fill fill-blue" style="width:73%"></div>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="chart-legend-item">
+                            <div class="chart-legend-dot" style="background:var(--accent-blue)"></div>
+                            冲压
+                        </div>
+                        <div class="chart-legend-item">
+                            <div class="chart-legend-dot" style="background:var(--accent-green)"></div>
+                            折弯
+                        </div>
+                        <div class="chart-legend-item">
+                            <div class="chart-legend-dot" style="background:var(--accent-orange)"></div>
+                            焊接
+                        </div>
+                        <div class="chart-legend-item">
+                            <div class="chart-legend-dot" style="background:var(--accent-cyan)"></div>
+                            喷涂
+                        </div>
+                    </div>
+                    <div class="chart-grid">
+                        <div class="chart-cell">
+                            <div class="value">78%</div>
+                            <div class="label">冲压完成率</div>
+                        </div>
+                        <div class="chart-cell">
+                            <div class="value">90%</div>
+                            <div class="label">折弯完成率</div>
+                        </div>
+                        <div class="chart-cell">
+                            <div class="value">63%</div>
+                            <div class="label">焊接完成率</div>
+                        </div>
+                        <div class="chart-cell">
+                            <div class="value">73%</div>
+                            <div class="label">喷涂完成率</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-cyan">💰</div>
-      <div class="feature-title">计件工资计算</div>
-      <div class="feature-desc">每道工序设定单价，工人报工数量自动乘单价得出工费。良品率按规则自动扣款，一键导出工资表，直接发钱不用再算</div>
-      <div class="feature-detail">工资表直接导出 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-silver">🔍</div>
-      <div class="feature-title">质量双追溯</div>
-      <div class="feature-desc">来料扫码录入批次号，报工记录工人和工序信息。发现质量问题时，可从成品反向查到原材料批次和操作工人</div>
-      <div class="feature-detail">来料+操作双追溯 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-blue">📝</div>
-      <div class="feature-title">报工记录</div>
-      <div class="feature-desc">工人完工后扫码报工（产品批次+工序+数量+良品数）。数据实时同步，后台统计产量，不依赖工人主动填写Excel</div>
-      <div class="feature-detail">扫码即可报工 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-indigo">🔧</div>
-      <div class="feature-title">设备状态监控</div>
-      <div class="feature-desc">接入设备运行信号，实时显示每台设备状态（运行中/待机/故障）。设备报警时自动通知维修负责人，减少停机时间</div>
-      <div class="feature-detail">故障自动通知 →</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-cyan">📊</div>
-      <div class="feature-title">生产数据看板</div>
-      <div class="feature-desc">每日产量、良品率、工序耗时、设备稼动率全部自动统计。老板手机上就能看到车间真实情况，不用亲自去现场</div>
-      <div class="feature-detail">手机端实时查看 →</div>
-    </div>
-  </div>
-</section>
 
-<section class="section-stats">
-  <div class="stats-track">
-    <div class="stat-item"><div class="stat-num">300+</div><div class="stat-label">服务工厂数</div></div>
-    <div class="stat-item"><div class="stat-num">15%</div><div class="stat-label">交付效率提升</div></div>
-    <div class="stat-item"><div class="stat-num">98%</div><div class="stat-label">工资算没错</div></div>
-    <div class="stat-item"><div class="stat-num">25%</div><div class="stat-label">质量损失降低</div></div>
-  </div>
-</section>
-
-<section class="section-pricing" id="pricing">
-  <div class="section-label">定价方案</div>
-  <h2 class="section-title">简单透明，没有套路</h2>
-  <div class="pricing-card">
-    <div class="pricing-inner">
-      <div class="pricing-tag">SaaS · 云端部署</div>
-      <div class="pricing-price">¥5000<span> / 年</span></div>
-      <p class="pricing-desc">基础版 · 适合20人以内小微工厂</p>
-      <ul class="pricing-features">
-        <li>工序管理（不限工序数）</li>
-        <li>计件工资计算</li>
-        <li>来料+操作双追溯</li>
-        <li>报工记录</li>
-        <li>设备状态监控</li>
-        <li>生产数据看板</li>
-      </ul>
-      <button class="btn-pricing">立即免费试用14天</button>
+    <!-- Value Data Section -->
+    <div class="value-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>价值数据</h2>
+                <p>用数字说话，让管理决策有据可依</p>
+            </div>
+            <div class="value-grid">
+                <div class="value-card">
+                    <div class="number">85%</div>
+                    <div class="desc">对账时间减少</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">0起</div>
+                    <div class="desc">计件工资纠纷</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">5分钟</div>
+                    <div class="desc">质量追溯时间</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">透明</div>
+                    <div class="desc">维修费用可查</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <p class="section-sub" style="margin-top:24px;">另有 ¥8000 / 年 专业版（含工艺路线配置、多产品管理）<br>¥10000 / 年 旗舰版（含设备联网、完整BI报表）</p>
-</section>
 
-<footer>
-  <p>© 2026 智造宝 · 小微工厂也能用上专业MES</p>
-</footer>
+    <!-- Comparison Table Section -->
+    <div class="compare-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>对比表格</h2>
+                <p>智造宝 vs 传统管理方式，全面超越</p>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>功能项</th>
+                        <th>传统方式（Excel+纸笔）</th>
+                        <th>智造宝MES系统</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>报工方式</td>
+                        <td><span class="cross">✗ 手工填写，字迹潦草易出错</span></td>
+                        <td><span class="check">✓ 扫码报工，精确到秒</span></td>
+                    </tr>
+                    <tr>
+                        <td>计件工资</td>
+                        <td><span class="cross">✗ 人工核算，阶梯易出错</span></td>
+                        <td><span class="check">✓ 系统自动算，分毫不差</span></td>
+                    </tr>
+                    <tr>
+                        <td>质量追溯</td>
+                        <td><span class="cross">✗ 查2天找不到源头</span></td>
+                        <td><span class="check">✓ 5分钟定位到人和工序</span></td>
+                    </tr>
+                    <tr>
+                        <td>设备管理</td>
+                        <td><span class="cross">✗ 故障靠人报，费用糊涂</span></td>
+                        <td><span class="check">✓ 自动告警，维修留档</span></td>
+                    </tr>
+                    <tr>
+                        <td>数据统计</td>
+                        <td><span class="cross">✗ 人工汇总，滞后且不准</span></td>
+                        <td><span class="check">✓ 实时自动，多维分析</span></td>
+                    </tr>
+                    <tr>
+                        <td>工资查看</td>
+                        <td><span class="cross">✗ 必须找老板当面查</span></td>
+                        <td><span class="check">✓ 公众号自助，随时可查</span></td>
+                    </tr>
+                    <tr>
+                        <td>设备保养</td>
+                        <td><span class="cross">✗ 靠人工记得，经常忘记</span></td>
+                        <td><span class="check">✓ 到期自动提醒</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<script>
-(function(){
-  var c = document.getElementById('lines');
-  for(var i=0;i<6;i++){
-    var l = document.createElement('div');
-    l.className = 'line';
-    l.style.cssText = [
-      'width:'+(200+Math.random()*300)+'px',
-      'left:'+(-50+Math.random()*20)+'%',
-      'top:'+(15+i*14)+'%',
-      'animation-duration:'+(4+Math.random()*4)+'s',
-      'animation-delay:'+(Math.random()*3)+'s'
-    ].join(';');
-    c.appendChild(l);
-  }
-})();
-document.querySelectorAll('a[href^="#"]').forEach(function(a){ a.addEventListener('click',function(e){ var target = document.querySelector(this.getAttribute('href')); if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); } }); });
-</script>
+    <!-- Case Study Section -->
+    <div class="case-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>客户案例</h2>
+                <p>真实客户，真实改变</p>
+            </div>
+            <div class="case-card">
+                <div>
+                    <div class="case-avatar">👨‍💼</div>
+                    <div class="case-name">张老板</div>
+                    <div class="case-location">广东东莞 · 五金加工厂</div>
+                    <div class="case-quote">
+                        "我们厂8年了，一直用Excel加纸条管生产。用了智造宝之后，月底统计从3天变成4小时，
+                        我都不敢相信。工人也服气，因为工资单上每一票都有记录，谁做了多少件系统里一目了然。
+                        现在我终于有时间跑客户、接新单了。"
+                    </div>
+                </div>
+                <div class="case-result">
+                    <h4>使用前后对比</h4>
+                    <div class="case-result-item">
+                        <span class="label">月底统计时间</span>
+                        <div>
+                            <span class="value old">3天</span>
+                            <span class="value"> → 4小时</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">计件工资出错</span>
+                        <div>
+                            <span class="value old">经常有</span>
+                            <span class="value"> → 0起纠纷</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">质量追溯耗时</span>
+                        <div>
+                            <span class="value old">2天</span>
+                            <span class="value"> → 5分钟</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">设备维修账单</span>
+                        <div>
+                            <span class="value old">糊涂账</span>
+                            <span class="value"> → 透明可查</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">工厂规模</span>
+                        <div>
+                            <span class="value">10人 → 10人+系统管理</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <div class="container">
+            <h2>让您的工厂也用上专业MES</h2>
+            <p>10人起即可启用，按月付费，专业团队实施，30天上线</p>
+            <a href="#" class="cta-btn">立即咨询，获取方案</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>智造宝 · 轻型MES系统 | 为小微工厂而生</p>
+        </div>
+    </div>
+
 </body>
 </html>
