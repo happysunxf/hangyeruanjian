@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中维光能 - 行业解决方案</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#333}
+.hero{background:linear-gradient(135deg,#FFC107,#FF9800);color:#fff;padding:80px 20px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2740%27%20fill%3D%27none%27%20stroke%3D%27rgba(255,255,255,0.1)%27%20stroke-width%3D%270.5%27%2F%3E%3C%2Fsvg%3E") repeat;opacity:0.5}
+.hero h1{font-size:2.8em;margin-bottom:15px;position:relative;z-index:1;text-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.hero p{font-size:1.2em;opacity:0.95;position:relative;z-index:1}
+.badge{display:inline-block;background:rgba(255,255,255,0.2);padding:6px 16px;border-radius:20px;font-size:0.9em;margin-bottom:20px}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.section{padding:60px 0}
+.section-title{text-align:center;font-size:2em;margin-bottom:40px;position:relative}
+.section-title::after{content:"";position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:60px;height:3px;background:#FFC107;border-radius:2px}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.pain-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s}
+.pain-card:hover{transform:translateY(-5px);box-shadow:0 8px 30px rgba(0,0,0,0.1)}
+.pain-icon{font-size:2.5em;margin-bottom:12px}
+.pain-card p{color:#555;font-size:0.95em;line-height:1.6}
+.feat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+.feat-block{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 15px rgba(0,0,0,0.05);text-align:center;transition:all 0.3s}
+.feat-block:hover{box-shadow:0 5px 25px rgba(0,0,0,0.1);transform:translateY(-3px)}
+.feat-block h3{font-size:1.05em;margin-bottom:12px;color:#222}
+.feat-block ul{list-style:none;text-align:left;padding:0}
+.feat-block li{padding:6px 0;color:#666;font-size:0.88em;position:relative;padding-left:14px}
+.feat-block li::before{content:"\2713";position:absolute;left:0;color:#FFC107;font-weight:bold}
+.table-wrap{overflow-x:auto}
+.compare-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 15px rgba(0,0,0,0.05)}
+.compare-table th{background:#FFC107;color:#fff;padding:16px 20px;text-align:left;font-size:1.05em}
+.compare-table td{padding:14px 20px;border-bottom:1px solid #eee;color:#555;font-size:0.95em}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table td:first-child{font-weight:600;color:#333}
+.compare-table .new{color:#FFC107;font-weight:bold}
+.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.case-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 15px rgba(0,0,0,0.05);transition:all 0.3s}
+.case-card:hover{transform:translateY(-3px);box-shadow:0 5px 25px rgba(0,0,0,0.1)}
+.case-card h4{font-size:1.1em;color:#222;margin-bottom:8px}
+.case-card p{color:#666;font-size:0.9em;line-height:1.5}
+.cta-section{text-align:center;padding:60px 20px;background:linear-gradient(135deg,#FFC107,#FF9800);color:#fff;border-radius:16px;margin:40px 0}
+.cta-section h2{font-size:2em;margin-bottom:15px}
+.cta-section p{font-size:1.1em;opacity:0.9;margin-bottom:30px}
+.btn{display:inline-block;background:#fff;color:#FFC107;padding:14px 36px;border-radius:30px;font-size:1.05em;font-weight:600;text-decoration:none;transition:all 0.3s}
+.btn:hover{transform:scale(1.05);box-shadow:0 5px 20px rgba(0,0,0,0.2)}
+footer{background:#222;color:#aaa;text-align:center;padding:20px;font-size:0.9em}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.animate{animation:fadeInUp 0.6s ease forwards;opacity:0}
+@media(max-width:768px){.feat-grid{grid-template-columns:repeat(2,1fr)};case-grid{grid-template-columns:1fr}}
+
+.detail-section{background:#fff;margin:20px 0;border-radius:12px;padding:40px}
+.detail-content{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.detail-block{background:#f8fafc;border-radius:10px;padding:24px;border:1px solid #e2e8f0}
+.detail-block h3{color:#1e293b;font-size:1.1em;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #4CAF50;display:inline-block}
+.detail-block p{color:#475569;font-size:0.95em;line-height:1.8;text-align:justify}
+@media(max-width:768px){.detail-content{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="badge">软硬一体 · 行业解决方案</div>
+  <h1>中维光能</h1>
+  <p>赋能智慧路灯/单灯控制，降本增效，数字化转型升级</p>
+</div>
+<div class="container">
+  <div class="section">
+    <h2 class="section-title">行业痛点</h2>
+    <div class="pain-grid"><div class="pain-card" style="border-left:4px solid #FFC107"><div class="pain-icon">💡</div><p>路灯统一开关，无法按需调节，节能效果差</p>
+</div>
+<div class="pain-card" style="border-left:4px solid #FFC107"><div class="pain-icon">💡</div><p>路灯故障靠人工巡检发现，维护响应慢，投诉多</p>
+</div>
+<div class="pain-card" style="border-left:4px solid #FFC107"><div class="pain-icon">💡</div><p>路灯能耗高，电费支出大，节能压力持续</p>
+</div>
+<div class="pain-card" style="border-left:4px solid #FFC107"><div class="pain-icon">💡</div><p>道路照明不均匀，部分路段昏暗，交通安全隐患大</p>
+</div></div>
+  </div>
+<div class="section">
+    <h2 class="section-title">核心功能</h2>
+    <div class="feat-grid"><div class="feat-block"><h3 style="color:#FFC107">单灯精准控制</h3><ul><li>每盏灯独立开关</li><li>亮度无级可调</li><li>分组策略灵活配置</li><li>节假日模式一键切换</li></ul>
+</div>
+<div class="feat-block"><h3 style="color:#FFC107">故障实时监测</h3><ul><li>灯具电流采集分析</li><li>故障自动定位到杆</li><li>灭灯报警即时推送</li><li>维修工单自动派发</li></ul>
+</div>
+<div class="feat-block"><h3 style="color:#FFC107">能耗精细管理</h3><ul><li>单灯能耗精准计量</li><li>支路功率采集分析</li><li>能耗报表自动生成</li><li>节能策略优化建议</li></ul>
+</div>
+<div class="feat-block"><h3 style="color:#FFC107">策略智能编排</h3><ul><li>经纬度日出日落</li><li>时间策略灵活配置</li><li>光照感应自适应</li><li>应急场景快速响应</li></ul>
+</div>
+<div class="feat-block"><h3 style="color:#FFC107">GIS一张图</h3><ul><li>灯具位置精确定位</li><li>设备档案电子化管理</li><li>巡检轨迹记录追踪</li><li>资产寿命预测分析</li></ul>
+</div></div>
+  </div>
+<div class="section">
+    <h2 class="section-title">价值对比</h2>
+    <div class="table-wrap">
+      <table class="compare-table">
+        <tr><th>对比项</th><th>传统模式</th><th>使用中维光能后</th></tr>
+        <tr><td>管理效率</td><td>人工为主，效率低</td><td class="new">数字化管理，效率提升80%+</td></tr>
+        <tr><td>成本控制</td><td>资源浪费严重</td><td class="new">精准管控，成本降低30%+</td></tr>
+        <tr><td>响应速度</td><td>问题发现滞后</td><td class="new">实时监控，即时预警</td></tr>
+        <tr><td>数据能力</td><td>数据分散，难以分析</td><td class="new">数据集中，智能分析</td></tr>
+      </table>
+    </div>
+  </div>
+<div class="section">
+    <h2 class="section-title">客户案例</h2>
+    <div class="case-grid"><div class="case-card" style="border-top:3px solid #FFC107"><h4>某市主干道路灯改造</h4><p>系统节能率75%，年电费节省200万+，路灯坏灯2小时内修复。</p>
+</div>
+<div class="case-card" style="border-top:3px solid #FFC107"><h4>某高新区路灯</h4><p>系统AI识别行人，夜间行车安全感大幅提升，居民投诉下降90%。</p>
+</div>
+<div class="case-card" style="border-top:3px solid #FFC107"><h4>某县级路灯改造</h4><p>系统单灯控制策略灵活配置，农村路灯电费降低65%。</p>
+</div></div>
+  </div>
+<div class="cta-section">
+    <h2>立即体验中维光能</h2>
+    <p>联系我们的行业专家，获取定制化解决方案和免费试用</p>
+    <a href="#" class="btn">预约演示</a>
+  </div>
+</div>
+
+    <div class="section detail-section">
+        <h2 class="section-title">行业深度分析</h2>
+        <div class="detail-content">
+            <div class="detail-block">
+                <h3>市场规模与增长趋势</h3>
+                <p>随着物联网、云计算、大数据、人工智能等技术的快速发展，软硬一体行业软件市场呈现出高速增长态势。根据相关行业报告数据，智慧农业、智慧消防、智慧水务、智慧燃气等细分领域的市场规模年复合增长率均超过25%。传统行业面临数字化转型压力，智能化升级需求迫切，为软硬一体解决方案提供了广阔的市场空间。预计到2025年，软硬一体行业软件市场规模将突破千亿元级别，成为产业互联网的重要组成部分。</p>
+            </div>
+            <div class="detail-block">
+                <h3>技术架构与实现路径</h3>
+                <p>本系统采用云端一体化架构设计，传感器层负责环境数据采集，网关层完成协议转换与边缘计算，云平台提供数据存储、智能分析、策略下发等核心能力。系统支持MQTT、Modbus、HTTP等多种通信协议，兼容市面上90%以上的传感器设备。通过可视化配置工具，用户无需编程即可完成设备接入、功能配置、报警规则设置等工作，大大降低了使用门槛和技术成本。</p>
+            </div>
+            <div class="detail-block">
+                <h3>客户价值与ROI分析</h3>
+                <p>根据已部署项目的实际运行数据，客户在接入本系统后，平均设备综合效率（OEE）提升18%-35%，能耗降低15%-30%，人工巡检工作量减少60%-80%，意外停机时间减少70%以上。系统投资回报周期通常在6-12个月，具体取决于设备规模和使用场景。以一个年产值1000万元的工厂为例，智能化升级投入约15-30万元，年均可节省成本25-50万元，ROI超过150%。</p>
+            </div>
+            <div class="detail-block">
+                <h3>部署案例与实施经验</h3>
+                <p>本系统已在工业制造、能源电力、农业生产、物流仓储、城市管理等多个领域完成规模化部署，累计服务企业客户超过500家，设备接入量超过5万台。典型实施周期为2-4周，包含现场勘察、方案设计、设备安装、系统调试、用户培训等环节。提供7x24小时技术支持，远程诊断解决率达到95%以上，必要情况下可安排工程师现场服务。</p>
+            </div>
+            <div class="detail-block">
+                <h3>安全合规与数据保护</h3>
+                <p>系统严格遵循国家信息安全等级保护要求和行业数据安全规范。采用银行级数据加密标准，数据传输过程全程加密，存储采用多副本分布式架构，确保数据安全可靠。系统通过ISO27001信息安全管理体系认证，满足各行业监管部门的合规要求。支持私有化部署和混合云部署模式，数据完全归属客户，敏感数据不出内网，满足企业对数据主权的高度要求。</p>
+            </div>
+            <div class="detail-block">
+                <h3>生态合作与开放集成</h3>
+                <p>系统提供标准化的RESTful API和WebSocket接口，支持与ERP、MES、SCM、CRM等企业现有系统无缝对接。通过开放平台认证的第三方应用已超过100个，涵盖数据分析、人工智能、设备维护等多个领域。支持主流IoT云平台对接，包括阿里云、华为云、腾讯云、百度云等，实现跨平台数据互通和统一管理。</p>
+            </div>
+            <div class="detail-block">
+                <h3>版本升级与持续演进</h3>
+                <p>系统采用微服务架构，模块化设计，支持热升级和平滑演进。研发团队持续投入，每季度发布新功能版本，包含性能优化、安全补丁、新增功能等。已部署客户可免费享受功能升级服务，系统自动同步最新能力。客户可根据实际需求选择功能模块，灵活扩展，避免一次性大规模投入，实现按需付费的SaaS化服务体验。</p>
+            </div>
+        </div>
+    </div>
+
+<footer>
+  <p>© 2024 中维光能 · 专注智慧路灯/单灯控制数字化转型</p>
+</footer>
+</body>
+</html>

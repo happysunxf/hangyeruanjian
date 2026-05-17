@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>智慧水务云 - 系统演示</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#1a1a2e;color:#e0e0e0}
+.header{background:linear-gradient(135deg,#2196F3,#03A9F4);padding:20px 30px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.header h1{font-size:1.5em}
+.header span{font-size:0.9em;opacity:0.85}
+.sidebar{width:220px;background:#16213e;min-height:calc(100vh - 80px);padding:20px 0;float:left}
+.sidebar-item{padding:12px 20px;cursor:pointer;color:#94a3b8;font-size:0.9em;transition:all 0.2s;border-left:3px solid transparent}
+.sidebar-item:hover,.sidebar-item.active{background:rgba(255,255,255,0.05);color:#2196F3;border-left-color:#2196F3}
+.main{flex:1;padding:20px;overflow:auto}
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.metric{background:#1f2937;border-radius:12px;padding:18px;text-align:center;border:1px solid #374151}
+.metric .label{color:#94a3b8;font-size:0.8em;margin-bottom:8px}
+.metric .value{font-size:1.8em;font-weight:700;color:#2196F3}
+.metric .sub{color:#64748b;font-size:0.75em;margin-top:4px}
+.chart-box{background:#1f2937;border-radius:12px;padding:20px;border:1px solid #374151;margin-bottom:20px}
+.chart-box h3{font-size:0.95em;color:#e2e8f0;margin-bottom:15px;border-bottom:1px solid #374151;padding-bottom:10px}
+.flex{display:flex;gap:15px;flex-wrap:wrap}
+.card{background:#1f2937;border-radius:12px;padding:20px;border:1px solid #374151;flex:1;min-width:200px}
+.card h4{color:#2196F3;font-size:0.95em;margin-bottom:12px}
+.list-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #374151;font-size:0.85em}
+.list-item:last-child{border:none}
+.list-item .name{color:#e2e8f0}
+.list-item .val{color:#2196F3;font-weight:600}
+.alert{background:rgba(245,158,11,0.1);border:1px solid #2196F3;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:0.85em;display:flex;align-items:center;gap:10px}
+.alert::before{content:"\26A0";font-size:1.2em}
+.btn-demo{background:#2196F3;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:0.9em;transition:all 0.2s}
+.btn-demo:hover{opacity:0.85;transform:scale(1.02)}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;z-index:1000}
+.modal.show{display:flex}
+.modal-content{background:#1f2937;border-radius:16px;padding:30px;max-width:450px;width:90%;border:1px solid #2196F3}
+.modal-content h3{color:#2196F3;margin-bottom:15px;font-size:1.1em}
+.modal-content p{color:#94a3b8;font-size:0.9em;line-height:1.6;margin-bottom:20px}
+.modal-content button{background:#03A9F4;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>智慧水务云 控制台</h1>
+  <span>智慧水务/水表</span>
+</div>
+<div style="display:flex">
+  <div class="sidebar">
+    <div class="sidebar-item active">✓ 数据概览</div>
+    <div class="sidebar-item">📅 设备管理</div>
+    <div class="sidebar-item">🚨 实时报警</div>
+    <div class="sidebar-item">📊 数据报表</div>
+    <div class="sidebar-item">⚙ 系统设置</div>
+  </div>
+  <div class="main">
+    <div class="dashboard">
+      <div class="metric">
+        <div class="label">在线设备</div>
+        <div class="value">156</div>
+        <div class="sub">总设备:186</div>
+      </div>
+      <div class="metric">
+        <div class="label">今日告警</div>
+        <div class="value">16</div>
+        <div class="sub">同比↓ 26%</div>
+      </div>
+      <div class="metric">
+        <div class="label">运行效率</div>
+        <div class="value">87%</div>
+        <div class="sub">目标:95%</div>
+      </div>
+      <div class="metric">
+        <div class="label">本月收益</div>
+        <div class="value">46万</div>
+        <div class="sub">同比↑ 31%</div>
+      </div>
+    </div>
+    <div class="alert">
+      <span>⚠ 设备维护提醒: 3台设备即将到达保养周期</span>
+      <button class="btn-demo" onclick="showModal()">立即处理</button>
+    </div>
+    <div class="chart-box">
+      <h3>⭐ 设备状态分布</h3>
+      <div style="display:flex;gap:30px;margin-top:10px">
+        <div style="text-align:center"><div style="font-size:2em;color:#2196F3">91%</div><div style="color:#64748b;font-size:0.8em">正常运行</div></div>
+        <div style="text-align:center"><div style="font-size:2em;color:#f59e0b">10%</div><div style="color:#64748b;font-size:0.8em">维护中</div></div>
+        <div style="text-align:center"><div style="font-size:2em;color:#ef4444">4%</div><div style="color:#64748b;font-size:0.8em">异常</div></div>
+        <div style="text-align:center"><div style="font-size:2em;color:#6b7280">4%</div><div style="color:#64748b;font-size:0.8em">离线</div></div>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="card">
+        <h4>📈 今日数据趋势</h4>
+        <div class="list-item"><span class="name">00:00</span><span class="val">56</span></div>
+        <div class="list-item"><span class="name">04:00</span><span class="val">46</span></div>
+        <div class="list-item"><span class="name">08:00</span><span class="val">86</span></div>
+        <div class="list-item"><span class="name">12:00</span><span class="val">121</span></div>
+        <div class="list-item"><span class="name">16:00</span><span class="val">96</span></div>
+        <div class="list-item"><span class="name">20:00</span><span class="val">71</span></div>
+      </div>
+      <div class="card">
+        <h4>🚨 最新告警</h4>
+        <div class="list-item"><span class="name">2分钟前</span><span class="val" style="color:#ef4444">温度超标</span></div>
+        <div class="list-item"><span class="name">15分钟前</span><span class="val" style="color:#f59e0b">设备离线</span></div>
+        <div class="list-item"><span class="name">1小时前</span><span class="val" style="color:#2196F3">电压波动</span></div>
+        <div class="list-item"><span class="name">3小时前</span><span class="val">正常运行</span></div>
+      </div>
+      <div class="card">
+        <h4>🛠 快捷操作</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+          <button class="btn-demo" onclick="showModal(✓ 设备状态查看)">设备状态查看</button>
+          <button class="btn-demo" onclick="showModal(🚨 告警历史)">告警历史</button>
+          <button class="btn-demo" onclick="showModal(📅 报表导出)">报表导出</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3 id="modalTitle">提示</h3>
+    <p id="modalText">该功能已打开，请点击确定缓进进行操作。该是演示系统，故故保留此处。</p>
+    <button onclick="closeModal()">知道了</button>
+  </div>
+</div>
+<script>
+function showModal(t){document.getElementById("modal").classList.add("show");if(t){document.getElementById("modalTitle").textContent=t}}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+</script>
+</body>
+</html>
