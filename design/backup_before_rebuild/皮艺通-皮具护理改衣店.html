@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皮艺通 - 皮具护理改衣店管理系统 | 二维码追溯·进度可查·会员透明</title>
+    <style>
+
+:root {
+    --bg-primary: #1c1612;
+    --bg-secondary: #241e19;
+    --bg-card: #2d2419;
+    --accent-brown: #8b6914;
+    --accent-gold: #c9a96e;
+    --accent-light: #e8dcc8;
+    --accent-orange: #c97a3e;
+    --text-primary: #e8e4dc;
+    --text-secondary: #9a8e8a;
+    --border-color: #3d3020;
+    --shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "PingFang SC", "Microsoft YaHei", serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.hero { background: linear-gradient(135deg, #1c1612 0%, #241e19 50%, #1c1612 100%); padding: 80px 0 60px; position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(201,169,110,0.03) 40px, rgba(201,169,110,0.03) 41px), repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(201,169,110,0.03) 40px, rgba(201,169,110,0.03) 41px); animation: needleMove 8s linear infinite; }
+@keyframes needleMove { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
+.hero-badge { display: inline-block; background: linear-gradient(90deg, var(--accent-brown), var(--accent-gold)); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; text-transform: uppercase; position: relative; z-index: 1; border: 1px solid rgba(201,169,110,0.4); }
+.hero h1 { font-size: 48px; font-weight: 800; background: linear-gradient(90deg, var(--accent-light) 0%, var(--accent-gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px; position: relative; z-index: 1; }
+.hero-sub { font-size: 18px; color: var(--text-secondary); max-width: 640px; margin-bottom: 36px; position: relative; z-index: 1; }
+.hero-stats { display: flex; gap: 40px; flex-wrap: wrap; position: relative; z-index: 1; }
+.hero-stat { text-align: left; }
+.hero-stat .num { font-size: 36px; font-weight: 800; color: var(--accent-gold); }
+.hero-stat .label { font-size: 13px; color: var(--text-secondary); }
+.nav-bar { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+.nav-inner { display: flex; gap: 8px; overflow-x: auto; padding: 0 20px; }
+.nav-item { padding: 16px 20px; color: var(--text-secondary); font-size: 14px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.3s; cursor: pointer; }
+.nav-item:hover, .nav-item.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+.section { padding: 70px 0; }
+.section-title { text-align: center; margin-bottom: 50px; }
+.section-title h2 { font-size: 32px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
+.section-title p { font-size: 15px; color: var(--text-secondary); }
+.section-title .tag { display: inline-block; width: 40px; height: 3px; background: linear-gradient(90deg, var(--accent-brown), var(--accent-gold)); border-radius: 2px; margin-bottom: 16px; }
+.pain-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.pain-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 28px; position: relative; overflow: hidden; transition: all 0.3s; }
+.pain-card:hover { border-color: var(--accent-gold); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,169,110,0.15); }
+.pain-card::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--accent-brown), var(--accent-gold)); }
+.pain-icon { width: 44px; height: 44px; background: rgba(201,169,110,0.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+.pain-card h3 { font-size: 16px; font-weight: 600; color: var(--accent-light); margin-bottom: 10px; }
+.pain-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+.feat-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.feat-block { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; transition: all 0.3s; }
+.feat-block:hover { border-color: var(--accent-gold); box-shadow: 0 8px 32px rgba(201,169,110,0.1); }
+.feat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.feat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.fi-brown { background: rgba(139,105,20,0.15); }
+.fi-gold { background: rgba(201,169,110,0.15); }
+.fi-orange { background: rgba(201,122,62,0.15); }
+.fi-light { background: rgba(232,220,200,0.08); }
+.fi-dark { background: rgba(60,50,40,0.5); }
+.feat-title h3 { font-size: 18px; font-weight: 700; color: var(--accent-light); }
+.feat-title span { font-size: 12px; color: var(--text-secondary); }
+.sub-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.sub-item:last-child { border-bottom: none; }
+.sub-item::before { content: "▸"; color: var(--accent-gold); font-size: 12px; margin-top: 3px; flex-shrink: 0; }
+.sub-item strong { color: var(--accent-gold); font-size: 14px; }
+.sub-item span { font-size: 14px; color: var(--text-secondary); }
+.order-section { background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary)); padding: 70px 0; }
+.order-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.order-list { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; }
+.order-list h4 { font-size: 16px; font-weight: 600; color: var(--accent-light); margin-bottom: 20px; }
+.order-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.order-item:last-child { border-bottom: none; }
+.order-item .name { font-size: 14px; color: var(--text-primary); }
+.order-item .meta { font-size: 12px; color: var(--text-secondary); }
+.order-item .status { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.status-received { background: rgba(139,105,20,0.15); color: var(--accent-gold); }
+.status-cleaning { background: rgba(201,122,62,0.15); color: var(--accent-orange); }
+.status-nursing { background: rgba(201,169,110,0.15); color: var(--accent-gold); }
+.status-qc { background: rgba(107,159,212,0.15); color: var(--accent-light); }
+.status-done { background: rgba(39,174,96,0.15); color: #27ae60; }
+.progress-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; }
+.progress-panel h4 { font-size: 16px; font-weight: 600; color: var(--accent-light); margin-bottom: 20px; }
+.progress-steps { display: flex; flex-direction: column; gap: 0; }
+.progress-step { display: flex; gap: 16px; position: relative; }
+.progress-step::before { content: ""; position: absolute; left: 15px; top: 30px; bottom: -16px; width: 2px; background: rgba(201,169,110,0.2); }
+.progress-step:last-child::before { display: none; }
+.progress-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; position: relative; z-index: 1; }
+.progress-dot.done { background: rgba(39,174,96,0.2); color: #27ae60; }
+.progress-dot.active { background: rgba(201,169,110,0.2); color: var(--accent-gold); }
+.progress-dot.pending { background: rgba(100,100,100,0.15); color: #777; }
+.progress-info { flex: 1; padding-bottom: 20px; }
+.progress-info h5 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.progress-info p { font-size: 12px; color: var(--text-secondary); }
+.value-section { background: linear-gradient(135deg, #141210, #1c1612); padding: 70px 0; }
+.value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.value-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px 20px; text-align: center; position: relative; overflow: hidden; }
+.value-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent-brown), var(--accent-gold)); }
+.value-card .number { font-size: 40px; font-weight: 800; background: linear-gradient(90deg, var(--accent-brown), var(--accent-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+.value-card .desc { font-size: 14px; color: var(--text-secondary); }
+.compare-section { padding: 70px 0; }
+.compare-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 16px; overflow: hidden; }
+.compare-table thead th { background: var(--bg-secondary); padding: 16px 20px; font-size: 14px; font-weight: 600; color: var(--accent-light); text-align: left; border-bottom: 1px solid var(--border-color); }
+.compare-table tbody td { padding: 14px 20px; font-size: 14px; color: var(--text-secondary); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table tbody tr:hover td { background: rgba(201,169,110,0.05); }
+.compare-table .check { color: var(--accent-gold); font-weight: 700; }
+.compare-table .cross { color: var(--accent-orange); font-weight: 700; }
+.case-section { background: var(--bg-secondary); padding: 70px 0; }
+.case-card { background: linear-gradient(135deg, var(--bg-card), #1e1a14); border: 1px solid var(--border-color); border-radius: 20px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.case-avatar { width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent-brown), var(--accent-gold)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 20px; }
+.case-name { font-size: 20px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
+.case-location { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+.case-quote { font-size: 16px; color: var(--text-secondary); line-height: 1.9; font-style: italic; }
+.case-result { background: var(--bg-secondary); border-radius: 16px; padding: 28px; }
+.case-result h4 { font-size: 14px; font-weight: 600; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.case-result-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.case-result-item:last-child { border-bottom: none; }
+.case-result-item .label { font-size: 14px; color: var(--text-secondary); }
+.case-result-item .value { font-size: 14px; font-weight: 700; color: var(--accent-gold); }
+.case-result-item .value.old { color: var(--text-secondary); text-decoration: line-through; }
+.cta-section { background: linear-gradient(135deg, #100e0c, #1c1612); padding: 80px 0; text-align: center; }
+.cta-section h2 { font-size: 36px; font-weight: 700; color: var(--accent-light); margin-bottom: 16px; }
+.cta-section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 36px; }
+.cta-btn { display: inline-block; background: linear-gradient(90deg, var(--accent-brown), var(--accent-gold)); color: #fff; font-size: 16px; font-weight: 700; padding: 16px 48px; border-radius: 12px; text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; }
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,169,110,0.4); }
+.footer { background: var(--bg-secondary); padding: 30px 0; text-align: center; font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--border-color); }
+@media (max-width: 768px) { .hero h1 { font-size: 32px; } .pain-grid, .feat-layout, .case-card, .order-layout { grid-template-columns: 1fr; } .value-grid { grid-template-columns: repeat(2, 1fr); } .hero-stats { gap: 20px; } }
+
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="hero-badge">皮具护理 · 改衣店专业管理系统</div>
+            <h1>皮艺通 · 皮具护理改衣店管理系统</h1>
+            <p class="hero-sub">
+                每件衣物都有二维码，取衣日期自动提醒，进度随时可查。
+                皮艺通为皮具护理和改衣店打造专业管理系统，让手艺人对账清晰、顾客安心。
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="num">75%</div>
+                    <div class="label">顾客投诉降低</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">90%</div>
+                    <div class="label">取衣准时率提升</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">40%</div>
+                    <div class="label">会员复购率提升</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">12年+</div>
+                    <div class="label">老店经验沉淀</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <div class="nav-inner">
+            <div class="nav-item active">概述</div>
+            <div class="nav-item">行业痛点</div>
+            <div class="nav-item">核心功能</div>
+            <div class="nav-item">接单管理</div>
+            <div class="nav-item">价值数据</div>
+            <div class="nav-item">对比表格</div>
+            <div class="nav-item">客户案例</div>
+        </div>
+    </div>
+
+    <!-- Pain Points Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>行业痛点</h2>
+                <p>皮具护理和改衣是手艺活，但管理上的问题却让人头疼不已</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="pain-icon">👜</div>
+                    <h3>皮包送来护理，取包时发现肩带换错了</h3>
+                    <p>周师傅在广州开了12年皮具护理店。有一次顾客送来一个名牌皮包，
+                    做肩带护理。取包时顾客发现肩带被换成了另一款——颜色不对、扣子也不同。
+                    顾客很生气，周师傅翻了半天，没有找到任何关于肩带颜色和扣子款式的记录。
+                    最后只能赔偿，损失了信誉也损失了钱。从那以后，周师傅下定决心：用系统记录每一件衣物的细节。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">📅</div>
+                    <h3>取衣日期到了，衣服还没处理好</h3>
+                    <p>李女士的羊绒大衣约定周四取。她周四来到店里，结果衣服还在护理中，
+                    预计还要2天才能好。李女士白跑一趟，当场黑脸，说以后再也不来了。
+                    周师傅也委屈：皮革护理工艺复杂，受天气影响大，有时候干燥时间就是不能压缩。
+                    问题出在顾客不知道进度，也没有提前告知。如果有进度追踪，这类投诉完全可以避免。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">💳</div>
+                    <h3>会员卡忘了带，店员不记得卡里多少钱</h3>
+                    <p>王阿姨是店里的老会员，办了储值卡。但有一次出门忘带了卡，
+                    店员在系统里查不到信息——以前的会员记录都是手写的本子，店员不记得她卡里还有多少钱。
+                    王阿姨觉得被冒犯了：我确实充过钱，怎么查不到？最后只能先付全款，
+                    回家取了卡再来核销。王阿姨虽然没说什么，但之后来的次数明显少了。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">📏</div>
+                    <h3>改衣尺寸出错，返工花了3天</h3>
+                    <p>张女士拿来一条西装裤改裤脚，说好放长2厘米。取裤时发现，
+                    裤脚被截短了2厘米——方向搞反了，本来要放长结果截短了。
+                    张师傅检查发现，是记录时字迹潦草，"放长2cm"和"改短2cm"没写清楚。
+                    返工花了3天，还赔了张女士加急费。皮具和改衣行业的容错率极低，
+                    一个字写得不清楚，就是三天返工。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Features Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>核心功能</h2>
+                <p>皮艺通为皮具护理和改衣店量身打造，每一个功能都直击经营核心问题</p>
+            </div>
+            <div class="feat-layout">
+                <!-- Feature 1: 二维码凭证 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-brown">🏷️</div>
+                        <div class="feat-title">
+                            <h3>二维码凭证</h3>
+                            <span>每件衣物唯一标识，扫码即查</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>每件衣物生成唯一二维码</strong>
+                        <span>接单时，系统为每件衣物生成一张专属二维码标签，贴在衣物醒目位置。
+                        顾客离店时收到一张同等二维码的小票，扫码即可查询衣物状态和进度。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>扫码查进度</strong>
+                        <span>顾客用微信扫一扫二维码，即可查看衣物的当前状态（已收件/已清洗/已护理/已质检/已通知/已取件）、
+                        预计完成时间、护理项目和费用明细。信息透明，顾客安心。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>记录完整细节</strong>
+                        <span>接单时，店员必须拍照记录衣物细节（颜色、纹路、瑕疵、扣子样式、肩带款式等），
+                        系统存档，调取方便。即使是同一款包不同批次，也能通过照片区分。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>取衣日期和价格明码标价</strong>
+                        <span>每张二维码关联取衣日期、护理项目清单和总价。顾客随时可查，
+                        不会有"怎么又多了个项目"的争议。</span>
+                    </div>
+                </div>
+                <!-- Feature 2: 进度追踪 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-gold">📍</div>
+                        <div class="feat-title">
+                            <h3>进度追踪</h3>
+                            <span>六步状态，微信可查，完成自动推送</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>六步状态实时更新</strong>
+                        <span>衣物从进店到取走，经历六个状态：已收件 → 已清洗 → 已护理 → 已质检 → 已通知 → 已取件。
+                        店员每完成一步，在系统中更新状态，顾客实时可见。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>微信随时可查</strong>
+                        <span>顾客关注店铺小程序后，绑定衣物二维码，随时在微信里查看衣物当前状态。
+                        不需要打电话询问，也不需要再次到店查询，一个二维码全部搞定。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>完成后自动推送通知</strong>
+                        <span>衣物完成所有护理工序后，系统自动向顾客微信推送"可取衣"通知，
+                        包含取衣时间、店铺地址和联系方式。顾客收到通知再来，省得白跑。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>逾期未取自动提醒</strong>
+                        <span>超过取衣日期7天未取，系统自动向顾客发送提醒，告知逾期存放会产生每天¥5的储物费。
+                        提醒顾客及时取走，减少店铺仓储压力。</span>
+                    </div>
+                </div>
+                <!-- Feature 3: 会员积分 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-orange">💎</div>
+                        <div class="feat-title">
+                            <h3>会员积分</h3>
+                            <span>储值卡+积分卡，双轨制留住顾客</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>储值卡（充1000送100）</strong>
+                        <span>顾客首次储值1000元，赠送100元，实际到账1100元。
+                        储值余额可在微信小程序随时查询，消费一笔扣一笔，清晰透明。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>积分卡（消费1元积1分）</strong>
+                        <span>消费1元积累1分，100分可在下次消费时抵扣5元。
+                        积分不设过期时间，持续积累激励顾客多次回头。积分余额在小程序中实时可见。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>刷手机识别身份</strong>
+                        <span>会员到店报手机号或直接扫会员码，系统自动识别其会员身份、储值余额和积分余额。
+                        即使忘带实体卡，也能正常核销和扣费。会员数据云端同步，换店不丢失。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>会员等级折扣</strong>
+                        <span>普通会员无折扣，银卡会员享受全场9折，金卡会员享受全场8.5折。
+                        等级根据累计消费金额自动升降，到期前7天提醒续费，保持会员粘性。</span>
+                    </div>
+                </div>
+                <!-- Feature 4: 库存管理 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-light">📦</div>
+                        <div class="feat-title">
+                            <h3>库存管理</h3>
+                            <span>皮革护理用品分类管理，预警精准</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>皮革护理用品分类</strong>
+                        <span>系统支持将库存商品分为护理剂类（如黑色鞋油、无色鞋油、皮革护理膏）、
+                        清洁剂类、染色剂类、工具类（如鞋刷、抹布）四大类，每个品类单独管理库存。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>库存不足预警</strong>
+                        <span>为每件商品设置最低库存警戒线，低于警戒线时系统自动推送预警通知。
+                        例如"黑色鞋油仅剩3瓶，建议立即补货"。确保热卖品不断货，影响服务质量。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>进货记录可查</strong>
+                        <span>每次进货录入商品名称、数量、进货价、供应商和进货日期。
+                        支持按时间范围查询进货历史，方便追溯商品来源，也方便评估供应商优劣。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>批次管理与先进先出</strong>
+                        <span>护理用品有保质期，按批次录入和出库，系统自动执行先进先出原则。
+                        避免过期产品用于顾客衣物，确保服务质量与安全。</span>
+                    </div>
+                </div>
+                <!-- Feature 5: 到期提醒 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-dark">⏰</div>
+                        <div class="feat-title">
+                            <h3>到期提醒</h3>
+                            <span>取衣日期提前通知，逾期标记储物费</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>取衣日期提前1天自动提醒</strong>
+                        <span>系统在取衣日期前1天向顾客微信推送提醒，告知衣物已准备好，请尽快到店取走。
+                        避免顾客遗忘取衣日期，也避免衣物在店铺积压过久。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>逾期7天标记储物费</strong>
+                        <span>超过取衣日期7天未取，系统自动在账单上标记储物费（¥5/天），
+                        并再次向顾客发送提醒。储物费标准透明告知顾客，不产生争议。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>逾期衣物查询列表</strong>
+                        <div class="case-result-item">
+                            <span class="label">衣物记录</span>
+                            <div>
+                                <span class="value old">纸质单据易丢失</span>
+                                <span class="value"> → 云端永久保存</span>
+                            </div>
+                        </div>
+                        <span>老板可在后台一键查看所有逾期未取衣物清单，包括顾客联系方式、逾期天数和应付储物费金额。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>逾期原因记录</strong>
+                        <span>店员可记录衣物逾期原因（顾客出外地/衣物需改衣/争议未解决等），
+                        方便月底复盘，找出是服务问题还是顾客问题，持续改进。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Management Section -->
+    <div class="order-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>接单管理</h2>
+                <p>二维码追踪每件衣物，六步状态实时更新</p>
+            </div>
+            <div class="order-layout">
+                <div class="order-list">
+                    <h4>今日待处理衣物</h4>
+                    <div class="order-item">
+                        <div>
+                            <div class="name">LV皮包（黑色）- 李女士</div>
+                            <div class="meta">收件：今天 10:30 · 取衣：周六 · ¥380</div>
+                        </div>
+                        <span class="status status-nursing">护理中</span>
+                    </div>
+                    <div class="order-item">
+                        <div>
+                            <div class="name">Burberry风衣 - 张先生</div>
+                            <div class="meta">收件：今天 09:15 · 取衣：下周一 · ¥520</div>
+                        </div>
+                        <span class="status status-cleaning">清洗中</span>
+                    </div>
+                    <div class="order-item">
+                        <div>
+                            <div class="name">西装裤改裤脚 - 王女士</div>
+                            <div class="meta">收件：昨天 15:00 · 取衣：明天 · ¥80</div>
+                        </div>
+                        <span class="status status-qc">质检中</span>
+                    </div>
+                    <div class="order-item">
+                        <div>
+                            <div class="name">UGG雪地靴 - 赵阿姨</div>
+                            <div class="meta">收件：昨天 11:00 · 取衣：今天 · ¥150</div>
+                        </div>
+                        <span class="status status-done">待取件</span>
+                    </div>
+                    <div class="order-item">
+                        <div>
+                            <div class="name">Chanel羊皮包 - 陈小姐</div>
+                            <div class="meta">收件：周三 14:00 · 取衣：周五 · ¥680</div>
+                        </div>
+                        <span class="status status-received">已收件</span>
+                    </div>
+                </div>
+                <div class="progress-panel">
+                    <h4>衣物进度追踪示例</h4>
+                    <div class="progress-steps">
+                        <div class="progress-step">
+                            <div class="progress-dot done">✓</div>
+                            <div class="progress-info">
+                                <h5>已收件</h5>
+                                <p>今天 10:30 · 收到LV皮包，拍照存档</p>
+                            </div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-dot done">✓</div>
+                            <div class="progress-info">
+                                <h5>已清洗</h5>
+                                <p>今天 14:00 · 完成表面清洁</p>
+                            </div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-dot active">●</div>
+                            <div class="progress-info">
+                                <h5>护理中</h5>
+                                <p>今天 15:30 · 皮革护理膏护理中</p>
+                            </div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-dot pending">○</div>
+                            <div class="progress-info">
+                                <h5>质检中</h5>
+                                <p>预计明天 09:00 · 护理完成后质检</p>
+                            </div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-dot pending">○</div>
+                            <div class="progress-info">
+                                <h5>已通知</h5>
+                                <p>预计周六 · 系统推送取衣通知</p>
+                            </div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-dot pending">○</div>
+                            <div class="progress-info">
+                                <h5>已取件</h5>
+                                <p>周六 · 顾客到店取走，确认结清</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Value Data Section -->
+    <div class="value-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>价值数据</h2>
+                <p>用数字验证效果，让每一步改变都有迹可循</p>
+            </div>
+            <div class="value-grid">
+                <div class="value-card">
+                    <div class="number">75%</div>
+                    <div class="desc">顾客投诉降低</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">90%</div>
+                    <div class="desc">取衣准时率提升</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">40%</div>
+                    <div class="desc">会员复购率提升</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Table Section -->
+    <div class="compare-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>对比表格</h2>
+                <p>皮艺通 vs 传统管理方式，全面超越</p>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>功能项</th>
+                        <th>传统方式（手写单+脑子记）</th>
+                        <th>皮艺通管理系统</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>衣物记录</td>
+                        <td><span class="cross">✗ 纸质单据易丢失，细节记不清</span></td>
+                        <td><span class="check">✓ 云端永久保存，照片存档</span></td>
+                    </tr>
+                    <tr>
+                        <td>进度追踪</td>
+                        <td><span class="cross">✗ 顾客打电话问，店员也说不清</span></td>
+                        <td><span class="check">✓ 微信扫码随时查，六步状态透明</span></td>
+                    </tr>
+                    <tr>
+                        <td>取衣提醒</td>
+                        <td><span class="cross">✗ 顾客忘日期，白跑一趟</span></td>
+                        <td><span class="check">✓ 到期前1天自动微信提醒</span></td>
+                    </tr>
+                    <tr>
+                        <td>会员管理</td>
+                        <td><span class="cross">✗ 实体卡易忘带，信息不互通</span></td>
+                        <td><span class="check">✓ 手机即会员卡，余额积分实时查</span></td>
+                    </tr>
+                    <tr>
+                        <td>库存管理</td>
+                        <td><span class="cross">✗ 卖完才知道断货</span></td>
+                        <td><span class="check">✓ 自动预警，主动补货</span></td>
+                    </tr>
+                    <tr>
+                        <td>储物费</td>
+                        <td><span class="cross">✗ 逾期不收费用，衣物堆积</span></td>
+                        <td><span class="check">✓ 逾期自动标记，标准透明</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Case Study Section -->
+    <div class="case-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>客户案例</h2>
+                <p>广州周师傅，12年老店的数字化升级之路</p>
+            </div>
+            <div class="case-card">
+                <div>
+                    <div class="case-avatar">🧵</div>
+                    <div class="case-name">周师傅</div>
+                    <div class="case-location">广东广州 · 皮具护理改衣店 · 12年经营</div>
+                    <div class="case-quote">
+                        "我做了12年皮具护理，以前全靠手写单子和脑子记。顾客问进度，我只能说"差不多了，明天来问问"，
+                        顾客心里没底，我也说不清楚。用了皮艺通之后，每件衣服都有二维码，顾客自己扫一扫就能看到进度。
+                        以前经常搞错衣物的问题彻底消失了，取衣准时率从60%提高到了95%。现在老顾客都说：
+                        你们这家店虽然小，但比那些大品牌还专业。"
+
+                    </div>
+                </div>
+                <div class="case-result">
+                    <h4>使用前后对比</h4>
+                    <div class="case-result-item">
+                        <span class="label">取衣准时率</span>
+                        <div>
+                            <span class="value old">约60%</span>
+                            <span class="value"> → 95%+</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">衣物记录出错率</span>
+                        <div>
+                            <span class="value old">每年10+次</span>
+                            <span class="value"> → 0次</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">顾客咨询量</span>
+                        <div>
+                            <span class="value old">每天15+条</span>
+                            <span class="value"> → 几乎为零</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">会员复购率</span>
+                        <div>
+                            <span class="value old">约35%</span>
+                            <span class="value"> → 50%+</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">储物费逾期收入</span>
+                        <div>
+                            <span class="value old">¥0（从未收取）</span>
+                            <span class="value"> → 每月¥200-400</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <div class="container">
+            <h2>让您的店铺也升级为数字化经营</h2>
+            <p>12年老店经验沉淀，专业团队实施，5天即可上线使用</p>
+            <a href="#" class="cta-btn">立即咨询，获取方案</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>皮艺通 · 皮具护理改衣店管理系统 | 让每一件衣物都有二维码</p>
+        </div>
+    </div>
+
+</body>
+</html>

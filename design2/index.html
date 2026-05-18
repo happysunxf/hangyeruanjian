@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>行业软件产品展示 - 设计稿合集</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#0f0f1a;color:#e0e0e0}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:40px 30px;text-align:center;border-bottom:1px solid #2196F3}
+.header h1{font-size:2em;color:#2196F3;margin-bottom:10px}
+.header p{color:#94a3b8;font-size:1.1em}
+.stats{display:flex;justify-content:center;gap:40px;padding:25px;background:#16213e}
+.stat{text-align:center}
+.stat .num{font-size:2em;font-weight:700;color:#2196F3}
+.stat .label{color:#64748b;font-size:0.85em;margin-top:4px}
+.container{max-width:1200px;margin:0 auto;padding:30px 20px}
+.search-box{margin-bottom:25px}
+.search-box input{width:100%;padding:14px 20px;background:#1f2937;border:1px solid #374151;border-radius:12px;color:#e2e8f0;font-size:1em;outline:none;transition:border-color 0.2s}
+.search-box input:focus{border-color:#2196F3}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.filter-btn{padding:8px 18px;background:#1f2937;border:1px solid #374151;border-radius:20px;color:#94a3b8;font-size:0.85em;cursor:pointer;transition:all 0.2s}
+.filter-btn:hover,.filter-btn.active{background:#2196F3;color:#fff;border-color:#2196F3}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.product-card{background:#1f2937;border-radius:16px;padding:24px;border:1px solid #374151;transition:all 0.3s;cursor:pointer;display:block;text-decoration:none;color:inherit}
+.product-card:hover{transform:translateY(-4px);border-color:#2196F3;box-shadow:0 8px 30px rgba(33,150,243,0.15)}
+.product-card .tag{display:inline-block;padding:4px 10px;background:rgba(33,150,243,0.15);color:#2196F3;border-radius:6px;font-size:0.75em;margin-bottom:12px}
+.product-card h3{color:#e2e8f0;font-size:1.1em;margin-bottom:8px}
+.product-card p{color:#64748b;font-size:0.85em;line-height:1.5;margin-bottom:16px}
+.product-card .footer{display:flex;justify-content:space-between;align-items:center}
+.product-card .link-text{color:#2196F3;font-size:0.9em}
+.product-card .arrow{color:#2196F3;font-size:1.2em}
+.empty-state{text-align:center;padding:60px;color:#64748b}
+.empty-state h3{font-size:1.2em;margin-bottom:8px}
+.footer-bar{text-align:center;padding:30px;color:#475569;font-size:0.85em;border-top:1px solid #1f2937;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🏢 行业软件产品展示</h1>
+  <p>57款 SaaS 产品设计稿 · 持续更新中</p>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">57</div><div class="label">产品总览</div></div>
+  <div class="stat"><div class="num">14</div><div class="label">覆盖行业</div></div>
+  <div class="stat"><div class="num">6</div><div class="label">核心场景</div></div>
+</div>
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 搜索产品名称..." oninput="filterProducts()">
+  </div>
+  <div class="filters" id="filterBtns">
+    <span class="filter-btn active" onclick="setFilter('all')">全部</span>
+    <span class="filter-btn" onclick="setFilter('停车')">停车类</span>
+    <span class="filter-btn" onclick="setFilter('门禁')">门禁类</span>
+    <span class="filter-btn" onclick="setFilter('消防')">消防类</span>
+    <span class="filter-btn" onclick="setFilter('医疗')">医疗健康</span>
+    <span class="filter-btn" onclick="setFilter('农业')">农牧业</span>
+    <span class="filter-btn" onclick="setFilter('体育')">体育教育</span>
+    <span class="filter-btn" onclick="setFilter('快递')">快递柜</span>
+    <span class="filter-btn" onclick="setFilter('工业')">工业制造</span>
+    <span class="filter-btn" onclick="setFilter('能源')">能源水务</span>
+    <span class="filter-btn" onclick="setFilter('城市')">智慧城市</span>
+  </div>
+  <div class="grid" id="productGrid"></div>
+  <div class="empty-state" id="emptyState" style="display:none">
+    <h3>🔍 未找到匹配产品</h3>
+    <p>换个关键词试试</p>
+  </div>
+</div>
+<div class="footer-bar">设计稿合集 · 仅供展示参考</div>
+<script>
+const products = [
+  {name:"9am智能办公",tag:"智慧办公",file:"9am智能办公.html",desc:"智能工位预约、会议管理、设备控制一体化办公平台"},
+  {name:"ETCP智慧停车",tag:"停车管理",file:"ETCP智慧停车.html",desc:"车牌识别、无感支付、车位引导、远程运维一体化停车系统"},
+  {name:"FLEXIS",tag:"工业制造",file:"FLEXIS.html",desc:"柔性制造执行系统，支撑离散型制造业数字化升级"},
+  {name:"Fthings",tag:"工业物联",file:"Fthings.html",desc:"物联网设备连接与数据采集平台，适配多协议接入"},
+  {name:"G7温控",tag:"冷链温控",file:"G7温控.html",desc:"冷链运输全程温湿度监控，超温自动报警"},
+  {name:"iGas",tag:"燃气安全",file:"iGas.html",desc:"燃气管网压力监测与泄漏预警系统"},
+  {name:"中维光能",tag:"能源管理",file:"中维光能.html",desc:"光伏电站智能运维与发电效率分析平台"},
+  {name:"丰巢快递柜",tag:"快递柜",file:"丰巢快递柜.html",desc:"智能存取柜支持扫码、刷脸、验证码多重开柜方式"},
+  {name:"云从科技门禁",tag:"人脸门禁",file:"云从科技门禁.html",desc:"人脸识别门禁考勤一体机，支持活体检测与权限管理"},
+  {name:"令令开门",tag:"智慧门禁",file:"令令开门.html",desc:"手机NFC/二维码开门，访客预约与远程授权"},
+  {name:"会议桌面智",tag:"会议预约",file:"会议桌面智.html",desc:"会议室智能预约、屏幕指引、设备状态可视化"},
+  {name:"体检宝",tag:"健康体检",file:"体检宝.html",desc:"体检中心预约管理、报告推送、健康档案一体化"},
+  {name:"体育百分百",tag:"体育器材",file:"体育百分百.html",desc:"体育场馆预订、器材管理、会员营销系统"},
+  {name:"停简单",tag:"停车管理",file:"停简单.html",desc:"城市级停车诱导与反向寻车一体化解决方案"},
+  {name:"健康小屋",tag:"健康管理",file:"健康小屋.html",desc:"社区健康自测站，数据上传云端形成个人健康报告"},
+  {name:"共享轮椅",tag:"医疗辅具",file:"共享轮椅.html",desc:"医院轮椅智能共享，扫码取用、跨院区归还"},
+  {name:"农嗨云盒",tag:"农业物联",file:"农嗨云盒.html",desc:"大棚环境监测与自动灌溉控制一体机"},
+  {name:"冷链博士",tag:"冷链物流",file:"冷链博士.html",desc:"冷链物流全程温度监控与路径可视化"},
+  {name:"华为HiLens路灯",tag:"智慧路灯",file:"华为HiLens路灯.html",desc:"AI摄像头与路灯杆集成，环境监测与人流统计"},
+  {name:"华为云消防",tag:"智慧消防",file:"华为云消防.html",desc:"烟感温感联网报警，消防设施巡查与预警"},
+  {name:"厕纸精灵",tag:"智慧公厕",file:"厕纸精灵.html",desc:"公厕纸巾余量监测与设备运维管理"},
+  {name:"友盒售药机",tag:"医药零售",file:"友盒售药机.html",desc:"24小时无人售药机，处方药扫码核验与库存管理"},
+  {name:"叮当快药",tag:"医药新零售",file:"叮当快药.html",desc:"即时配送O2O药店系统，对接骑手与订单调度"},
+  {name:"工业象鼻虫",tag:"工业检测",file:"工业象鼻虫.html",desc:"生产线视觉缺陷检测，AI识别与自动分拣"},
+  {name:"心大陆",tag:"心理评测",file:"心大陆.html",desc:"心理健康评测与预约咨询平台，支持量表推送"},
+  {name:"掌心停车",tag:"停车管理",file:"掌心停车.html",desc:"掌心停车——掌心一点，车位我有"},
+  {name:"日日顺快递柜",tag:"快递柜",file:"日日顺快递柜.html",desc:"大件物流智能柜，支持重货存放与超期提醒"},
+  {name:"易流温宝宝",tag:"冷链温控",file:"易流温宝宝.html",desc:"疫苗冷链运输温控，异常自动告警与记录导出"},
+  {name:"智慧体育云",tag:"体育教育",file:"智慧体育云.html",desc:"体育课体能测试与成绩分析，生成运动处方"},
+  {name:"智慧保洁",tag:"物业保洁",file:"智慧保洁.html",desc:"保洁人员排班巡检与物料消耗管理"},
+  {name:"智慧公厕云",tag:"智慧城市",file:"智慧公厕云.html",desc:"公厕气味监测与人流统计，辅助城市精细化管理"},
+  {name:"智慧农业SaaS",tag:"农业生产",file:"智慧农业SaaS.html",desc:"农业生产全流程管理，种植养殖追溯一体化"},
+  {name:"智慧水务云",tag:"水务管理",file:"智慧水务云.html",desc:"水厂SCADA数据接入与水质异常预警"},
+  {name:"智慧消防云",tag:"消防安全",file:"智慧消防云.html",desc:"重点场所消防物联网监测与可视化大屏"},
+  {name:"智慧牧业",tag:"畜牧养殖",file:"智慧牧业.html",desc:"牛羊定位追踪与健康监测，牧民移动端管理"},
+  {name:"智慧路灯云",tag:"城市照明",file:"智慧路灯云.html",desc:"路灯远程开关与节能调光，电费分摊统计"},
+  {name:"智能取餐柜",tag:"餐饮配送",file:"智能取餐柜.html",desc:"外卖骑手放餐、食客扫码取餐，支持保温加热"},
+  {name:"极目物联",tag:"物联平台",file:"极目物联.html",desc:"通用物联网设备接入平台，支持私有化部署"},
+  {name:"树根互联",tag:"工业互联网",file:"树根互联.html",desc:"设备上云与远程运维，支撑后市场服务"},
+  {name:"校园体育SaaS",tag:"校园体育",file:"校园体育SaaS.html",desc:"体育课教学管理、学生运动数据、赛事编排"},
+  {name:"水产智慧宝",tag:"水产养殖",file:"水产智慧宝.html",desc:"鱼塘溶氧量与水质在线监测，投放饲料联动控制"},
+  {name:"水联网",tag:"水务科技",file:"水联网.html",desc:"管网压力与水质监测，漏损定位与GIS地图"},
+  {name:"汇中股份",tag:"仪表制造",file:"汇中股份.html",desc:"超声波热量表数据采集与能耗报表分析"},
+  {name:"消防管家",tag:"消防维保",file:"消防管家.html",desc:"消防设施维保记录与到期提醒，业主通知送达"},
+  {name:"渔飞快",tag:"渔业服务",file:"渔飞快.html",desc:"渔船位置监控与渔获交易撮合平台"},
+  {name:"燃气安全监控云",tag:"燃气安全",file:"燃气安全监控云.html",desc:"餐饮场所可燃气体监测，联动切断阀与声光报警"},
+  {name:"猪智汇",tag:"养猪管理",file:"猪智汇.html",desc:"猪只盘点与健康监测，饲喂曲线与繁育管理"},
+  {name:"畜禽云",tag:"畜牧养殖",file:"畜禽云.html",desc:"鸡鸭养殖环境监控与疫病预警管理系统"},
+  {name:"秦川燃气",tag:"燃气输配",file:"秦川燃气.html",desc:"燃气门站SCADA系统与输配管网调度"},
+  {name:"自助洗车SaaS",tag:"洗车服务",file:"自助洗车SaaS.html",desc:"自助洗车机联网运营，订单监控与会员体系"},
+  {name:"贴心智护",tag:"养老照护",file:"贴心智护.html",desc:"居家养老健康监测与紧急呼叫服务系统"},
+  {name:"车海洋",tag:"停车服务",file:"车海洋.html",desc:"停车场无人值守方案，车主自助缴费与发票获取"},
+  {name:"钉钉智能门禁",tag:"企业门禁",file:"钉钉智能门禁.html",desc:"钉钉考勤门禁一体化，审批联动自动授权"},
+  {name:"闪洗侠",tag:"洗车服务",file:"闪洗侠.html",desc:"上门洗车预约调度系统，技师派单与验收评分"},
+  {name:"阿童医疗",tag:"医疗信息化",file:"阿童医疗.html",desc:"基层诊所HIS系统，电子病历与医保结算"},
+  {name:"陪护通",tag:"陪护服务",file:"陪护通.html",desc:"医院陪护预约与护工排班管理系统"},
+  {name:"鱼儿乐",tag:"水产监测",file:"鱼儿乐.html",desc:"鱼塘水质多参数监测与增氧机智能控制"},
+];
+
+let currentFilter = 'all';
+let searchTerm = '';
+
+function getCategory(name) {
+  const cats = {
+    '停车':['停车','车海洋'],
+    '门禁':['门禁','考勤'],
+    '消防':['消防','燃气'],
+    '医疗':['医疗','健康','体检','医药','养老','陪护'],
+    '农业':['农','牧','渔','畜','禽','猪'],
+    '体育':['体育','校园'],
+    '快递':['快递','柜','柜'],
+    '工业':['工业','制造','MES','FLEXIS','Fthings'],
+    '能源':['能源','水务','光能','燃气'],
+    '城市':['路灯','公厕','保洁','城市']
+  };
+  for(let c in cats){
+    if(cats[c].some(k=>name.includes(k))) return c;
+  }
+  return '其他';
+}
+
+function renderProducts() {
+  const grid = document.getElementById('productGrid');
+  const empty = document.getElementById('emptyState');
+  const filtered = products.filter(p=>{
+    const matchSearch = searchTerm==='' || p.name.includes(searchTerm) || p.desc.includes(searchTerm);
+    const matchFilter = currentFilter==='all' || getCategory(p.name)===currentFilter;
+    return matchSearch && matchFilter;
+  });
+  if(filtered.length===0){
+    grid.innerHTML='';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+  grid.innerHTML=filtered.map(p=>`
+    <a href="${p.file}" class="product-card">
+      <span class="tag">${p.tag}</span>
+      <h3>${p.name}</h3>
+      <p>${p.desc}</p>
+      <div class="footer">
+        <span class="link-text">查看设计稿 →</span>
+        <span class="arrow">›</span>
+      </div>
+    </a>
+  `).join('');
+}
+
+function setFilter(f){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderProducts();
+}
+
+function filterProducts(){
+  searchTerm=document.getElementById('searchInput').value.trim();
+  renderProducts();
+}
+
+renderProducts();
+</script>
+</body>
+</html>

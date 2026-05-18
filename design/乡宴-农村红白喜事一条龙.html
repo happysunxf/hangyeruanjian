@@ -3,93 +3,282 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>乡宴 - 农村红白喜事一条龙</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<title>乡宴 - 农村红白喜事一条龙服务平台</title>
+<meta name="description" content="乡宴，农村红白喜事一条龙服务平台。SaaS年费根据版本不同3000-15000元不等。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--main-red:#b91c1c;--main-gold:#d97706;--bg-cream:#fefce8;--bg-warm:#fffbeb;--text-dark:#1c1917;--text-gray:#78716c;--card-bg:#ffffff;--card-border:#fed7aa}
-body{font-family:'Noto Sans SC',sans-serif;background:var(--bg-cream);color:var(--text-dark);min-height:100vh}
-.header{background:linear-gradient(135deg,var(--main-red),#7f1d1d);color:#fff;padding:60px 0;text-align:center;position:relative;overflow:hidden}
-.header-content{position:relative;z-index:1}
-.header h1{font-size:clamp(40px,8vw,72px);font-weight:900;margin-bottom:10px;letter-spacing:-1px}
-.header-subtitle{font-size:clamp(16px,2.5vw,22px);opacity:0.9;font-weight:300;max-width:600px;margin:0 auto}
-.container{max-width:1400px;margin:0 auto;padding:0 20px}
-.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:20px;background:#fff;border-bottom:1px solid var(--card-border)}
-.nav a{padding:10px 20px;border-radius:50px;text-decoration:none;color:var(--text-dark);font-size:14px;font-weight:500;transition:all 0.3s}
-.nav a:hover,.nav a.active{background:var(--main-red);color:#fff}
-.section{padding:80px 0}
-.section-title{font-size:clamp(28px,4vw,42px);font-weight:700;text-align:center;margin-bottom:15px}
-.section-desc{font-size:16px;color:var(--text-gray);text-align:center;max-width:600px;margin:0 auto 50px}
-.timeline-section{position:relative;padding-left:80px}
-.timeline-section::before{content:'';position:absolute;left:35px;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--main-red),var(--main-gold),var(--main-red))}
-.timeline-step{position:relative;margin-bottom:50px}
-.timeline-step::before{content:'';position:absolute;left:-57px;top:0;width:50px;height:50px;background:var(--main-red);border-radius:50%;border:5px solid var(--bg-cream)}
-.timeline-step-num{position:absolute;left:-57px;top:50%;transform:translateY(-50%);width:50px;text-align:center;line-height:50px;color:#fff;font-weight:700;font-size:18px}
-.timeline-content{background:#fff;border:1px solid var(--card-border);border-radius:20px;padding:30px;margin-left:20px}
-.timeline-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.timeline-title{font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px}
-.timeline-icon{width:45px;height:45px;background:linear-gradient(135deg,var(--main-red),var(--main-gold));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
-.timeline-tag{background:var(--bg-warm);color:var(--main-gold);padding:5px 15px;border-radius:20px;font-size:13px;font-weight:600}
-.timeline-text{font-size:15px;color:var(--text-gray);line-height:1.8;margin-bottom:20px}
-.timeline-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
-.timeline-list li{background:var(--bg-cream);padding:12px 18px;border-radius:12px;font-size:14px;display:flex;align-items:center;gap:10px}
-.timeline-list li strong{color:var(--main-red)}
-.pain-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;max-width:1200px;margin:0 auto}
-.pain-card{background:#fff;border:1px solid var(--card-border);border-radius:20px;padding:30px;position:relative;overflow:hidden}
-.pain-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--main-gold)}
-.pain-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--main-gold),#fbbf24);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:15px}
-.pain-title{font-size:17px;font-weight:700;margin-bottom:10px}
-.pain-text{font-size:14px;color:var(--text-gray);line-height:1.7}
-.feature-section{background:#fff}
-.feature-group{margin-bottom:60px}
-.feature-group-title{display:flex;align-items:center;gap:15px;margin-bottom:30px}
-.feature-group-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--main-red),var(--main-gold));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
-.feature-group-name{font-size:24px;font-weight:700}
-.feature-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-.feature-card{background:var(--bg-cream);border:1px solid var(--card-border);border-radius:16px;padding:25px;transition:all 0.3s}
-.feature-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.08)}
-.feature-card-header{display:flex;align-items:center;gap:10px;margin-bottom:15px}
-.feature-num{width:32px;height:32px;background:var(--main-red);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
-.feature-name{font-size:17px;font-weight:600}
-.feature-intro{font-size:14px;color:var(--text-gray);line-height:1.7;margin-bottom:15px}
-.feature-list{list-style:none}
-.feature-list li{position:relative;padding-left:18px;margin-bottom:8px;font-size:13px;line-height:1.6}
-.feature-list li strong{color:var(--main-red)}
-.value-cards{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px}
-.value-card{background:#fff;border:2px solid var(--card-border);border-radius:20px;padding:35px;text-align:center;transition:all 0.3s}
-.value-card:hover{border-color:var(--main-gold);transform:translateY(-5px)}
-.value-icon{font-size:42px;margin-bottom:15px}
-.value-number{font-size:48px;font-weight:800;color:var(--main-gold);display:block}
-.value-label{font-size:15px;font-weight:600;margin-top:10px}
-.value-detail{font-size:13px;color:var(--text-gray);margin-top:8px}
-.cta-section{padding:100px 0;text-align:center;background:linear-gradient(135deg,var(--bg-cream),#fff)}
-.cta-box{max-width:700px;margin:0 auto;padding:50px;background:#fff;border:2px solid var(--main-gold);border-radius:25px}
-.cta-title{font-size:clamp(24px,4vw,36px);font-weight:700;margin-bottom:15px}
-.cta-desc{font-size:16px;color:var(--text-gray);line-height:1.7;margin-bottom:30px}
-.cta-buttons{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
-.btn{padding:14px 35px;border-radius:50px;font-size:15px;font-weight:600;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
-.btn-primary{background:linear-gradient(135deg,var(--main-red),#7f1d1d);color:#fff}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(185,28,28,0.3)}
-.btn-secondary{background:#fff;color:var(--main-red);border:2px solid var(--main-red)}
-.btn-secondary:hover{background:var(--bg-cream)}
-.footer{padding:40px 0;text-align:center;border-top:1px solid var(--card-border);background:#fff}
-.footer-text{font-size:13px;color:var(--text-gray)}
-@media(max-width:768px){.timeline-section{padding-left:60px}.timeline-section::before{left:25px}.timeline-step::before{left:-45px;width:40px;height:40px}.timeline-step-num{left:-45px;width:40px;height:40px;line-height:40px;font-size:14px}}
+:root{--primary:135deg;--accent: #e65100;--bg:#060c1a;--text:#e3f2fd;--border:rgba(255,255,255,0.06);--gradient:linear-gradient(135deg, #e65100, #ffab40);}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;}
+.anim{position:absolute;opacity:0.06;animation:anim 8s linear infinite;}
+@keyframes anim{0%{transform:translateY(-100%);opacity:0;}20%{opacity:0.1;}80%{opacity:0.1;}100%{transform:translateY(100vh);opacity:0;}}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.nav-logo{font-size:20px;font-weight:900;color:#fff;text-decoration:none;}
+.nav-logo span{color:var(--primary);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;}
+.nav-cta{background:var(--gradient);color:#fff;padding:8px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;}
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;}
+.hero-bg{position:absolute;inset:0;background:linear-linear-gradient(135deg, #e65100, #ffab40);opacity:0.3;z-index:-1;}
+.hero-title{font-size:clamp(48px,8vw,88px);font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.5);margin-bottom:40px;max-width:520px;}
+.btn{padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:var(--gradient);color:#fff;box-shadow:0 0 30px rgba(0,0,0,0.3);}
+.btn-secondary{border:1px solid var(--border);color:var(--text);}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:6px 20px;border-radius:20px;font-size:12px;color:var(--accent);letter-spacing:3px;margin-bottom:28px;}
+.hero-stats{display:flex;gap:40px;margin-top:48px;flex-wrap:wrap;justify-content:center;}
+.hero-stat{text-align:center;}
+.hero-stat-num{font-size:32px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-stat-label{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.section{padding:100px 24px;}
+.section-label{text-align:center;font-size:12px;letter-spacing:3px;color:var(--accent);margin-bottom:12px;}
+.section-title{text-align:center;font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:16px;}
+.section-sub{text-align:center;color:rgba(255,255,255,0.45);max-width:560px;margin:0 auto 56px;font-size:16px;}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:1000px;margin:0 auto;}
+.pain-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all 0.4s;}
+.pain-card:hover{transform:translateY(-8px);background:rgba(255,255,255,0.06);}
+.pain-number{font-size:48px;color:rgba(255,255,255,0.04);margin-bottom:16px;}
+.pain-icon{font-size:32px;margin-bottom:20px;}
+.pain-title{font-size:16px;font-weight:700;margin-bottom:10px;color:#fff;}
+.pain-desc{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.8;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
+.feature-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:36px;transition:all 0.4s;}
+.feature-card:hover{transform:translateY(-6px);background:rgba(255,255,255,0.06);}
+.feature-icon{font-size:28px;margin-bottom:24px;}
+.fi-blue{background:rgba(13,71,161,0.15);color:#64b5f6;}
+.fi-silver{background:rgba(144,164,174,0.15);color:#b0bec5;}
+.fi-light{background:rgba(255,255,255,0.08);color:#cfd8dc;}
+.fi-cyan{background:rgba(0,229,255,0.1);color:#00e5ff;}
+.fi-green{background:rgba(46,125,50,0.15);color:#81c784;}
+.fi-amber{background:rgba(255,160,0,0.15);color:#ffb300;}
+.feature-title{font-size:18px;font-weight:700;margin-bottom:12px;color:#fff;}
+.feature-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.9;margin-bottom:20px;}
+.feature-subitems{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.feature-subitems li{font-size:13px;color:rgba(255,255,255,0.4);padding-left:16px;position:relative;}
+.feature-subitems li::before{content:"→";position:absolute;left:0;color:var(--accent);}
+.value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+.value-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;transition:all 0.3s;}
+.value-item:hover{transform:translateY(-4px);}
+.value-label{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;text-transform:uppercase;letter-spacing:2px;}
+.value-before{font-size:15px;color:rgba(255,100,100,0.7);margin-bottom:8px;}
+.value-arrow{font-size:18px;color:var(--accent);margin-bottom:8px;}
+.value-after{font-size:18px;font-weight:700;color:rgba(100,255,150,0.9);}
+.comparison-table{max-width:900px;margin:0 auto;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.compare-header{display:grid;grid-template-columns:1fr 1fr 1fr;background:rgba(255,255,255,0.05);padding:16px 24px;font-weight:700;font-size:13px;color:rgba(255,255,255,0.5);text-align:center;}
+.compare-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:18px 24px;border-bottom:1px solid var(--border);text-align:center;}
+.compare-label{font-weight:600;color:#fff;font-size:14px;}
+.compare-old{color:rgba(255,100,100,0.7);font-size:13px;}
+.compare-arrow{color:var(--accent);font-size:16px;}
+.compare-new{color:rgba(100,255,150,0.8);font-size:13px;}
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1000px;margin:0 auto;}
+.case-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all 0.3s;}
+.case-card:hover{transform:translateY(-6px);background:rgba(255,255,255,0.05);}
+.case-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+.case-avatar{width:48px;height:48px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;}
+.case-name{font-size:15px;font-weight:700;color:#fff;}
+.case-type{font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.case-before{background:rgba(255,100,100,0.08);border:1px solid rgba(255,100,100,0.15);padding:14px 16px;border-radius:12px;margin-bottom:12px;}
+.case-after{background:rgba(100,255,150,0.08);border:1px solid rgba(100,255,150,0.15);padding:14px 16px;border-radius:12px;margin-bottom:12px;}
+.case-detail{background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:14px 16px;border-radius:12px;}
+.case-badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:700;margin-bottom:8px;}
+.before-badge{background:rgba(255,100,100,0.15);color:rgba(255,150,150,0.9);}
+.after-badge{background:rgba(100,255,150,0.15);color:rgba(100,255,150,0.9);}
+.case-before p,.case-after p,.case-detail p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7;margin:0;}
+.pricing-card{max-width:480px;margin:0 auto;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:24px;padding:48px;text-align:center;}
+.pricing-tag{display:inline-block;background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:4px 16px;border-radius:20px;font-size:11px;color:var(--accent);letter-spacing:2px;margin-bottom:20px;}
+.pricing-price{font-size:48px;font-weight:900;color:#fff;margin-bottom:8px;}
+.pricing-price span{font-size:18px;font-weight:500;color:var(--accent);}
+.pricing-desc{color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:32px;}
+.pricing-features{list-style:none;text-align:left;margin-bottom:32px;}
+.pricing-features li{padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.pricing-features li::before{content:"✓";color:var(--accent);font-weight:700;margin-right:10px;}
+.btn-pricing{width:100%;padding:14px;background:var(--gradient);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;}
+footer{text-align:center;padding:48px 24px;color:rgba(255,255,255,0.3);font-size:13px;border-top:1px solid var(--border);}
+@media(max-width:768px){nav{padding:0 20px;}.nav-links{display:none;}.section{padding:80px 20px;}}
 </style>
 </head>
 <body>
-<header class="header"><div class="header-content container"><h1>乡宴</h1><p class="header-subtitle">农村红白喜事一条龙服务 · 数字化管理<br>从档期预约到账目结算，让每一场宴席都圆满无忧</p></div></header>
-<nav class="nav"><a href="#pain">行业痛点</a><a href="#timeline">服务流程</a><a href="#feature">核心功能</a><a href="#value">价值数据</a></nav>
-<section id="pain" class="section"><div class="container"><div class="section-title">那些让人头疼的时刻</div><div class="section-desc">每个操办宴席的人都在经历的场景</div><div class="pain-cards"><div class="pain-card"><div class="pain-icon">🍽️</div><h3 class="pain-title">备了35桌结果只来了15桌</h3><p class="pain-text">"东家说要30桌，结果备了35桌食材，最后20桌的菜全浪费了，亏了¥2000多。"每次办宴席都是估算，估算不准就浪费。要么备多了吃不完，要么备少了不够吃。</p></div><div class="pain-card"><div class="pain-icon">💰</div><h3 class="pain-title">人情账算错，亲戚间闹矛盾</h3><p class="pain-text">"人情账最难算，东家的亲戚送来¥200礼金，结果记账记成了¥100，尴尬了一个月。"记账全靠人工，笔误在所难免。事后发现对不上账，亲戚之间容易产生误会。</p></div><div class="pain-card"><div class="pain-icon">👨‍🍳</div><h3 class="pain-title">厨师临时说来不了</h3><p class="pain-text">"厨师临时说来不了，换了个厨师手艺不行，菜做得不好吃，东家不满意。"厨师班底不确定，临时换人影响菜品质量，口碑受损。</p></div><div class="pain-card"><div class="pain-icon">📋</div><h3 class="pain-title">账目不清，三兄弟吵了一架</h3><p class="pain-text">"账目不清导致亲戚间矛盾，老二说老三家的菜金算少了，三兄弟吵了一架。"账目不透明是家族矛盾的火药桶。</p></div></div></div></section>
-<section id="timeline" class="section"><div class="container"><div class="section-title">一场宴席的完整筹备流程</div><div class="section-desc">从预约到结束，每个环节都有对应的解决方案</div><div class="timeline-section"><div class="timeline-step"><div class="timeline-content"><div class="timeline-header"><div class="timeline-title"><div class="timeline-icon">📅</div>档期预约</div><span class="timeline-tag">第1步</span></div><p class="timeline-text">东家上门咨询，敲定日期和桌数。系统自动记录档期，生成订单确认单。农历/公历双日历支持，农村老人习惯用农历。</p><ul class="timeline-list"><li><strong>农历支持：</strong>自动转换农历日期，如"2026年六月初六"</li><li><strong>撞期预警：</strong>同时接了两家喜宴自动检测厨师班底冲突</li><li><strong>定金记录：</strong>一般收¥200-500定金，防止临时取消</li><li><strong>确认单：</strong>自动生成带所有细节的订单确认单</li></ul></div></div><div class="timeline-step"><div class="timeline-content"><div class="timeline-header"><div class="timeline-title"><div class="timeline-icon">🛒</div>食材采购</div><span class="timeline-tag">第2步</span></div><p class="timeline-text">根据桌数系统自动生成采购清单，精确到两。联系供应商比价，锁定最优价格。采购过程全程记录，透明可查。</p><ul class="timeline-list"><li><strong>按桌计算：</strong>30桌酒席系统自动计算需要猪肉35斤/草鱼30斤</li><li><strong>供应商比价：</strong>记录各供应商的价格，历史最低价一目了然</li><li><strong>现场追加：</strong>宴席现场可即时追加采购，如追加5斤虾¥120</li><li><strong>采购记录：</strong>每次采购记录供应商/价格/质量评分</li></ul></div></div><div class="timeline-step"><div class="timeline-content"><div class="timeline-header"><div class="timeline-title"><div class="timeline-icon">📊</div>成本核算</div><span class="timeline-tag">第3步</span></div><p class="timeline-text">食材成本、人工成本、场地成本分别记录。系统自动计算单桌利润，超支时红色预警提醒。</p><ul class="timeline-list"><li><strong>分摊计算：</strong>食材¥6000/人工¥3200/场地¥1000分别记录</li><li><strong>单桌利润：</strong>¥800×30桌-¥10200÷30桌=单桌利润¥600</li><li><strong>超支预警：</strong>预算¥800/桌，实际超过¥850显示红色预警</li><li><strong>利润报表：</strong>自动生成当月收支汇总，支持按季/年查看</li></ul></div></div><div class="timeline-step"><div class="timeline-content"><div class="timeline-header"><div class="timeline-title"><div class="timeline-icon">👨‍🍳</div>人员调度</div><span class="timeline-tag">第4步</span></div><p class="timeline-text">厨师班底、传菜员、帮厨、清洁工分开管理。排班表自动发送微信通知到个人，临时换人有记录可查。</p><ul class="timeline-list"><li><strong>班底管理：</strong>记录长期合作厨师班底的档期和价格参考</li><li><strong>帮工排班：</strong>传菜员/帮厨/清洁工分开管理，自动发通知</li><li><strong>换人记录：</strong>临时换人原因和时间记录，防止纠纷</li><li><strong>微信通知：</strong>排班表自动发送到相关人员微信</li></ul></div></div><div class="timeline-step"><div class="timeline-content"><div class="timeline-header"><div class="timeline-title"><div class="timeline-icon">💵</div>账目透明</div><span class="timeline-tag">第5步</span></div><p class="timeline-text">东家专属查账二维码，扫码即可查看实时收支。每笔支出拍照留存，防止事后争议。账目清晰，家族和睦。</p><ul class="timeline-list"><li><strong>查账二维码：</strong>东家扫码查看"已收礼金¥28600，已支出¥18500"</li><li><strong>拍照留痕：</strong>每笔支出拍照留存，如"6月1日购海鲜¥3200"</li><li><strong>导出报表：</strong>一键导出包含所有明细的Excel报表</li><li><strong>东家确认：</strong>报表打印后东家签字确认</li></ul></div></div><div class="timeline-step"><div class="timeline-content"><div class="timeline-header"><div class="timeline-title"><div class="timeline-icon">💌</div>客户关怀</div><span class="timeline-tag">第6步</span></div><p class="timeline-text">宴席前提醒、宴后回访、明年预订锁定。完整的客户关怀体系，让东家感受到贴心服务，自然愿意介绍新客户。</p><ul class="timeline-list"><li><strong>宴前提醒：</strong>提前7天/3天/当天分别发送短信提醒</li><li><strong>宴后回访：</strong>宴后3天回访，记录东家满意度</li><li><strong>明年预订：</strong>宴后可直接锁定明年同日期，意向金¥100</li><li><strong>满意度调查：</strong>自动推送满意度调查，收集改进建议</li></ul></div></div></div></div></section>
-<section id="feature" class="section feature-section"><div class="container"><div class="section-title">专为乡宴服务设计的数字化工具</div><div class="section-desc">从档期预约到账目结算，六个环节全面覆盖</div>
-<div class="feature-group"><div class="feature-group-title"><div class="feature-group-icon">📅</div><h3 class="feature-group-name">档期管理</h3></div><div class="feature-cards"><div class="feature-card"><div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">农历/公历双日历</h4></div><p class="feature-intro">农村老人习惯用农历，系统自动转换。输入"六月初六"自动显示公历日期，方便与城里回来的亲戚沟通。</p><ul class="feature-list"><li><strong>自动转换：</strong>农历日期一键转换为公历</li><li><strong>黄历参考：</strong>显示当日宜忌供参考</li><li><strong>农历输入：</strong>支持农历日期直接输入</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">撞期预警</h4></div><p class="feature-intro">同时接了两家喜宴，系统自动检测厨师班底是否冲突。比如"张师傅6月初六已被预约"。</p><ul class="feature-list"><li><strong>厨师冲突：</strong>自动检测同一厨师班底的档期冲突</li><li><strong>场地冲突：</strong>同一场地同时段只能接一单</li><li><strong>预警提醒：</strong>冲突时弹出提示，不允许确认</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">定金记录</h4></div><p class="feature-intro">一般收¥200-500定金，防止临时取消。定金退还规则可自定义，比如提前7天取消可退。</p><ul class="feature-list"><li><strong>定金设置：</strong>可自定义定金金额和退还规则</li><li><strong>定金收取：</strong>记录定金收取方式和时间</li><li><strong>退款处理：</strong>符合规则时自动计算应退金额</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">4</span><h4 class="feature-name">订单确认单</h4></div><p class="feature-intro">自动生成带所有细节的订单确认单（桌数/菜品/价格/档期），发给东家微信确认。确认后自动锁定。</p><ul class="feature-list"><li><strong>自动生成：</strong>根据录入信息自动生成确认单</li><li><strong>微信发送：</strong>一键发送确认单到东家微信</li><li><strong>在线确认：</strong>东家在线确认，确认后自动锁定</li></ul></div></div></div>
-<div class="feature-group"><div class="feature-group-title"><div class="feature-group-icon">🛒</div><h3 class="feature-group-name">食材采购</h3></div><div class="feature-cards"><div class="feature-card"><div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">按桌数生成采购清单</h4></div><p class="feature-intro">30桌酒席，系统自动计算需要猪肉35斤/草鱼30斤/饮料20箱，精确到两。再也不用估算。</p><ul class="feature-list"><li><strong>自动计算：</strong>根据桌数自动计算各类食材需求量</li><li><strong>损耗预留：</strong>自动预留5%损耗量</li><li><strong>清单导出：</strong>采购清单支持导出打印</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">供应商比价</h4></div><p class="feature-intro">记录各供应商的价格，比如"猪肉：老王¥15/斤，老李¥14.5/斤"，历史最低价一目了然。</p><ul class="feature-list"><li><strong>价格记录：</strong>记录各供应商历史报价</li><li><strong>最低价标注：</strong>自动标注历史最低价</li><li><strong>供应商对比：</strong>同一商品多供应商价格对比表</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">现场采购追加</h4></div><p class="feature-intro">宴席现场发现某道菜做少了，可即时追加采购，比如追加5斤虾¥120，并自动记录进成本。</p><ul class="feature-list"><li><strong>即时追加：</strong>现场发现问题即时录入追加采购</li><li><strong>成本同步：</strong>追加采购自动计入总成本</li><li><strong>原因备注：</strong>记录追加原因，如"第8道菜不够"</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">4</span><h4 class="feature-name">采购比价记录</h4></div><p class="feature-intro">每次采购记录供应商/价格/质量评分，下次采购时快速参考。长期合作的好供应商一目了然。</p><ul class="feature-list"><li><strong>质量评分：</strong>每次采购后评分1-5星</li><li><strong>历史参考：</strong>快速查看历史采购记录</li><li><strong>供应商淘汰：</strong>连续低分供应商自动预警</li></ul></div></div></div>
-<div class="feature-group"><div class="feature-group-title"><div class="feature-group-icon">📊</div><h3 class="feature-group-name">成本核算</h3></div><div class="feature-cards"><div class="feature-card"><div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">分摊计算</h4></div><p class="feature-intro">食材成本（比如¥6000）/人工成本（厨师4人×¥500=¥2000，帮工6人×¥200=¥1200）/场地成本（¥1000）分别记录。</p><ul class="feature-list"><li><strong>成本分类：</strong>食材/人工/场地三大类分开记录</li><li><strong>人工明细：</strong>记录每个人工的工作量和报酬</li><li><strong>费用明细：</strong>所有费用都有明细可查</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">单桌利润</h4></div><p class="feature-intro">自动计算单桌收入（¥800/桌×30桌=¥24000）-单桌成本（¥10200÷30=¥340）=单桌利润¥460。</p><ul class="feature-list"><li><strong>自动计算：</strong>系统自动计算单桌收入、成本、利润</li><li><strong>历史对比：</strong>可对比历史宴席的单桌利润</li><li><strong>定价参考：</strong>根据利润目标反推定价</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">超支预警</h4></div><p class="feature-intro">预算¥800/桌，实际成本超过¥850时显示红色预警"已超支¥50/桌"。及时预警，及时调整。</p><ul class="feature-list"><li><strong>预算设置：</strong>每桌设置预算上限</li><li><strong>实时监控：</strong>成本超过预算时自动预警</li><li><strong>超支分析：</strong>分析超支原因，是食材涨价还是浪费</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">4</span><h4 class="feature-name">利润报表</h4></div><p class="feature-intro">自动生成当月收支汇总，支持按季/年查看。哪些月份生意好、哪些食材成本高，一目了然。</p><ul class="feature-list"><li><strong>月度汇总：</strong>自动生成月度收支报表</li><li><strong>季度对比：</strong>对比各季度利润变化</li><li><strong>年度总结：</strong>年度经营数据汇总分析</li></ul></div></div></div>
-<div class="feature-group"><div class="feature-group-title"><div class="feature-group-icon">💵</div><h3 class="feature-group-name">账目透明</h3></div><div class="feature-cards"><div class="feature-card"><div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">东家专属查账二维码</h4></div><p class="feature-intro">东家扫码即可查看实时收支，比如"已收礼金¥28600，已支出¥18500，余额¥10100"。</p><ul class="feature-list"><li><strong>实时更新：</strong>收支数据实时同步，东家随时可查</li><li><strong>扫码即查：</strong>无需下载APP，扫码即查</li><li><strong>权限控制：</strong>东家只能查看，无法修改数据</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">拍照留痕</h4></div><p class="feature-intro">每笔支出拍照留存，比如"6月1日购海鲜¥3200（附图）"，防止事后争议。</p><ul class="feature-list"><li><strong>支出拍照：</strong>每笔支出上传照片留证</li><li><strong>云端存储：</strong>照片存储云端，永不丢失</li><li><strong>收据管理：</strong>电子收据统一管理</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">导出报表</h4></div><p class="feature-intro">一键导出包含所有明细的Excel报表，可打印留存，东家签字确认。留存归档，规范管理。</p><ul class="feature-list"><li><strong>Excel导出：</strong>一键导出所有收支明细</li><li><strong>打印功能：</strong>支持打印后东家签字确认</li><li><strong>格式规范：</strong>报表格式规范，可作为存档</li></ul></div></div></div>
-<div class="feature-group"><div class="feature-group-title"><div class="feature-group-icon">👨‍🍳</div><h3 class="feature-group-name">人员调度</h3></div><div class="feature-cards"><div class="feature-card"><div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">厨师班底管理</h4></div><p class="feature-intro">记录长期合作厨师班底的档期和价格参考，比如"张师傅团队，6大厨+6帮工，全包价¥5000"。</p><ul class="feature-list"><li><strong>班底档案：</strong>记录厨师班底的人员配置和价格</li><li><strong>档期管理：</strong>记录各班底的可用档期</li><li><strong>评价记录：</strong>记录各班底的历史服务评价</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">帮工排班</h4></div><p class="feature-intro">传菜员/帮厨/清洁工分开管理，排班表自动发送微信通知，比如"6月初六传菜员：张三、李四、王五"。</p><ul class="feature-list"><li><strong>工种分类：</strong>按工种分开管理，互不干扰</li><li><strong>微信通知：</strong>排班表自动发送到相关人员微信</li><li><strong>签到确认：</strong>帮工到场后点击签到确认</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">临时换人记录</h4></div><p class="feature-intro">临时换人原因和时间记录，比如"6月初六因病换人，原定张三替换为李四"，防止事后纠纷。</p><ul class="feature-list"><li><strong>换人原因：</strong>记录临时换人的具体原因</li><li><strong>时间戳：</strong>换人操作的时间精确记录</li><li><strong>防止纠纷：</strong>有记录可查，防止事后争议</li></ul></div></div></div>
-<div class="feature-group"><div class="feature-group-title"><div class="feature-group-icon">💌</div><h3 class="feature-group-name">客户关怀</h3></div><div class="feature-cards"><div class="feature-card"><div class="feature-card-header"><span class="feature-num">1</span><h4 class="feature-name">宴席前提醒</h4></div><p class="feature-intro">提前7天（确认清单）/3天（提醒备货）/当天（确认到场人数）分别发送短信提醒。提醒到位，服务不遗漏。</p><ul class="feature-list"><li><strong>7天提醒：</strong>发送详细确认清单给东家</li><li><strong>3天提醒：</strong>提醒东家确认到场人数</li><li><strong>当天提醒：</strong>再次确认，提醒工作人员到位</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">2</span><h4 class="feature-name">宴后回访</h4></div><p class="feature-intro">宴后3天回访，记录东家满意度，比如"菜品满意，服务一般，改进意见：上菜速度慢"。持续改进服务质量。</p><ul class="feature-list"><li><strong>回访记录：</strong>记录回访时间和东家反馈</li><li><strong>满意度评分：</strong>东家对菜品/服务分别评分</li><li><strong>改进跟踪：</strong>记录改进措施和效果</li></ul></div><div class="feature-card"><div class="feature-card-header"><span class="feature-num">3</span><h4 class="feature-name">明年预订</h4></div><p class="feature-intro">宴后可直接锁定明年同日期，收取意向金¥100，锁定成功后优先排期。提前锁定明年生意。</p><ul class="feature-list"><li><strong>意向金锁定：</strong>收取¥100意向金锁定明年档期</li><li><strong>优先排期：</strong>锁定客户享有优先排期权</li><li><strong>自动提醒：</strong>锁定后自动计算并提醒到期时间</li></ul></div></div></div></div></section>
-<section id="value" class="section"><div class="container"><div class="section-title">真实可量化的改变</div><div class="section-desc">用数据说话，看看上线后实际带来了什么效果</div><div class="value-cards"><div class="value-card"><div class="value-icon">🥬</div><span class="value-number">40%</span><p class="value-label">食材浪费减少</p><p class="value-detail">按桌数精准备货，不再盲目估算</p></div><div class="value-card"><div class="value-icon">⏱️</div><span class="value-number">80%</span><p class="value-label">对账时间减少</p><p class="value-detail">原来对账1天 → 现在2小时</p></div><div class="value-card"><div class="value-icon">😊</div><span class="value-number">50%</span><p class="value-label">东家满意度提升</p><p class="value-detail">账目透明减少人情纠纷</p></div></div></div></section>
-<section class="cta-section"><div class="container"><div class="cta-box"><h2 class="cta-title">让每一场宴席都圆满无忧</h2><p class="cta-desc">从档期预约到账目结算，乡宴帮你搞定所有运营细节<br>专注做好服务本身，其他交给我们</p><div class="cta-buttons"><a href="#" class="btn btn-primary">立即咨询了解</a><a href="#" class="btn btn-secondary">预约演示</a></div></div></div></section>
-<footer class="footer"><p class="footer-text">© 2025 乡宴 - 农村红白喜事一条龙服务 · 为乡村宴席而生</p></footer>
-</body></html>
+<div id="animLayer" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;"></div>
+<nav>
+  <a href="index.html" class="nav-logo">乡<span>宴</span></a>
+  <ul class="nav-links"><li><a href="#pain">痛点</a></li><li><a href="#features">功能</a></li><li><a href="#comparison">对比</a></li><li><a href="#cases">案例</a></li><li><a href="#pricing">定价</a></li></ul>
+  <a href="#pricing" class="nav-cta">立即试用</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">&#x1F37E; 农村宴席 一条龙</div>
+  <h1 class="hero-title">乡宴</h1>
+  <p class="hero-sub">农村红白喜事一条龙服务平台</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn btn-primary">免费试用14天</a>
+    <a href="#features" class="btn btn-secondary">了解功能</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">500+</div><div class="hero-stat-label">服务用户</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">85%</div><div class="hero-stat-label">效率提升</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">30%</div><div class="hero-stat-label">成本节省</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">99%</div><div class="hero-stat-label">满意度</div></div>
+  </div>
+</section>
+
+<section class="section" id="pain">
+  <div class="section-label">真实痛点</div>
+  <h2 class="section-title">行业痛点深度解析</h2>
+  <p class="section-sub">我们深入调研了数十个小B商家，总结出最影响经营的四个核心问题</p>
+  <div class="pain-grid">
+    <div class="pain-card"><div class="pain-number">01</div><div class="pain-icon">📊</div><div class="pain-title">痛点一：信息分散，管理困难</div><div class="pain-desc">客户信息、订单数据、财务记录分散在各个地方，统一管理无从下手。每次要汇总数据都要花大半天时间，还容易出错。</div></div>
+    <div class="pain-card"><div class="pain-number">02</div><div class="pain-icon">⚠️</div><div class="pain-title">痛点二：流程繁琐，效率低下</div><div class="pain-desc">每天花大量时间处理重复性操作，人工录入容易出错。员工离职后交接困难，新人上手周期长。</div></div>
+    <div class="pain-card"><div class="pain-number">03</div><div class="pain-icon">📦</div><div class="pain-title">痛点三：数据缺失，决策困难</div><div class="pain-desc">没有数据支撑，只能凭感觉做决策。爆款预测不准确，库存积压，资金周转压力大。</div></div>
+    <div class="pain-card"><div class="pain-number">04</div><div class="pain-icon">💰</div><div class="pain-title">痛点四：成本上升，利润压缩</div><div class="pain-desc">人力成本上升，获客成本增加，但价格战让利润越来越薄。需要找到新的增长点。</div></div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="section-label">核心功能</div>
+  <h2 class="section-title">每一个功能，都解决一个实际问题</h2>
+  <p class="section-sub">不是功能堆砌，是帮助商家实实在在降本增效</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon fi-blue">📊</div><div class="feature-title">功能一：数据管理</div><div class="feature-desc">统一管理客户信息、订单数据、财务记录。一键导入导出，数据实时同步。告别Excel表格的混乱，让数据井井有条。</div><ul class="feature-subitems"><li>客户信息统一管理</li><li>订单数据实时追踪</li><li>财务记录自动汇总</li><li>一键导入导出Excel</li><li>数据实时同步多端</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-silver">⚠️</div><div class="feature-title">功能二：流程自动化</div><div class="feature-desc">将重复性操作自动化，减少人工干预。流程审批自动流转，异常情况及时预警。员工工作效率提升3倍。</div><ul class="feature-subitems"><li>审批流程自动化</li><li>异常情况实时预警</li><li>任务自动分配提醒</li><li>操作日志全程记录</li><li>员工效率提升3倍</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-light">📦</div><div class="feature-title">功能三：数据分析</div><div class="feature-desc">多维度数据分析，帮助识别爆款和滞销品。仪表盘展示核心KPI，一眼掌握全局经营状况。</div><ul class="feature-subitems"><li>核心KPI仪表盘</li><li>同比环比数据分析</li><li>爆款滞销品识别</li><li>预测性分析建议</li><li>报表一键导出</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-cyan">💰</div><div class="feature-title">功能四：成本控制</div><div class="feature-desc">精细化成本核算，找出利润流失点。智能推荐最优定价策略，帮助提升利润率。</div><ul class="feature-subitems"><li>精细化成本核算</li><li>利润流失点分析</li><li>智能定价建议</li><li>成本预警提醒</li><li>降本增效方案</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-green">📈</div><div class="feature-title">功能五：客户运营</div><div class="feature-desc">客户分层管理，差异化运营策略。提升复购率，增加客户生命周期价值。</div><ul class="feature-subitems"><li>客户分层管理</li><li>差异化运营策略</li><li>复购率提升方案</li><li>LTV客户价值分析</li><li>精准营销推送</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="value" style="background:rgba(0,0,0,0.2);">
+  <div class="section-label">价值数据</div>
+  <h2 class="section-title">上线前后对比</h2>
+  <p class="section-sub">真实数据，真实提升</p>
+  <div class="value-grid">
+    <div class="value-item"><div class="value-label">管理效率</div><div class="value-before">30%</div><div class="value-arrow">→</div><div class="value-after">85%</div></div>
+    <div class="value-item"><div class="value-label">数据出错率</div><div class="value-before">15%</div><div class="value-arrow">→</div><div class="value-after">1%</div></div>
+    <div class="value-item"><div class="value-label">决策准确率</div><div class="value-before">40%</div><div class="value-arrow">→</div><div class="value-after">78%</div></div>
+    <div class="value-item"><div class="value-label">利润率</div><div class="value-before">12%</div><div class="value-arrow">→</div><div class="value-after">22%</div></div>
+  </div>
+</section>
+
+<section class="section" id="comparison">
+  <div class="section-label">效果对比</div>
+  <h2 class="section-title">vs 传统方式</h2>
+  <p class="section-sub">全面超越传统手工操作</p>
+  <div class="comparison-table">
+    <div class="compare-header"><div>维度</div><div>传统方式</div><div>乡宴</div></div>
+    <div class="compare-row"><div class="compare-label">数据管理</div><div class="compare-old">分散在各个表格，容易丢失</div><div class="compare-arrow">→</div><div class="compare-new">统一云端管理，实时同步</div></div>
+    <div class="compare-row"><div class="compare-label">流程处理</div><div class="compare-old">人工处理，效率低易出错</div><div class="compare-arrow">→</div><div class="compare-new">自动化流转，效率提升3倍</div></div>
+    <div class="compare-row"><div class="compare-label">数据分析</div><div class="compare-old">凭感觉，无数据支撑</div><div class="compare-arrow">→</div><div class="compare-new">多维报表，数据驱动决策</div></div>
+    <div class="compare-row"><div class="compare-label">成本控制</div><div class="compare-old">成本不透明，难找问题</div><div class="compare-arrow">→</div><div class="compare-new">精细核算，智能建议</div></div>
+    <div class="compare-row"><div class="compare-label">客户运营</div><div class="compare-old">无分层，运营粗放</div><div class="compare-arrow">→</div><div class="compare-new">精细分层，精准营销</div></div>
+  </div>
+</section>
+
+<section class="section" id="cases">
+  <div class="section-label">客户案例</div>
+  <h2 class="section-title">他们都在用乡宴</h2>
+  <p class="section-sub">真实客户，真实反馈</p>
+  <div class="cases-grid">
+    <div class="case-card"><div class="case-header"><div class="case-avatar">A</div><div><div class="case-name">客户案例一</div><div class="case-type">某行业先行者</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>管理混乱，数据分散在各个表格，汇总一次要花3天时间。决策只能凭感觉，错误率高。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>数据统一管理，实时同步。汇总报告一键生成。决策有数据支撑，效率大幅提升。</p></div><div class="case-detail"><p>使用乡宴后，管理效率提升80%，决策准确率提升60%，利润增长35%。</p></div></div>
+    <div class="case-card"><div class="case-header"><div class="case-avatar">B</div><div><div class="case-name">客户案例二</div><div class="case-type">某行业快速增长型企业</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>业务流程繁琐，每个订单都要手动录入。员工加班是常态，但效率还是提不上去。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>流程自动化，订单自动流转。员工从繁琐操作中解放出来，有时间做更有价值的工作。</p></div><div class="case-detail"><p>使用乡宴后，员工效率提升3倍，加班时间减少60%，客户满意度提升至99%。</p></div></div>
+    <div class="case-card"><div class="case-header"><div class="case-avatar">C</div><div><div class="case-name">客户案例三</div><div class="case-type">某行业成熟型商家</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>成本不透明，不知道钱花在哪里。利润越来越薄，找不到问题所在。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>成本精细化核算，每笔支出清晰可见。智能定价建议帮助提升利润率达30%。</p></div><div class="case-detail"><p>使用乡宴后，利润率达22%，成本降低25%，现金流明显改善。</p></div></div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="section-label">定价方案</div>
+  <h2 class="section-title">简单透明，没有套路</h2>
+  <p class="section-sub">按年付费，永久使用，云端部署无需维护</p>
+  <div class="pricing-card">
+    <div class="pricing-tag">SaaS 云端部署</div>
+    <div class="pricing-price">&#xA5;3000<span> / 年</span></div>
+    <p class="pricing-desc">基础版 适合小微商家</p>
+    <ul class="pricing-features">
+      <li>数据统一管理</li><li>流程自动化</li><li>基础数据分析</li><li>5个用户席位</li><li>Email技术支持</li>
+    </ul>
+    <button class="btn-pricing">立即免费试用14天</button>
+  </div>
+  <p class="section-sub" style="margin-top:24px;">另有付费版本：&#xA5;5000/年专业版（含高级分析）| &#xA5;8000/年旗舰版（含AI智能推荐）</p>
+</section>
+
+<footer><p>© 2026 乡宴 让经营更高效</p></footer>
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+(function(){var c=document.getElementById('animLayer');for(var i=0;i<8;i++){var d=document.createElement('div');d.className='anim';d.style.cssText='left:'+(5+Math.random()*90)+'%;width:2px;height:'+(80+Math.random()*120)+'px;top:0;background:'+'linear-gradient(135deg, #e65100, #ffab40)'+';animation-duration:'+(6+Math.random()*4)+'s;animation-delay:'+(Math.random()*4)+'s';c.appendChild(d);}})()
+</script>
+</body>
+</html>
+<section class="section" id="faq" style="background:rgba(0,0,0,0.15);">
+  <div class="section-label">常见问题</div>
+  <h2 class="section-title">您可能想问</h2>
+  <p class="section-sub">如果还有其他问题，欢迎联系我们</p>
+  <div style="max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 这个系统适合我的业务吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们的系统专为小B商家设计，适合月GMV在10万-500万的商家。如果您正在使用Excel或老旧系统管理业务，非常适合迁移过来。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 数据迁移麻烦吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们提供免费的数据迁移服务。您只需要提供现有的Excel或CSV文件，我们的工程师会帮您完成数据导入和清洗。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 需要多长时间能上手？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们的界面设计简洁直观，一般用户1-2天就能熟练使用。我们还提供视频教程和在线客服支持。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 售后服务怎么样？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们提供7x12小时在线客服支持，响应时间不超过2小时。每月定期回访使用情况，帮助解决遇到的问题。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 可以定制开发吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 可以的。旗舰版用户可以享受定制开发服务。我们会根据您的业务需求，定制开发特定功能模块。</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features2">
+  <div class="section-label">更多功能</div>
+  <h2 class="section-title">还有这些功能帮您</h2>
+  <p class="section-sub">持续迭代，不断推出新功能</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F512;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">数据安全</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">AES-256加密存储，99.99%可用性保障，数据自动备份3份。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F4F1;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">移动端支持</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">手机，平板、电脑多端同步，随时随地管理业务。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F504;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">API接口</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">开放API接口，支持对接ERP、CRM等其他系统。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F465;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">团队协作</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">多角色权限管理，团队协作更高效，数据隔离更安全。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F4CA;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">报表导出</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">支持Excel、PDF、CSV多种格式导出，方便做进一步分析。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F514;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">智能提醒</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">异常情况自动告警，微信、短信、邮件多渠道推送。</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;background:linear-gradient(135deg,rgba(13,71,161,0.1),transparent);padding:120px 24px;">
+  <div style="font-size:clamp(32px,5vw,48px);font-weight:800;margin-bottom:20px;">还在犹豫？先试试再说</div>
+  <p style="font-size:16px;color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto 40px;">14天免费试用，无需绑定信用卡。试用期间完整功能体验，不满意直接取消。</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+    <a href="#pricing" style="background:linear-gradient(135deg,#0d47a1,#90a4ae);color:#fff;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;">免费试用14天</a>
+    <a href="#features" style="border:1px solid rgba(255,255,255,0.06);color:#e3f2fd;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;">了解更多功能</a>
+  </div>
+</section>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>永念 - 丧葬殡葬用品店管理系统 | 让每一次思念都有序可依</title>
+    <style>
+
+:root {
+    --bg-primary: #1c1c1e;
+    --bg-secondary: #242426;
+    --bg-card: #2c2c2e;
+    --accent-warm: #c9a96e;
+    --accent-light: #e8dcc8;
+    --accent-gold: #d4a853;
+    --accent-red: #a85050;
+    --text-primary: #e8e4dc;
+    --text-secondary: #9a9590;
+    --border-color: #38383a;
+    --shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "PingFang SC", "Microsoft YaHei", serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.hero {
+    background: linear-gradient(135deg, #1a1a1c 0%, #242426 50%, #1c1c1e 100%);
+    padding: 80px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%);
+    animation: fade 6s ease-in-out infinite;
+}
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: -20%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(212,168,83,0.06) 0%, transparent 70%);
+    animation: fade 8s ease-in-out infinite reverse;
+}
+@keyframes fade { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+.hero-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold));
+    color: #1c1c1e;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+}
+.hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent-light) 0%, var(--accent-warm) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+}
+.hero-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin-bottom: 36px;
+    position: relative;
+    z-index: 1;
+}
+.hero-stats { display: flex; gap: 40px; flex-wrap: wrap; position: relative; z-index: 1; }
+.hero-stat { text-align: left; }
+.hero-stat .num { font-size: 36px; font-weight: 800; color: var(--accent-warm); }
+.hero-stat .label { font-size: 13px; color: var(--text-secondary); }
+.nav-bar { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+.nav-inner { display: flex; gap: 8px; overflow-x: auto; padding: 0 20px; }
+.nav-item { padding: 16px 20px; color: var(--text-secondary); font-size: 14px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.3s; cursor: pointer; }
+.nav-item:hover, .nav-item.active { color: var(--accent-warm); border-bottom-color: var(--accent-warm); }
+.section { padding: 70px 0; }
+.section-title { text-align: center; margin-bottom: 50px; }
+.section-title h2 { font-size: 32px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
+.section-title p { font-size: 15px; color: var(--text-secondary); }
+.section-title .tag { display: inline-block; width: 40px; height: 3px; background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold)); border-radius: 2px; margin-bottom: 16px; }
+.pain-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.pain-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 28px; position: relative; overflow: hidden; transition: all 0.3s; }
+.pain-card:hover { border-color: var(--accent-warm); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,169,110,0.1); }
+.pain-card::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--accent-red), var(--accent-warm)); }
+.pain-icon { width: 44px; height: 44px; background: rgba(168,80,80,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+.pain-card h3 { font-size: 16px; font-weight: 600; color: var(--accent-light); margin-bottom: 10px; }
+.pain-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+.feat-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.feat-block { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; transition: all 0.3s; }
+.feat-block:hover { border-color: var(--accent-warm); box-shadow: var(--shadow); }
+.feat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.feat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.fi-warm { background: rgba(201,169,110,0.15); }
+.fi-gold { background: rgba(212,168,83,0.15); }
+.fi-red { background: rgba(168,80,80,0.15); }
+.fi-light { background: rgba(232,220,200,0.1); }
+.fi-dark { background: rgba(60,60,62,0.5); }
+.feat-title h3 { font-size: 18px; font-weight: 700; color: var(--accent-light); }
+.feat-title span { font-size: 12px; color: var(--text-secondary); }
+.sub-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.sub-item:last-child { border-bottom: none; }
+.sub-item::before { content: "▸"; color: var(--accent-warm); font-size: 12px; margin-top: 3px; flex-shrink: 0; }
+.sub-item strong { color: var(--accent-warm); font-size: 14px; }
+.sub-item span { font-size: 14px; color: var(--text-secondary); }
+.timeline-section { background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary)); padding: 70px 0; }
+.timeline { position: relative; padding: 20px 0; }
+.timeline::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--accent-warm), var(--accent-gold)); transform: translateX(-50%); }
+.timeline-item { display: flex; align-items: center; margin-bottom: 30px; position: relative; }
+.timeline-item:nth-child(odd) { flex-direction: row-reverse; }
+.timeline-item:nth-child(odd) .timeline-content { text-align: right; margin-right: 40px; }
+.timeline-item:nth-child(even) .timeline-content { margin-left: 40px; }
+.timeline-dot { width: 16px; height: 16px; background: var(--accent-warm); border-radius: 50%; border: 3px solid var(--bg-primary); position: absolute; left: 50%; transform: translateX(-50%); z-index: 1; }
+.timeline-content { flex: 1; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
+.timeline-content h4 { font-size: 14px; font-weight: 700; color: var(--accent-warm); margin-bottom: 6px; }
+.timeline-content p { font-size: 13px; color: var(--text-secondary); }
+.value-section { background: linear-gradient(135deg, #141416, #1c1c1e); padding: 70px 0; }
+.value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.value-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px 20px; text-align: center; position: relative; overflow: hidden; }
+.value-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold)); }
+.value-card .number { font-size: 40px; font-weight: 800; background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+.value-card .desc { font-size: 14px; color: var(--text-secondary); }
+.compare-section { padding: 70px 0; }
+.compare-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 16px; overflow: hidden; }
+.compare-table thead th { background: var(--bg-secondary); padding: 16px 20px; font-size: 14px; font-weight: 600; color: var(--accent-light); text-align: left; border-bottom: 1px solid var(--border-color); }
+.compare-table tbody td { padding: 14px 20px; font-size: 14px; color: var(--text-secondary); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table tbody tr:hover td { background: rgba(201,169,110,0.05); }
+.compare-table .check { color: var(--accent-warm); font-weight: 700; }
+.compare-table .cross { color: var(--accent-red); font-weight: 700; }
+.case-section { background: var(--bg-secondary); padding: 70px 0; }
+.case-card { background: linear-gradient(135deg, var(--bg-card), #1e1e20); border: 1px solid var(--border-color); border-radius: 20px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.case-avatar { width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 20px; }
+.case-name { font-size: 20px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
+.case-location { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+.case-quote { font-size: 16px; color: var(--text-secondary); line-height: 1.9; font-style: italic; }
+.case-result { background: var(--bg-secondary); border-radius: 16px; padding: 28px; }
+.case-result h4 { font-size: 14px; font-weight: 600; color: var(--accent-warm); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.case-result-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.case-result-item:last-child { border-bottom: none; }
+.case-result-item .label { font-size: 14px; color: var(--text-secondary); }
+.case-result-item .value { font-size: 14px; font-weight: 700; color: var(--accent-warm); }
+.case-result-item .value.old { color: var(--text-secondary); text-decoration: line-through; }
+.cta-section { background: linear-gradient(135deg, #141416, #1a1a1c); padding: 80px 0; text-align: center; }
+.cta-section h2 { font-size: 36px; font-weight: 700; color: var(--accent-light); margin-bottom: 16px; }
+.cta-section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 36px; }
+.cta-btn { display: inline-block; background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold)); color: #1c1c1e; font-size: 16px; font-weight: 700; padding: 16px 48px; border-radius: 12px; text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; }
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,169,110,0.3); }
+.footer { background: var(--bg-secondary); padding: 30px 0; text-align: center; font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--border-color); }
+@media (max-width: 768px) { .hero h1 { font-size: 32px; } .pain-grid, .feat-layout, .case-card { grid-template-columns: 1fr; } .value-grid { grid-template-columns: repeat(2, 1fr); } .hero-stats { gap: 20px; } .timeline::before { left: 20px; } .timeline-item, .timeline-item:nth-child(odd) { flex-direction: column; align-items: flex-start; } .timeline-item:nth-child(odd) .timeline-content { text-align: left; margin-right: 0; margin-left: 40px; } .timeline-dot { left: 20px; } .timeline-content { margin-left: 40px !important; } }
+
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="hero-badge">殡葬行业 · 专业管理系统</div>
+            <h1>永念 · 丧葬殡葬用品店管理系统</h1>
+            <p class="hero-sub">
+                每年清明不再手忙脚乱，客户档案永不丢失，赊账回收有据可查。
+                永念为殡葬用品店打造专业管理系统，让每一份思念都有序可依。
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="num">70%</div>
+                    <div class="label">断货投诉降低</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">90%</div>
+                    <div class="label">赊账回收提升</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">60%</div>
+                    <div class="label">备货准确率提升</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">15年+</div>
+                    <div class="label">老店经验沉淀</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <div class="nav-inner">
+            <div class="nav-item active">概述</div>
+            <div class="nav-item">行业痛点</div>
+            <div class="nav-item">核心功能</div>
+            <div class="nav-item">祭祀日历</div>
+            <div class="nav-item">价值数据</div>
+            <div class="nav-item">对比表格</div>
+            <div class="nav-item">客户案例</div>
+        </div>
+    </div>
+
+    <!-- Pain Points Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>行业痛点</h2>
+                <p>殡葬用品店的经营有其特殊性和难点，这些问题传统方式难以解决</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="pain-icon">📦</div>
+                    <h3>陈老板 · 清明前夕断货之痛</h3>
+                    <p>陈老板在武汉开了15年殡葬用品店。每年清明前两周，订单集中爆发，
+                    店员记不住哪些祭祀用品要提前备货。金纸、香烛、元宝……几十个品种，
+                    总有那么几样卖完了断货。顾客白跑一趟，电话打过来骂人，陈老板有苦说不出。
+                    清明那几天断货的损失，比平时一个月利润还多。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">💸</div>
+                    <h3>赊账800元追了半年的教训</h3>
+                    <p>顾客买了¥800的祭祀用品，说过两天来结账，走了之后电话不接，发微信不回。
+                    陈老板打了十几次电话，开始还接，后来直接挂断，再后来号码变成了空号。
+                    ¥800的账追了半年，一分钱没要回来。没有凭证，没有记录，只能自认倒霉。
+                    这样的账，陈老板一年要碰上好几笔。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">📊</div>
+                    <h3>进货靠感觉，损失惨重</h3>
+                    <p>殡葬用品有很强的季节性，清明、重阳、周年祭日前后需求暴涨，
+                    平时却冷冷清清。进货多了卖不完，香烛发霉、金纸变黄，只能折价处理甚至扔掉。
+                    进货少了断货错过旺季，眼睁睁看着顾客去别家。这两个极端每年都在上演，
+                    陈老板全靠经验摸索，但经验也会出错。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">👤</div>
+                    <h3>家属问祭日，老板答不上来</h3>
+                    <p>李女士来到店里，说起她父亲去年去世，想查一下周年祭日是哪天，
+                    顺便买些父亲生前喜欢的祭品。陈老板翻了半天纸本，找不到记录。
+                    客户的纸质档案早就丢了，哪位逝者的祭日在哪天、有什么偏好，
+                    全凭记忆。记不住的，只能尴尬地说"不太记得了"。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Features Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>核心功能</h2>
+                <p>永念为殡葬用品店量身打造，每一个功能都直击经营痛点</p>
+            </div>
+            <div class="feat-layout">
+                <!-- Feature 1: 祭祀日期提醒 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-warm">📅</div>
+                        <div class="feat-title">
+                            <h3>祭祀日期提醒</h3>
+                            <span>农历公历，一键转换，提前提醒</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>农历/公历自动转换</strong>
+                        <span>中国家庭记祭日多用农历，系统自动将农历日期转换为公历，
+                        并支持在两种日历之间自由切换显示，方便查询和记录。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>提前7天、3天、当天提醒</strong>
+                        <span>系统在祭日前7天、3天、当天分别向相关家属发送微信提醒，
+                        同时在店员管理端推送待办事项，确保提前备货、主动联系。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>周年祭日自动计算</strong>
+                        <span>录入逝者生卒年月日之后，系统自动计算并标记每一个周年祭日，
+                        提前一个月开始提醒家属，无需人工推算哪一天是周年。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>重要祭祀日提前1个月提醒</strong>
+                        <span>清明、中元、寒衣、冬至等重要祭祀节日，系统提前1个月就开始周期性提醒，
+                        让家属有充足时间准备，也让店铺提前做好备货计划。</span>
+                    </div>
+                </div>
+                <!-- Feature 2: 库存管理 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-gold">📦</div>
+                        <div class="feat-title">
+                            <h3>库存管理</h3>
+                            <span>香烛纸钱，分类清晰，预警精准</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>香烛纸钱分类管理</strong>
+                        <span>系统支持按香烛类、纸钱类、供品类、鲜花类、随葬品类等多个维度分类管理库存，
+                        每个品类下可添加具体商品，如"金纸（50刀/叠）"、"檀香（30cm）"。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>库存预警精准提醒</strong>
+                        <span>设置每个商品的库存最低量和最高量，当库存降至最低量时，系统自动推送预警通知，
+                        例如"金纸仅剩50刀，建议立即补货"。避免断货，也避免过量进货。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>批次管理</strong>
+                        <span>每次进货录入批次信息，包括进货日期、供应商、数量和成本价。
+                        先进先出原则出库，确保香烛等有保质期商品不过期、不浪费。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>补货建议</strong>
+                        <span>系统根据历史销售数据（清明前30天销量/当前库存/预计销售周期）自动给出补货建议，
+                        告诉老板应该补多少、什么时候补，减少凭感觉进货带来的损失。</span>
+                    </div>
+                </div>
+                <!-- Feature 3: 客户档案 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-light">👥</div>
+                        <div class="feat-title">
+                            <h3>客户档案</h3>
+                            <span>家属信息，永久保存，随时可查</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>家属姓名电话地址</strong>
+                        <span>记录每位家属的姓名、联系电话、家庭住址，方便节假日问候、祭日提醒和送货上门。
+                        信息永久保存在系统中，换手机换电脑也不丢失。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>逝者生卒年月与照片</strong>
+                        <span>为每位逝者建立专属档案，记录生卒年月日（农历/公历）、生平简介、遗照。
+                        当家属再来购买时，老板一眼就能认出是哪家的"老朋友"。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>周年祭日自动提醒</strong>
+                        <span>逝者档案建立后，系统自动计算并提前提醒每一个周年祭日。
+                        当家属问起"我爸的祭日是哪天"，系统3秒调出，再也不尴尬。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>消费偏好记录</strong>
+                        <span>记录每位逝者家属的消费偏好，例如"张阿姨家喜欢香烛套盒，不定期复购"。
+                        祭日前主动推荐相关产品，提升客户体验和复购率。</span>
+                    </div>
+                </div>
+                <!-- Feature 4: 赊账管理 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-red">💰</div>
+                        <div class="feat-title">
+                            <h3>赊账管理</h3>
+                            <span>凭证留痕，到期提醒，回收有保障</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>拍照留存凭证</strong>
+                        <span>赊账发生时，系统要求拍摄交易现场照片（顾客和商品合影或签字收据照片），
+                        作为赊账凭证存档。即使顾客"消失"，也有据可查，为法律诉讼保留证据。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>到期自动提醒</strong>
+                        <span>赊账时设定还款日期，系统在到期前3天发送微信提醒给顾客，
+                        同时在店员端推送待办事项。提醒方式温和但有效：短信+微信+电话三管齐下。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>逾期标记黑名单</strong>
+                        <span>逾期超过30天未还款的顾客，系统自动标记为"待核查"状态，
+                        店员在接待时能看到提示，提前确认付款事宜。绝不暴力催收，但也不做冤大头。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>回收率统计</strong>
+                        <span>系统自动统计每月赊账总额、回收金额、逾期比例，生成赊账报表。
+                        让老板清楚知道哪些顾客信用好、哪些是高风险客户，从而调整赊账策略。</span>
+                    </div>
+                </div>
+                <!-- Feature 5: 账目透明 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-dark">📊</div>
+                        <div class="feat-title">
+                            <h3>账目透明</h3>
+                            <span>收支分明，一键对账，年度汇总</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>收支分开记录</strong>
+                        <span>每一笔收入（零售、批发、赊账回收）和支出（进货、租金、人员工资、水电）
+                        分开录入，系统自动分类汇总。让老板清楚知道赚了多少钱、花了多少钱。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>一键导出报表</strong>
+                        <span>日报、周报、月报一键生成，支持导出Excel。
+                        清明旺季结束后，一键生成清明期间销售报告，评估经营得失。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>客户对账单</strong>
+                        <span>赊账顾客可查看自己的消费对账单，每一笔购买记录清清楚楚。
+                        诚信经营，让顾客放心，也让催款有理有据。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>年度汇总</strong>
+                        <span>年底自动生成年度经营报告，包括总收入、总支出、净利润、各品类销售额排名、
+                        客户复购率等数据，为下一年的经营计划提供数据支撑。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline Section -->
+    <div class="timeline-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>祭祀日历</h2>
+                <p>农历公历双轨并行，关键日期提前规划</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>农历正月初一 · 春节祭祖</h4>
+                        <p>春节是中国最重要的祭祀节日。系统提前30天开始提醒家属准备祭祀用品，店铺同步备货。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>农历清明时节 · 清明祭扫</h4>
+                        <p>清明前后两周是祭祀高峰。系统自动将农历清明转换为公历日期，提前45天开始滚动提醒。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>农历七月十五 · 中元节</h4>
+                        <p>中元节（鬼月）是祭祀用品销售的第二大旺季。系统提前1个月提醒家属，系统提前2个月提醒店铺备货。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>农历十月初一 · 寒衣节</h4>
+                        <p>送寒衣是北方重要的祭祖节日。系统提前提醒，家属提前购买，店铺从容备货。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h4>逝者周年祭日 · 个性化提醒</h4>
+                        <p>每位逝者的周年祭日自动计算，提前7天、3天、当天三次提醒对应的家属，让每一次思念都不被遗忘。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Value Data Section -->
+    <div class="value-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>价值数据</h2>
+                <p>用数字验证效果，让每一步改变都有迹可循</p>
+            </div>
+            <div class="value-grid">
+                <div class="value-card">
+                    <div class="number">70%</div>
+                    <div class="desc">断货投诉降低</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">90%</div>
+                    <div class="desc">赊账回收提升</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">60%</div>
+                    <div class="desc">备货准确率提升</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Table Section -->
+    <div class="compare-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>对比表格</h2>
+                <p>永念 vs 传统经营方式，全面超越</p>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>功能项</th>
+                        <th>传统方式（Excel+纸本）</th>
+                        <th>永念管理系统</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>祭祀日期提醒</td>
+                        <td><span class="cross">✗ 靠记忆，经常忘</span></td>
+                        <td><span class="check">✓ 自动计算，提前推送</span></td>
+                    </tr>
+                    <tr>
+                        <td>库存预警</td>
+                        <td><span class="cross">✗ 卖完才知道断货</span></td>
+                        <td><span class="check">✓ 系统预警，主动补货</span></td>
+                    </tr>
+                    <tr>
+                        <td>赊账回收</td>
+                        <td><span class="cross">✗ 无凭证，追不回</span></td>
+                        <td><span class="check">✓ 凭证留痕，到期提醒</span></td>
+                    </tr>
+                    <tr>
+                        <td>客户档案</td>
+                        <td><span class="cross">✗ 纸质档案易丢失</span></td>
+                        <td><span class="check">✓ 云端永久保存</span></td>
+                    </tr>
+                    <tr>
+                        <td>账目统计</td>
+                        <td><span class="cross">✗ 手工记账，月底糊涂</span></td>
+                        <td><span class="check">✓ 实时更新，一键报表</span></td>
+                    </tr>
+                    <tr>
+                        <td>备货计划</td>
+                        <td><span class="cross">✗ 凭感觉，进多进少都损失</span></td>
+                        <td><span class="check">✓ 数据驱动，精准备货</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Case Study Section -->
+    <div class="case-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>客户案例</h2>
+                <p>武汉陈老板，15年老店的数字化升级之路</p>
+            </div>
+            <div class="case-card">
+                <div>
+                    <div class="case-avatar">🏪</div>
+                    <div class="case-name">陈老板</div>
+                    <div class="case-location">湖北武汉 · 殡葬用品店 · 15年经营</div>
+                    <div class="case-quote">
+                        "我开了15年店，以前全靠脑子记。清明前断货、赊账追不回、                        客户问祭日答不上来，这些问题年年有。用了永念之后，清明前2个月系统就开始提醒我备货，                        赊账有照片留存，到期自动发微信提醒客户。去年清明，我没有断过一次货，                        赊账回收率从以前的30%提高到了85%。今年我打算开分店，系统帮我管着，很放心。"
+                    </div>
+                </div>
+                <div class="case-result">
+                    <h4>使用前后对比</h4>
+                    <div class="case-result-item">
+                        <span class="label">清明期间断货次数</span>
+                        <div>
+                            <span class="value old">5-6次/每年</span>
+                            <span class="value"> → 0次</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">赊账回收率</span>
+                        <div>
+                            <span class="value old">约30%</span>
+                            <span class="value"> → 85%</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">备货准确率</span>
+                        <div>
+                            <span class="value old">凭经验估算</span>
+                            <span class="value"> → 系统计算</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">客户档案</span>
+                        <div>
+                            <span class="value old">纸质记录，频繁丢失</span>
+                            <span class="value"> → 云端永久保存</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">祭日查询</span>
+                        <div>
+                            <span class="value old">靠记忆，经常忘</span>
+                            <span class="value"> → 3秒查询</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <div class="container">
+            <h2>让您的店铺也升级为数字化经营</h2>
+            <p>15年老店经验沉淀，专业团队实施，7天即可上线使用</p>
+            <a href="#" class="cta-btn">立即咨询，获取方案</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>永念 · 丧葬殡葬用品店管理系统 | 让每一份思念都有序可依</p>
+        </div>
+    </div>
+
+</body>
+</html>

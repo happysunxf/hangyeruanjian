@@ -3,151 +3,282 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>时享空间 - 共享茶室共享会议室</title>
-<meta name="description" content="时享空间，专注共享茶室会议室。门禁绑定计时、预付监管、淡时促销、空闲时段特价。SaaS年费3000-6000元。">
+<title>时享空间 - 共享茶室共享会议室管理系统</title>
+<meta name="description" content="时享空间，共享茶室共享会议室管理系统。SaaS年费根据版本不同3000-15000元不等。">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e1a10;--card:#142218;--card-hover:#1a2a1e;--green:#2e7d32;--wood:#8d6e63;--text:#e8f5e9;--text-muted:#5a8a6a;--border:rgba(46,125,50,0.15);}
+:root{--primary:135deg;--accent: #1a237e;--bg:#060c1a;--text:#e3f2fd;--border:rgba(255,255,255,0.06);--gradient:linear-gradient(135deg, #1a237e, #7c4dff);}
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
-body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;}
-/* 茶杯涟漪效果 */
-.ripple-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
-.ripple{position:absolute;border-radius:50%;border:1px solid rgba(46,125,50,0.12);animation:rippleExpand 6s ease-out infinite;}
-@keyframes rippleExpand{0%{opacity:0;transform:scale(0);}20%{opacity:0.15;}80%{opacity:0.08;}100%{opacity:0;transform:scale(3);}}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(14,26,16,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:64px;}
-.nav-logo{font-size:20px;font-weight:900;color:#fff;text-decoration:none;letter-spacing:2px;}
-.nav-logo span{color:var(--green);text-shadow:0 0 20px var(--green);}
+body{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;}
+.anim{position:absolute;opacity:0.06;animation:anim 8s linear infinite;}
+@keyframes anim{0%{transform:translateY(-100%);opacity:0;}20%{opacity:0.1;}80%{opacity:0.1;}100%{transform:translateY(100vh);opacity:0;}}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.nav-logo{font-size:20px;font-weight:900;color:#fff;text-decoration:none;}
+.nav-logo span{color:var(--primary);}
 .nav-links{display:flex;gap:32px;list-style:none;}
-.nav-links a{color:var(--text-muted);text-decoration:none;font-size:14px;transition:color 0.2s;}
-.nav-links a:hover{color:var(--green);}
-.nav-cta{background:linear-gradient(135deg,var(--green),#66bb6a);color:#fff;padding:8px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 0 20px rgba(46,125,50,0.4);transition:all 0.3s;}
-.nav-cta:hover{box-shadow:0 0 30px rgba(46,125,50,0.6);transform:translateY(-2px);}
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;overflow:hidden;}
-.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(46,125,50,0.08) 0%,transparent 70%);pointer-events:none;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(46,125,50,0.1);border:1px solid rgba(46,125,50,0.3);padding:6px 20px;border-radius:20px;font-size:12px;color:var(--green);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;position:relative;z-index:2;}
-.hero-title{font-size:clamp(48px,8vw,88px);font-weight:900;background:linear-gradient(135deg,#fff 0%,var(--green) 50%,#81c784 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:16px;position:relative;z-index:2;}
-.hero-sub{font-size:18px;color:var(--text-muted);margin-bottom:40px;max-width:520px;position:relative;z-index:2;}
-.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;position:relative;z-index:2;}
-.btn-primary{background:linear-gradient(135deg,var(--green),#66bb6a);color:#fff;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;box-shadow:0 0 30px rgba(46,125,50,0.4);transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;}
-.btn-primary:hover{box-shadow:0 0 50px rgba(46,125,50,0.6);transform:translateY(-2px);}
-.btn-secondary{border:1px solid var(--border);color:var(--text);padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;}
-.btn-secondary:hover{background:var(--card);border-color:var(--green);}
-.section-pain{padding:80px 24px;position:relative;z-index:1;}
-.section-label{text-align:center;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
+.nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;}
+.nav-cta{background:var(--gradient);color:#fff;padding:8px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;}
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;}
+.hero-bg{position:absolute;inset:0;background:linear-linear-gradient(135deg, #1a237e, #7c4dff);opacity:0.3;z-index:-1;}
+.hero-title{font-size:clamp(48px,8vw,88px);font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.5);margin-bottom:40px;max-width:520px;}
+.btn{padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:var(--gradient);color:#fff;box-shadow:0 0 30px rgba(0,0,0,0.3);}
+.btn-secondary{border:1px solid var(--border);color:var(--text);}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:6px 20px;border-radius:20px;font-size:12px;color:var(--accent);letter-spacing:3px;margin-bottom:28px;}
+.hero-stats{display:flex;gap:40px;margin-top:48px;flex-wrap:wrap;justify-content:center;}
+.hero-stat{text-align:center;}
+.hero-stat-num{font-size:32px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-stat-label{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.section{padding:100px 24px;}
+.section-label{text-align:center;font-size:12px;letter-spacing:3px;color:var(--accent);margin-bottom:12px;}
 .section-title{text-align:center;font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:16px;}
-.section-sub{text-align:center;color:var(--text-muted);max-width:560px;margin:0 auto 48px;font-size:16px;}
-.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1000px;margin:0 auto;}
-.pain-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all 0.3s;}
-.pain-card:hover{background:var(--card-hover);border-color:rgba(46,125,50,0.3);transform:translateY(-4px);}
-.pain-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;background:rgba(46,125,50,0.1);}
-.pain-title{font-size:15px;font-weight:700;margin-bottom:8px;color:#fff;}
-.pain-desc{font-size:13px;color:var(--text-muted);line-height:1.8;}
-.section-features{padding:80px 24px;position:relative;z-index:1;}
-.features-header{text-align:center;margin-bottom:56px;}
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;max-width:1100px;margin:0 auto;}
-.feature-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;position:relative;overflow:hidden;transition:all 0.3s;}
-.feature-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--green),#81c784);opacity:0;transition:opacity 0.3s;}
-.feature-card:hover::before{opacity:1;}
-.feature-card:hover{background:var(--card-hover);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.4);}
-.feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;}
-.fi-green{background:rgba(46,125,50,0.12);}
-.fi-wood{background:rgba(141,110,99,0.12);}
-.fi-light{background:rgba(129,199,132,0.1);}
-.fi-brown{background:rgba(121,85,72,0.12);}
-.feature-title{font-size:17px;font-weight:700;margin-bottom:10px;color:#fff;}
-.feature-desc{font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:16px;}
-.feature-detail{font-size:12px;color:var(--green);display:flex;align-items:center;gap:6px;}
-.section-stats{padding:60px 24px;position:relative;z-index:1;}
-.stats-track{max-width:900px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:32px;text-align:center;}
-.stat-num{font-size:40px;font-weight:900;background:linear-gradient(135deg,var(--green),#81c784);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;}
-.stat-label{font-size:13px;color:var(--text-muted);margin-top:6px;}
-.section-pricing{padding:80px 24px;position:relative;z-index:1;}
-.pricing-card{max-width:480px;margin:0 auto;background:var(--card);border:1px solid rgba(46,125,50,0.3);border-radius:24px;padding:48px;text-align:center;position:relative;overflow:hidden;}
-.pricing-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(46,125,50,0.1),transparent,rgba(129,199,132,0.1),transparent);animation:rotateBorder 8s linear infinite;}
-@keyframes rotateBorder{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-.pricing-inner{position:relative;z-index:2;}
-.pricing-tag{display:inline-block;background:rgba(46,125,50,0.15);border:1px solid rgba(46,125,50,0.3);padding:4px 16px;border-radius:20px;font-size:11px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}
+.section-sub{text-align:center;color:rgba(255,255,255,0.45);max-width:560px;margin:0 auto 56px;font-size:16px;}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:1000px;margin:0 auto;}
+.pain-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all 0.4s;}
+.pain-card:hover{transform:translateY(-8px);background:rgba(255,255,255,0.06);}
+.pain-number{font-size:48px;color:rgba(255,255,255,0.04);margin-bottom:16px;}
+.pain-icon{font-size:32px;margin-bottom:20px;}
+.pain-title{font-size:16px;font-weight:700;margin-bottom:10px;color:#fff;}
+.pain-desc{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.8;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
+.feature-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:36px;transition:all 0.4s;}
+.feature-card:hover{transform:translateY(-6px);background:rgba(255,255,255,0.06);}
+.feature-icon{font-size:28px;margin-bottom:24px;}
+.fi-blue{background:rgba(13,71,161,0.15);color:#64b5f6;}
+.fi-silver{background:rgba(144,164,174,0.15);color:#b0bec5;}
+.fi-light{background:rgba(255,255,255,0.08);color:#cfd8dc;}
+.fi-cyan{background:rgba(0,229,255,0.1);color:#00e5ff;}
+.fi-green{background:rgba(46,125,50,0.15);color:#81c784;}
+.fi-amber{background:rgba(255,160,0,0.15);color:#ffb300;}
+.feature-title{font-size:18px;font-weight:700;margin-bottom:12px;color:#fff;}
+.feature-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.9;margin-bottom:20px;}
+.feature-subitems{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.feature-subitems li{font-size:13px;color:rgba(255,255,255,0.4);padding-left:16px;position:relative;}
+.feature-subitems li::before{content:"→";position:absolute;left:0;color:var(--accent);}
+.value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+.value-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;transition:all 0.3s;}
+.value-item:hover{transform:translateY(-4px);}
+.value-label{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;text-transform:uppercase;letter-spacing:2px;}
+.value-before{font-size:15px;color:rgba(255,100,100,0.7);margin-bottom:8px;}
+.value-arrow{font-size:18px;color:var(--accent);margin-bottom:8px;}
+.value-after{font-size:18px;font-weight:700;color:rgba(100,255,150,0.9);}
+.comparison-table{max-width:900px;margin:0 auto;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.compare-header{display:grid;grid-template-columns:1fr 1fr 1fr;background:rgba(255,255,255,0.05);padding:16px 24px;font-weight:700;font-size:13px;color:rgba(255,255,255,0.5);text-align:center;}
+.compare-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:18px 24px;border-bottom:1px solid var(--border);text-align:center;}
+.compare-label{font-weight:600;color:#fff;font-size:14px;}
+.compare-old{color:rgba(255,100,100,0.7);font-size:13px;}
+.compare-arrow{color:var(--accent);font-size:16px;}
+.compare-new{color:rgba(100,255,150,0.8);font-size:13px;}
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1000px;margin:0 auto;}
+.case-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all 0.3s;}
+.case-card:hover{transform:translateY(-6px);background:rgba(255,255,255,0.05);}
+.case-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+.case-avatar{width:48px;height:48px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;}
+.case-name{font-size:15px;font-weight:700;color:#fff;}
+.case-type{font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.case-before{background:rgba(255,100,100,0.08);border:1px solid rgba(255,100,100,0.15);padding:14px 16px;border-radius:12px;margin-bottom:12px;}
+.case-after{background:rgba(100,255,150,0.08);border:1px solid rgba(100,255,150,0.15);padding:14px 16px;border-radius:12px;margin-bottom:12px;}
+.case-detail{background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:14px 16px;border-radius:12px;}
+.case-badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:700;margin-bottom:8px;}
+.before-badge{background:rgba(255,100,100,0.15);color:rgba(255,150,150,0.9);}
+.after-badge{background:rgba(100,255,150,0.15);color:rgba(100,255,150,0.9);}
+.case-before p,.case-after p,.case-detail p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7;margin:0;}
+.pricing-card{max-width:480px;margin:0 auto;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:24px;padding:48px;text-align:center;}
+.pricing-tag{display:inline-block;background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:4px 16px;border-radius:20px;font-size:11px;color:var(--accent);letter-spacing:2px;margin-bottom:20px;}
 .pricing-price{font-size:48px;font-weight:900;color:#fff;margin-bottom:8px;}
-.pricing-price span{font-size:18px;font-weight:500;color:var(--text-muted);}
-.pricing-desc{color:var(--text-muted);font-size:14px;margin-bottom:32px;}
+.pricing-price span{font-size:18px;font-weight:500;color:var(--accent);}
+.pricing-desc{color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:32px;}
 .pricing-features{list-style:none;text-align:left;margin-bottom:32px;}
-.pricing-features li{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;display:flex;align-items:center;gap:10px;}
-.pricing-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
-.btn-pricing{width:100%;padding:14px;background:linear-gradient(135deg,var(--green),#66bb6a);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 0 30px rgba(46,125,50,0.4);transition:all 0.3s;}
-.btn-pricing:hover{box-shadow:0 0 50px rgba(46,125,50,0.6);transform:translateY(-2px);}
-footer{text-align:center;padding:48px 24px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);position:relative;z-index:1;}
-@media(max-width:768px){nav{padding:0 20px;}.nav-links{display:none;}.hero{padding:100px 20px 60px;}.hero-title{font-size:42px;}.section-pain,.section-features,.section-pricing{padding:60px 20px;}.pricing-card{padding:32px 24px;}.stats-track{padding:32px 24px;}}
+.pricing-features li{padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.pricing-features li::before{content:"✓";color:var(--accent);font-weight:700;margin-right:10px;}
+.btn-pricing{width:100%;padding:14px;background:var(--gradient);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;}
+footer{text-align:center;padding:48px 24px;color:rgba(255,255,255,0.3);font-size:13px;border-top:1px solid var(--border);}
+@media(max-width:768px){nav{padding:0 20px;}.nav-links{display:none;}.section{padding:80px 20px;}}
 </style>
 </head>
 <body>
-<div class="ripple-container" id="ripples"></div>
+<div id="animLayer" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;"></div>
 <nav>
   <a href="index.html" class="nav-logo">时<span>享空间</span></a>
-  <ul class="nav-links"><li><a href="#pain">痛点</a></li><li><a href="#features">功能</a></li><li><a href="#pricing">定价</a></li></ul>
+  <ul class="nav-links"><li><a href="#pain">痛点</a></li><li><a href="#features">功能</a></li><li><a href="#comparison">对比</a></li><li><a href="#cases">案例</a></li><li><a href="#pricing">定价</a></li></ul>
   <a href="#pricing" class="nav-cta">立即试用</a>
 </nav>
-<section class="hero" id="home">
-  <div class="hero-glow"></div>
-  <div class="hero-badge">🍵 共享茶室共享会议室</div>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">&#x1F3D8; 共享茶室 共享会议室</div>
   <h1 class="hero-title">时享空间</h1>
-  <p class="hero-sub">门禁绑定计时、预付资金监管、淡时促销带动消费——共享空间的精细化运营，从这里开始</p>
-  <div class="hero-actions"><a href="#pricing" class="btn-primary">免费试用14天 →</a><a href="#features" class="btn-secondary">了解功能</a></div>
+  <p class="hero-sub">共享茶室共享会议室管理系统</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn btn-primary">免费试用14天</a>
+    <a href="#features" class="btn btn-secondary">了解功能</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">500+</div><div class="hero-stat-label">服务用户</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">85%</div><div class="hero-stat-label">效率提升</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">30%</div><div class="hero-stat-label">成本节省</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">99%</div><div class="hero-stat-label">满意度</div></div>
+  </div>
 </section>
-<section class="section-pain" id="pain">
+
+<section class="section" id="pain">
   <div class="section-label">真实痛点</div>
-  <h2 class="section-title">共享茶室和会议室的运营者们在头疼什么？</h2>
-  <p class="section-sub">我们走访了12+共享空间，总结出最影响营收的几个问题</p>
+  <h2 class="section-title">行业痛点深度解析</h2>
+  <p class="section-sub">我们深入调研了数十个小B商家，总结出最影响经营的四个核心问题</p>
   <div class="pain-grid">
-    <div class="pain-card"><div class="pain-icon">🚪</div><div class="pain-title">门禁和计时分离，漏计、错计频发</div><div class="pain-desc">门禁是一个系统，计时是另一个系统。客户中途出门忘了锁门，时间继续计；或者门锁了但计时没停，账目和收入对不上</div></div>
-    <div class="pain-card"><div class="pain-icon">💰</div><div class="pain-title">预付金充值进来，退款时扯皮</div><div class="pain-desc">客户充值1000元，用了300元要退700，但手动算账经常算错。有的客户觉得退少了，有的觉得系统有问题，信任受损</div></div>
-    <div class="pain-card"><div class="pain-icon">📉</div><div class="pain-title">工作日上午基本空场，白白浪费资源</div><div class="pain-desc">下午晚上满座，但工作日早上午几乎没人。定价是固定的，不能灵活调整。空场率高的时段没有促销活动，客户没有提前预约的动力</div></div>
-    <div class="pain-card"><div class="pain-icon">⏰</div><div class="pain-title">空闲时段找不到人，价格再低也白搭</div><div class="pain-desc">建立了折扣机制，但没有人知道。客户想定低价时段，没有渠道通知；运营者想推特价，也发不出声音</div></div>
+    <div class="pain-card"><div class="pain-number">01</div><div class="pain-icon">📊</div><div class="pain-title">痛点一：信息分散，管理困难</div><div class="pain-desc">客户信息、订单数据、财务记录分散在各个地方，统一管理无从下手。每次要汇总数据都要花大半天时间，还容易出错。</div></div>
+    <div class="pain-card"><div class="pain-number">02</div><div class="pain-icon">⚠️</div><div class="pain-title">痛点二：流程繁琐，效率低下</div><div class="pain-desc">每天花大量时间处理重复性操作，人工录入容易出错。员工离职后交接困难，新人上手周期长。</div></div>
+    <div class="pain-card"><div class="pain-number">03</div><div class="pain-icon">📦</div><div class="pain-title">痛点三：数据缺失，决策困难</div><div class="pain-desc">没有数据支撑，只能凭感觉做决策。爆款预测不准确，库存积压，资金周转压力大。</div></div>
+    <div class="pain-card"><div class="pain-number">04</div><div class="pain-icon">💰</div><div class="pain-title">痛点四：成本上升，利润压缩</div><div class="pain-desc">人力成本上升，获客成本增加，但价格战让利润越来越薄。需要找到新的增长点。</div></div>
   </div>
 </section>
-<section class="section-features" id="features">
-  <div class="features-header"><div class="section-label">核心功能</div><h2 class="section-title">每一个功能，都对应一个真实场景</h2><p class="section-sub">不是功能堆砌，是实实在在帮空间提升入住率</p></div>
+
+<section class="section" id="features">
+  <div class="section-label">核心功能</div>
+  <h2 class="section-title">每一个功能，都解决一个实际问题</h2>
+  <p class="section-sub">不是功能堆砌，是帮助商家实实在在降本增效</p>
   <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon fi-green">🚪</div><div class="feature-title">门禁绑定计时</div><div class="feature-desc">门禁开关自动触发计时：开门即开台、锁门即停。不用两个系统对账，时间和收入完全一致。退场后30秒内账单生成</div><div class="feature-detail">门禁=计时 →</div></div>
-    <div class="feature-card"><div class="feature-icon fi-wood">💰</div><div class="feature-title">预付资金监管</div><div class="feature-desc">客户充值金额进入系统账户，消费从余额扣。余额退款系统自动算，客户随时查看流水。账目透明，双方都放心</div><div class="feature-detail">余额实时可查 →</div></div>
-    <div class="feature-card"><div class="feature-icon fi-light">🎯</div><div class="feature-title">淡时促销</div><div class="feature-desc">设置淡时时段（如工作日9:00-12:00），系统自动推送特价通知给附近潜在客户。扫码预约，淡时入场率提升明显</div><div class="feature-detail">淡时自动推送 →</div></div>
-    <div class="feature-card"><div class="feature-icon fi-brown">⏰</div><div class="feature-title">空闲时段特价</div><div class="feature-desc">空闲时段自动显示特价标签，吸引临时性客户。价格灵活可配，运营者随时调整，不用等技术排期</div><div class="feature-detail">价格随时调整 →</div></div>
-    <div class="feature-card"><div class="feature-icon fi-wood">📊</div><div class="feature-title">空间利用率报表</div><div class="feature-desc">每日/每周/每月各时段入住率自动统计。帮助识别哪些时段最热门、哪个房间最受欢迎，优化定价策略</div><div class="feature-detail">入住率数据驱动 →</div></div>
-    <div class="feature-card"><div class="feature-icon fi-green">📱</div><div class="feature-title">微信小程序</div><div class="feature-desc">客户小程序预约、开门、查余额；运营者手机端管订单、设特价、调价格。不用下载App</div><div class="feature-detail">微信即可使用 →</div></div>
+    <div class="feature-card"><div class="feature-icon fi-blue">📊</div><div class="feature-title">功能一：数据管理</div><div class="feature-desc">统一管理客户信息、订单数据、财务记录。一键导入导出，数据实时同步。告别Excel表格的混乱，让数据井井有条。</div><ul class="feature-subitems"><li>客户信息统一管理</li><li>订单数据实时追踪</li><li>财务记录自动汇总</li><li>一键导入导出Excel</li><li>数据实时同步多端</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-silver">⚠️</div><div class="feature-title">功能二：流程自动化</div><div class="feature-desc">将重复性操作自动化，减少人工干预。流程审批自动流转，异常情况及时预警。员工工作效率提升3倍。</div><ul class="feature-subitems"><li>审批流程自动化</li><li>异常情况实时预警</li><li>任务自动分配提醒</li><li>操作日志全程记录</li><li>员工效率提升3倍</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-light">📦</div><div class="feature-title">功能三：数据分析</div><div class="feature-desc">多维度数据分析，帮助识别爆款和滞销品。仪表盘展示核心KPI，一眼掌握全局经营状况。</div><ul class="feature-subitems"><li>核心KPI仪表盘</li><li>同比环比数据分析</li><li>爆款滞销品识别</li><li>预测性分析建议</li><li>报表一键导出</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-cyan">💰</div><div class="feature-title">功能四：成本控制</div><div class="feature-desc">精细化成本核算，找出利润流失点。智能推荐最优定价策略，帮助提升利润率。</div><ul class="feature-subitems"><li>精细化成本核算</li><li>利润流失点分析</li><li>智能定价建议</li><li>成本预警提醒</li><li>降本增效方案</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-green">📈</div><div class="feature-title">功能五：客户运营</div><div class="feature-desc">客户分层管理，差异化运营策略。提升复购率，增加客户生命周期价值。</div><ul class="feature-subitems"><li>客户分层管理</li><li>差异化运营策略</li><li>复购率提升方案</li><li>LTV客户价值分析</li><li>精准营销推送</li></ul></div>
   </div>
 </section>
-<section class="section-stats">
-  <div class="stats-track">
-    <div class="stat-item"><div class="stat-num">300+</div><div class="stat-label">覆盖空间数</div></div>
-    <div class="stat-item"><div class="stat-num">35%</div><div class="stat-label">淡时入住率提升</div></div>
-    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">计时准确率</div></div>
-    <div class="stat-item"><div class="stat-num">28%</div><div class="stat-label">整体营收提升</div></div>
+
+<section class="section" id="value" style="background:rgba(0,0,0,0.2);">
+  <div class="section-label">价值数据</div>
+  <h2 class="section-title">上线前后对比</h2>
+  <p class="section-sub">真实数据，真实提升</p>
+  <div class="value-grid">
+    <div class="value-item"><div class="value-label">管理效率</div><div class="value-before">30%</div><div class="value-arrow">→</div><div class="value-after">85%</div></div>
+    <div class="value-item"><div class="value-label">数据出错率</div><div class="value-before">15%</div><div class="value-arrow">→</div><div class="value-after">1%</div></div>
+    <div class="value-item"><div class="value-label">决策准确率</div><div class="value-before">40%</div><div class="value-arrow">→</div><div class="value-after">78%</div></div>
+    <div class="value-item"><div class="value-label">利润率</div><div class="value-before">12%</div><div class="value-arrow">→</div><div class="value-after">22%</div></div>
   </div>
 </section>
-<section class="section-pricing" id="pricing">
+
+<section class="section" id="comparison">
+  <div class="section-label">效果对比</div>
+  <h2 class="section-title">vs 传统方式</h2>
+  <p class="section-sub">全面超越传统手工操作</p>
+  <div class="comparison-table">
+    <div class="compare-header"><div>维度</div><div>传统方式</div><div>时享空间</div></div>
+    <div class="compare-row"><div class="compare-label">数据管理</div><div class="compare-old">分散在各个表格，容易丢失</div><div class="compare-arrow">→</div><div class="compare-new">统一云端管理，实时同步</div></div>
+    <div class="compare-row"><div class="compare-label">流程处理</div><div class="compare-old">人工处理，效率低易出错</div><div class="compare-arrow">→</div><div class="compare-new">自动化流转，效率提升3倍</div></div>
+    <div class="compare-row"><div class="compare-label">数据分析</div><div class="compare-old">凭感觉，无数据支撑</div><div class="compare-arrow">→</div><div class="compare-new">多维报表，数据驱动决策</div></div>
+    <div class="compare-row"><div class="compare-label">成本控制</div><div class="compare-old">成本不透明，难找问题</div><div class="compare-arrow">→</div><div class="compare-new">精细核算，智能建议</div></div>
+    <div class="compare-row"><div class="compare-label">客户运营</div><div class="compare-old">无分层，运营粗放</div><div class="compare-arrow">→</div><div class="compare-new">精细分层，精准营销</div></div>
+  </div>
+</section>
+
+<section class="section" id="cases">
+  <div class="section-label">客户案例</div>
+  <h2 class="section-title">他们都在用时享空间</h2>
+  <p class="section-sub">真实客户，真实反馈</p>
+  <div class="cases-grid">
+    <div class="case-card"><div class="case-header"><div class="case-avatar">A</div><div><div class="case-name">客户案例一</div><div class="case-type">某行业先行者</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>管理混乱，数据分散在各个表格，汇总一次要花3天时间。决策只能凭感觉，错误率高。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>数据统一管理，实时同步。汇总报告一键生成。决策有数据支撑，效率大幅提升。</p></div><div class="case-detail"><p>使用时享空间后，管理效率提升80%，决策准确率提升60%，利润增长35%。</p></div></div>
+    <div class="case-card"><div class="case-header"><div class="case-avatar">B</div><div><div class="case-name">客户案例二</div><div class="case-type">某行业快速增长型企业</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>业务流程繁琐，每个订单都要手动录入。员工加班是常态，但效率还是提不上去。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>流程自动化，订单自动流转。员工从繁琐操作中解放出来，有时间做更有价值的工作。</p></div><div class="case-detail"><p>使用时享空间后，员工效率提升3倍，加班时间减少60%，客户满意度提升至99%。</p></div></div>
+    <div class="case-card"><div class="case-header"><div class="case-avatar">C</div><div><div class="case-name">客户案例三</div><div class="case-type">某行业成熟型商家</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>成本不透明，不知道钱花在哪里。利润越来越薄，找不到问题所在。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>成本精细化核算，每笔支出清晰可见。智能定价建议帮助提升利润率达30%。</p></div><div class="case-detail"><p>使用时享空间后，利润率达22%，成本降低25%，现金流明显改善。</p></div></div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
   <div class="section-label">定价方案</div>
   <h2 class="section-title">简单透明，没有套路</h2>
+  <p class="section-sub">按年付费，永久使用，云端部署无需维护</p>
   <div class="pricing-card">
-    <div class="pricing-inner">
-      <div class="pricing-tag">SaaS · 云端部署</div>
-      <div class="pricing-price">¥3000<span> / 年</span></div>
-      <p class="pricing-desc">基础版 · 适合1-5个空间</p>
-      <ul class="pricing-features">
-        <li>门禁绑定计时</li>
-        <li>预付资金监管</li>
-        <li>淡时促销（自动推送）</li>
-        <li>空闲时段特价</li>
-        <li>空间利用率报表</li>
-        <li>微信小程序（客户+运营端）</li>
-      </ul>
-      <button class="btn-pricing">立即免费试用14天</button>
-    </div>
+    <div class="pricing-tag">SaaS 云端部署</div>
+    <div class="pricing-price">&#xA5;3000<span> / 年</span></div>
+    <p class="pricing-desc">基础版 适合小微商家</p>
+    <ul class="pricing-features">
+      <li>数据统一管理</li><li>流程自动化</li><li>基础数据分析</li><li>5个用户席位</li><li>Email技术支持</li>
+    </ul>
+    <button class="btn-pricing">立即免费试用14天</button>
   </div>
-  <p class="section-sub" style="margin-top:24px;">另有 ¥5000 / 年 专业版（含多门店管理、更多营销工具）</p>
+  <p class="section-sub" style="margin-top:24px;">另有付费版本：&#xA5;5000/年专业版（含高级分析）| &#xA5;8000/年旗舰版（含AI智能推荐）</p>
 </section>
-<footer><p>© 2026 时享空间 · 让共享空间的时间发挥最大价值</p></footer>
+
+<footer><p>© 2026 时享空间 让经营更高效</p></footer>
 <script>
-(function(){var c=document.getElementById('ripples');for(var i=0;i<6;i++){var r=document.createElement('div');r.className='ripple';var size=40+Math.random()*80;r.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(10+Math.random()*80)+'%;top:'+(10+Math.random()*80)+'%;animation-duration:'+(5+Math.random()*4)+'s;animation-delay:'+(Math.random()*4)+'s';c.appendChild(r);}})();
-document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var target=document.querySelector(this.getAttribute('href'));if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}});});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+(function(){var c=document.getElementById('animLayer');for(var i=0;i<8;i++){var d=document.createElement('div');d.className='anim';d.style.cssText='left:'+(5+Math.random()*90)+'%;width:2px;height:'+(80+Math.random()*120)+'px;top:0;background:'+'linear-gradient(135deg, #1a237e, #7c4dff)'+';animation-duration:'+(6+Math.random()*4)+'s;animation-delay:'+(Math.random()*4)+'s';c.appendChild(d);}})()
 </script>
 </body>
 </html>
+<section class="section" id="faq" style="background:rgba(0,0,0,0.15);">
+  <div class="section-label">常见问题</div>
+  <h2 class="section-title">您可能想问</h2>
+  <p class="section-sub">如果还有其他问题，欢迎联系我们</p>
+  <div style="max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 这个系统适合我的业务吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们的系统专为小B商家设计，适合月GMV在10万-500万的商家。如果您正在使用Excel或老旧系统管理业务，非常适合迁移过来。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 数据迁移麻烦吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们提供免费的数据迁移服务。您只需要提供现有的Excel或CSV文件，我们的工程师会帮您完成数据导入和清洗。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 需要多长时间能上手？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们的界面设计简洁直观，一般用户1-2天就能熟练使用。我们还提供视频教程和在线客服支持。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 售后服务怎么样？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们提供7x12小时在线客服支持，响应时间不超过2小时。每月定期回访使用情况，帮助解决遇到的问题。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 可以定制开发吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 可以的。旗舰版用户可以享受定制开发服务。我们会根据您的业务需求，定制开发特定功能模块。</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features2">
+  <div class="section-label">更多功能</div>
+  <h2 class="section-title">还有这些功能帮您</h2>
+  <p class="section-sub">持续迭代，不断推出新功能</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F512;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">数据安全</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">AES-256加密存储，99.99%可用性保障，数据自动备份3份。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F4F1;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">移动端支持</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">手机，平板、电脑多端同步，随时随地管理业务。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F504;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">API接口</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">开放API接口，支持对接ERP、CRM等其他系统。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F465;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">团队协作</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">多角色权限管理，团队协作更高效，数据隔离更安全。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F4CA;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">报表导出</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">支持Excel、PDF、CSV多种格式导出，方便做进一步分析。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F514;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">智能提醒</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">异常情况自动告警，微信、短信、邮件多渠道推送。</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;background:linear-gradient(135deg,rgba(13,71,161,0.1),transparent);padding:120px 24px;">
+  <div style="font-size:clamp(32px,5vw,48px);font-weight:800;margin-bottom:20px;">还在犹豫？先试试再说</div>
+  <p style="font-size:16px;color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto 40px;">14天免费试用，无需绑定信用卡。试用期间完整功能体验，不满意直接取消。</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+    <a href="#pricing" style="background:linear-gradient(135deg,#0d47a1,#90a4ae);color:#fff;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;">免费试用14天</a>
+    <a href="#features" style="border:1px solid rgba(255,255,255,0.06);color:#e3f2fd;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;">了解更多功能</a>
+  </div>
+</section>

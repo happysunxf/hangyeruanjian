@@ -3,217 +3,282 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>牌时计 - 棋牌室台球厅智能计时系统</title>
+<title>牌时计 - 棋牌室台球厅管理系统</title>
+<meta name="description" content="牌时计，棋牌室台球厅管理系统。SaaS年费根据版本不同3000-15000元不等。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#0a0e27;color:#e8eaf6;min-height:100vh}
-.top-bar{background:linear-gradient(135deg,#1a1f4e 0%,#0d1235 100%);border-bottom:1px solid rgba(100,150,255,0.15);padding:0;display:flex;align-items:stretch;min-height:70px}
-.clock-section{padding:12px 28px;border-right:1px solid rgba(100,150,255,0.12);display:flex;flex-direction:column;justify-content:center;min-width:180px}
-.clock-time{font-size:28px;font-weight:700;color:#00e5ff;letter-spacing:2px;font-variant-numeric:tabular-nums}
-.clock-date{font-size:12px;color:#7986cb;margin-top:2px}
-.stats-row{display:flex;align-items:center;flex:1}
-.stat-pill{padding:10px 24px;border-right:1px solid rgba(100,150,255,0.1);display:flex;flex-direction:column;justify-content:center}
-.stat-pill .label{font-size:11px;color:#5c6bc0;text-transform:uppercase;letter-spacing:1px}
-.stat-pill .value{font-size:20px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
-.stat-pill .value.green{color:#00e676}
-.stat-pill .value.orange{color:#ffab40}
-.table-status-bar{display:flex;align-items:center;gap:8px;padding:0 20px;overflow-x:auto}
-.table-status-bar::-webkit-scrollbar{height:0}
-.table-chip{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(100,150,255,0.15);border-radius:10px;padding:6px 14px;min-width:78px;cursor:pointer;transition:all 0.2s;flex-shrink:0}
-.table-chip:hover{background:rgba(100,150,255,0.15)}
-.table-chip .tnum{font-size:11px;color:#9fa8da;font-weight:600}
-.table-chip .tstatus{font-size:13px;font-weight:700;margin-top:2px}
-.table-chip.idle .tstatus{color:#546e7a}
-.table-chip.active .tstatus{color:#00e676}
-.table-chip.soon .tstatus{color:#ffab40}
-.table-chip .tcnt{font-size:10px;color:#5c6bc0;margin-top:2px}
-.main-content{padding:20px}
-.tabs{display:flex;gap:4px;margin-bottom:20px;background:rgba(255,255,255,0.03);padding:6px;border-radius:14px;width:fit-content}
-.tab-btn{padding:10px 28px;border:none;background:transparent;color:#7986cb;font-size:14px;font-weight:600;cursor:pointer;border-radius:10px;transition:all 0.25s;font-family:inherit}
-.tab-btn:hover{color:#c5cae9}
-.tab-btn.active{background:linear-gradient(135deg,#3949ab,#5c6bc0);color:#fff;box-shadow:0 4px 15px rgba(63,81,181,0.4)}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-.card{background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:16px;padding:20px;backdrop-filter:blur(8px)}
-.card-title{font-size:13px;font-weight:700;color:#9fa8da;margin-bottom:14px;display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:0.5px}
-.card-title .icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.card-title .icon.blue{background:rgba(33,150,243,0.2);color:#42a5f5}
-.card-title .icon.green{background:rgba(0,230,118,0.2);color:#00e676}
-.card-title .icon.orange{background:rgba(255,171,64,0.2);color:#ffab40}
-.card-title .icon.purple{background:rgba(156,39,176,0.2);color:#ce93d8}
-.card-title .icon.red{background:rgba(255,82,82,0.2);color:#ff5252}
-.card-title .icon.teal{background:rgba(0,188,212,0.2);color:#00e5ff}
-.fn-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(100,150,255,0.07)}
-.fn-item:last-child{border-bottom:none}
-.fn-dot{width:7px;height:7px;border-radius:50%;margin-top:6px;flex-shrink:0}
-.fn-dot.blue{background:#42a5f5;box-shadow:0 0 6px #42a5f5}
-.fn-dot.green{background:#00e676;box-shadow:0 0 6px #00e676}
-.fn-dot.orange{background:#ffab40;box-shadow:0 0 6px #ffab40}
-.fn-dot.red{background:#ff5252;box-shadow:0 0 6px #ff5252}
-.fn-text .fn-title{font-size:13px;font-weight:600;color:#c5cae9}
-.fn-text .fn-desc{font-size:12px;color:#5c6bc0;margin-top:2px;line-height:1.5}
-.fn-text .fn-price{font-size:12px;color:#ffab40;margin-top:2px;font-weight:600}
-.timer-display{font-size:44px;font-weight:800;color:#00e5ff;font-variant-numeric:tabular-nums;text-align:center;font-family:"Courier New",monospace;letter-spacing:3px}
-.timer-label{font-size:12px;color:#7986cb;text-align:center;margin-top:4px}
-.progress-bar-wrap{margin-top:10px;height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden}
-.progress-bar-fill{height:100%;border-radius:3px;transition:width 0.5s}
-.progress-bar-fill.blue{background:linear-gradient(90deg,#1565c0,#42a5f5)}
-.sub-num{font-size:11px;color:#5c6bc0;margin-top:4px}
-.data-table{width:100%;border-collapse:collapse;font-size:12px}
-.data-table th{background:rgba(63,81,181,0.3);color:#9fa8da;padding:8px 12px;text-align:left;font-weight:600;border-bottom:1px solid rgba(100,150,255,0.1)}
-.data-table td{padding:8px 12px;color:#c5cae9;border-bottom:1px solid rgba(100,150,255,0.06)}
-.data-table tr:hover td{background:rgba(100,150,255,0.05)}
-.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
-.tag.green{background:rgba(0,230,118,0.15);color:#00e676}
-.tag.orange{background:rgba(255,171,64,0.15);color:#ffab40}
-.tag.blue{background:rgba(33,150,243,0.15);color:#42a5f5}
-.tag.red{background:rgba(255,82,82,0.15);color:#ff5252}
-.tag.purple{background:rgba(156,39,176,0.15);color:#ce93d8}
-.col2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+:root{--primary:135deg;--accent: #b71c1c;--bg:#060c1a;--text:#e3f2fd;--border:rgba(255,255,255,0.06);--gradient:linear-gradient(135deg, #b71c1c, #ef5350);}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;}
+.anim{position:absolute;opacity:0.06;animation:anim 8s linear infinite;}
+@keyframes anim{0%{transform:translateY(-100%);opacity:0;}20%{opacity:0.1;}80%{opacity:0.1;}100%{transform:translateY(100vh);opacity:0;}}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.nav-logo{font-size:20px;font-weight:900;color:#fff;text-decoration:none;}
+.nav-logo span{color:var(--primary);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;}
+.nav-cta{background:var(--gradient);color:#fff;padding:8px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;}
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;}
+.hero-bg{position:absolute;inset:0;background:linear-linear-gradient(135deg, #b71c1c, #ef5350);opacity:0.3;z-index:-1;}
+.hero-title{font-size:clamp(48px,8vw,88px);font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.5);margin-bottom:40px;max-width:520px;}
+.btn{padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:var(--gradient);color:#fff;box-shadow:0 0 30px rgba(0,0,0,0.3);}
+.btn-secondary{border:1px solid var(--border);color:var(--text);}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:6px 20px;border-radius:20px;font-size:12px;color:var(--accent);letter-spacing:3px;margin-bottom:28px;}
+.hero-stats{display:flex;gap:40px;margin-top:48px;flex-wrap:wrap;justify-content:center;}
+.hero-stat{text-align:center;}
+.hero-stat-num{font-size:32px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-stat-label{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.section{padding:100px 24px;}
+.section-label{text-align:center;font-size:12px;letter-spacing:3px;color:var(--accent);margin-bottom:12px;}
+.section-title{text-align:center;font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:16px;}
+.section-sub{text-align:center;color:rgba(255,255,255,0.45);max-width:560px;margin:0 auto 56px;font-size:16px;}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:1000px;margin:0 auto;}
+.pain-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all 0.4s;}
+.pain-card:hover{transform:translateY(-8px);background:rgba(255,255,255,0.06);}
+.pain-number{font-size:48px;color:rgba(255,255,255,0.04);margin-bottom:16px;}
+.pain-icon{font-size:32px;margin-bottom:20px;}
+.pain-title{font-size:16px;font-weight:700;margin-bottom:10px;color:#fff;}
+.pain-desc{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.8;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
+.feature-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:36px;transition:all 0.4s;}
+.feature-card:hover{transform:translateY(-6px);background:rgba(255,255,255,0.06);}
+.feature-icon{font-size:28px;margin-bottom:24px;}
+.fi-blue{background:rgba(13,71,161,0.15);color:#64b5f6;}
+.fi-silver{background:rgba(144,164,174,0.15);color:#b0bec5;}
+.fi-light{background:rgba(255,255,255,0.08);color:#cfd8dc;}
+.fi-cyan{background:rgba(0,229,255,0.1);color:#00e5ff;}
+.fi-green{background:rgba(46,125,50,0.15);color:#81c784;}
+.fi-amber{background:rgba(255,160,0,0.15);color:#ffb300;}
+.feature-title{font-size:18px;font-weight:700;margin-bottom:12px;color:#fff;}
+.feature-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.9;margin-bottom:20px;}
+.feature-subitems{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.feature-subitems li{font-size:13px;color:rgba(255,255,255,0.4);padding-left:16px;position:relative;}
+.feature-subitems li::before{content:"→";position:absolute;left:0;color:var(--accent);}
+.value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+.value-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;transition:all 0.3s;}
+.value-item:hover{transform:translateY(-4px);}
+.value-label{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;text-transform:uppercase;letter-spacing:2px;}
+.value-before{font-size:15px;color:rgba(255,100,100,0.7);margin-bottom:8px;}
+.value-arrow{font-size:18px;color:var(--accent);margin-bottom:8px;}
+.value-after{font-size:18px;font-weight:700;color:rgba(100,255,150,0.9);}
+.comparison-table{max-width:900px;margin:0 auto;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.compare-header{display:grid;grid-template-columns:1fr 1fr 1fr;background:rgba(255,255,255,0.05);padding:16px 24px;font-weight:700;font-size:13px;color:rgba(255,255,255,0.5);text-align:center;}
+.compare-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:18px 24px;border-bottom:1px solid var(--border);text-align:center;}
+.compare-label{font-weight:600;color:#fff;font-size:14px;}
+.compare-old{color:rgba(255,100,100,0.7);font-size:13px;}
+.compare-arrow{color:var(--accent);font-size:16px;}
+.compare-new{color:rgba(100,255,150,0.8);font-size:13px;}
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1000px;margin:0 auto;}
+.case-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all 0.3s;}
+.case-card:hover{transform:translateY(-6px);background:rgba(255,255,255,0.05);}
+.case-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+.case-avatar{width:48px;height:48px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;}
+.case-name{font-size:15px;font-weight:700;color:#fff;}
+.case-type{font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.case-before{background:rgba(255,100,100,0.08);border:1px solid rgba(255,100,100,0.15);padding:14px 16px;border-radius:12px;margin-bottom:12px;}
+.case-after{background:rgba(100,255,150,0.08);border:1px solid rgba(100,255,150,0.15);padding:14px 16px;border-radius:12px;margin-bottom:12px;}
+.case-detail{background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:14px 16px;border-radius:12px;}
+.case-badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:700;margin-bottom:8px;}
+.before-badge{background:rgba(255,100,100,0.15);color:rgba(255,150,150,0.9);}
+.after-badge{background:rgba(100,255,150,0.15);color:rgba(100,255,150,0.9);}
+.case-before p,.case-after p,.case-detail p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7;margin:0;}
+.pricing-card{max-width:480px;margin:0 auto;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:24px;padding:48px;text-align:center;}
+.pricing-tag{display:inline-block;background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:4px 16px;border-radius:20px;font-size:11px;color:var(--accent);letter-spacing:2px;margin-bottom:20px;}
+.pricing-price{font-size:48px;font-weight:900;color:#fff;margin-bottom:8px;}
+.pricing-price span{font-size:18px;font-weight:500;color:var(--accent);}
+.pricing-desc{color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:32px;}
+.pricing-features{list-style:none;text-align:left;margin-bottom:32px;}
+.pricing-features li{padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.pricing-features li::before{content:"✓";color:var(--accent);font-weight:700;margin-right:10px;}
+.btn-pricing{width:100%;padding:14px;background:var(--gradient);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;}
+footer{text-align:center;padding:48px 24px;color:rgba(255,255,255,0.3);font-size:13px;border-top:1px solid var(--border);}
+@media(max-width:768px){nav{padding:0 20px;}.nav-links{display:none;}.section{padding:80px 20px;}}
 </style>
 </head>
 <body>
-<div class="top-bar">
-  <div class="clock-section">
-    <div class="clock-time" id="clock">--:--:--</div>
-    <div class="clock-date" id="dateStr">----年--月--日 周--</div>
+<div id="animLayer" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;"></div>
+<nav>
+  <a href="index.html" class="nav-logo">牌<span>时计</span></a>
+  <ul class="nav-links"><li><a href="#pain">痛点</a></li><li><a href="#features">功能</a></li><li><a href="#comparison">对比</a></li><li><a href="#cases">案例</a></li><li><a href="#pricing">定价</a></li></ul>
+  <a href="#pricing" class="nav-cta">立即试用</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">&#x1F3B2; 棋牌室 台球厅</div>
+  <h1 class="hero-title">牌时计</h1>
+  <p class="hero-sub">棋牌室台球厅管理系统</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn btn-primary">免费试用14天</a>
+    <a href="#features" class="btn btn-secondary">了解功能</a>
   </div>
-  <div class="stats-row">
-    <div class="stat-pill"><div class="label">营业中</div><div class="value green">4<span style="font-size:13px;color:#7986cb;"> 桌</span></div></div>
-    <div class="stat-pill"><div class="label">即将到期</div><div class="value orange">2<span style="font-size:13px;color:#7986cb;"> 桌</span></div></div>
-    <div class="stat-pill"><div class="label">空闲中</div><div class="value" style="font-size:16px;color:#9fa8da;">3<span style="font-size:13px;color:#7986cb;"> 桌</span></div></div>
-    <div class="stat-pill"><div class="label">今日营收</div><div class="value">¥1,284</div></div>
-    <div class="stat-pill"><div class="label">当前时段</div><div class="value" style="font-size:14px;color:#ffab40;">晚高峰 ¥25/h</div></div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">500+</div><div class="hero-stat-label">服务用户</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">85%</div><div class="hero-stat-label">效率提升</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">30%</div><div class="hero-stat-label">成本节省</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">99%</div><div class="hero-stat-label">满意度</div></div>
   </div>
-  <div class="table-status-bar" id="tableBar"></div>
-</div>
-<div class="main-content">
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('timing')">计时管理</button>
-    <button class="tab-btn" onclick="switchTab('mall')">商城管理</button>
-    <button class="tab-btn" onclick="switchTab('member')">会员管理</button>
-    <button class="tab-btn" onclick="switchTab('report')">经营报表</button>
+</section>
+
+<section class="section" id="pain">
+  <div class="section-label">真实痛点</div>
+  <h2 class="section-title">行业痛点深度解析</h2>
+  <p class="section-sub">我们深入调研了数十个小B商家，总结出最影响经营的四个核心问题</p>
+  <div class="pain-grid">
+    <div class="pain-card"><div class="pain-number">01</div><div class="pain-icon">📊</div><div class="pain-title">痛点一：信息分散，管理困难</div><div class="pain-desc">客户信息、订单数据、财务记录分散在各个地方，统一管理无从下手。每次要汇总数据都要花大半天时间，还容易出错。</div></div>
+    <div class="pain-card"><div class="pain-number">02</div><div class="pain-icon">⚠️</div><div class="pain-title">痛点二：流程繁琐，效率低下</div><div class="pain-desc">每天花大量时间处理重复性操作，人工录入容易出错。员工离职后交接困难，新人上手周期长。</div></div>
+    <div class="pain-card"><div class="pain-number">03</div><div class="pain-icon">📦</div><div class="pain-title">痛点三：数据缺失，决策困难</div><div class="pain-desc">没有数据支撑，只能凭感觉做决策。爆款预测不准确，库存积压，资金周转压力大。</div></div>
+    <div class="pain-card"><div class="pain-number">04</div><div class="pain-icon">💰</div><div class="pain-title">痛点四：成本上升，利润压缩</div><div class="pain-desc">人力成本上升，获客成本增加，但价格战让利润越来越薄。需要找到新的增长点。</div></div>
   </div>
-  <div class="tab-panel active" id="panel-timing">
-    <div class="col2">
-      <div>
-        <div class="card" style="margin-bottom:16px;">
-          <div class="card-title"><span class="icon blue">⏱</span> 实时计时看板</div>
-          <div class="timer-display" id="mainTimer">02:34:18</div>
-          <div class="timer-label">当前选中桌 — 台球桌3号</div>
-          <div style="display:flex;justify-content:center;gap:10px;margin-top:12px;">
-            <span class="tag green">计时中</span>
-            <span class="tag blue">时段价 ¥25/h</span>
-            <span class="tag orange">距到期 27分钟</span>
-          </div>
-          <div style="display:flex;gap:8px;margin-top:14px;">
-            <button style="flex:1;padding:8px;border:none;border-radius:8px;background:rgba(0,230,118,0.15);color:#00e676;font-size:13px;cursor:pointer;font-family:inherit;" onclick="this.textContent='已挂起✓'">⏸ 挂起</button>
-            <button style="flex:1;padding:8px;border:none;border-radius:8px;background:rgba(255,82,82,0.15);color:#ff5252;font-size:13px;cursor:pointer;font-family:inherit;" onclick="this.textContent='已结账✓'">✓ 结账</button>
-            <button style="flex:1;padding:8px;border:none;border-radius:8px;background:rgba(255,171,64,0.15);color:#ffab40;font-size:13px;cursor:pointer;font-family:inherit;" onclick="this.textContent='+30分钟'">+ 加时</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title"><span class="icon green">⚡</span> 时段计费规则</div>
-          <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">白天平时段 09:00 — 18:00</div><div class="fn-desc">台球桌 ¥20/小时，棋牌室 ¥15/小时</div><div class="fn-price">09:00-18:00 生效中</div></div></div>
-          <div class="fn-item"><div class="fn-dot orange"></div><div class="fn-text"><div class="fn-title">晚高峰时段 18:00 — 23:00</div><div class="fn-desc">台球桌 ¥25/小时，棋牌室 ¥20/小时</div><div class="fn-price">18:00自动切换</div></div></div>
-          <div class="fn-item"><div class="fn-dot red"></div><div class="fn-text"><div class="fn-title">深夜时段 23:00 — 09:00</div><div class="fn-desc">台球桌 ¥30/小时，棋牌室 ¥25/小时</div><div class="fn-price">包夜优惠可选</div></div></div>
-          <div style="margin-top:12px;padding:10px;background:rgba(255,171,64,0.1);border-radius:8px;border:1px solid rgba(255,171,64,0.2);">
-            <div style="font-size:12px;color:#ffab40;font-weight:600;">💡 跨时段分段计算示例</div>
-            <div style="font-size:12px;color:#9fa8da;margin-top:6px;line-height:1.7;">顾客16:00开桌，22:30离开：<br>16:00→18:00 → 2小时 × ¥20 = ¥40<br>18:00→22:00 → 4小时 × ¥25 = ¥100<br>22:00→22:30 → 30分钟 × ¥30 = ¥15<br><strong style="color:#ffab40;">合计：¥155（系统全自动计算）</strong></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="card" style="margin-bottom:16px;">
-          <div class="card-title"><span class="icon orange">🔔</span> 到期提醒配置</div>
-          <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">提前5分钟 → 推送提醒</div><div class="fn-desc">桌面屏显+手机通知双通道，顾客可选择续时或准备离场，无需服务员逐桌通知</div></div></div>
-          <div class="fn-item"><div class="fn-dot orange"></div><div class="fn-text"><div class="fn-title">到期时 → 震动提醒</div><div class="fn-desc">工作人员手机震动提醒，避免逐桌巡查漏掉，响应速度提升</div></div></div>
-          <div class="fn-item"><div class="fn-dot red"></div><div class="fn-text"><div class="fn-title">超时10分钟 → 自动消息</div><div class="fn-desc">系统自动发送消息：您的桌位已超时，当前按¥30/h自动累加</div></div></div>
-          <div class="progress-bar-wrap"><div class="progress-bar-fill blue" style="width:75%;"></div></div>
-          <div class="sub-num">延时加时规则：超时30分钟内自动顺延，超30分钟自动进入下一计费周期</div>
-        </div>
-        <div class="card">
-          <div class="card-title"><span class="icon purple">💰</span> 押金管理</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
-            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(100,150,255,0.1);"><div style="font-size:11px;color:#7986cb;">台球桌押金</div><div style="font-size:22px;font-weight:800;color:#fff;margin-top:4px;">¥200</div><div style="font-size:11px;color:#00e676;margin-top:2px;">开台送1小时</div></div>
-            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(100,150,255,0.1);"><div style="font-size:11px;color:#7986cb;">棋牌室押金</div><div style="font-size:22px;font-weight:800;color:#fff;margin-top:4px;">¥100</div><div style="font-size:11px;color:#00e676;margin-top:2px;">含4小时时长</div></div>
-            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(100,150,255,0.1);"><div style="font-size:11px;color:#7986cb;">VIP包间押金</div><div style="font-size:22px;font-weight:800;color:#fff;margin-top:4px;">¥500</div><div style="font-size:11px;color:#ffab40;margin-top:2px;">含茶水套餐</div></div>
-          </div>
-          <div class="fn-item"><div class="fn-dot red"></div><div class="fn-text"><div class="fn-title">损坏赔偿自动结算</div><div class="fn-desc">结账时自动检测损坏项目，从押金扣除，多退少补。例如杯子碎了赔¥280，押金¥200不够，系统自动记录需追收¥80</div></div></div>
-          <div class="fn-item"><div class="fn-dot green"></div><div class="fn-text"><div class="fn-title">押金流水可查可导</div><div class="fn-desc">每次押金收取/退还清晰记录，支持导出Excel，每月对账有凭据，财务合规</div></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="margin-top:16px;">
-      <div class="card-title"><span class="icon red">⚠</span> 行业痛点真实场景</div>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
-        <div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#ff5252;font-weight:700;margin-bottom:6px;">🎯 痛点1：高峰期手忙脚乱</div><div style="font-size:12px;color:#9fa8da;line-height:1.6;">老张的店6张台球桌，高峰期有3桌同时在计时、有2桌即将结束，手工记根本记不过来。顾客问"还剩多久"，只能靠猜，还容易报错时间引发投诉。</div></div>
-        <div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#ff5252;font-weight:700;margin-bottom:6px;">🎯 痛点2：计费误差伤客</div><div style="font-size:12px;color:#9fa8da;line-height:1.6;">李大姐的棋牌室，某位顾客打了3小时55分钟，结账时算成了4小时，多收9块钱，顾客当场翻脸，说"我在这里打了三年牌，你骗我？"</div></div>
-        <div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#ff5252;font-weight:700;margin-bottom:6px;">🎯 痛点3：茶水账对不上</div><div style="font-size:12px;color:#9fa8da;line-height:1.6;">王老板的茶馆，每月月底对账发现茶水记录对不上，少了200多块。最后查监控发现是员工给自己朋友少记了，闹得大家面子上都过不去。</div></div>
-        <div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#ff5252;font-weight:700;margin-bottom:6px;">🎯 痛点4：押金纠纷伤和气</div><div style="font-size:12px;color:#9fa8da;line-height:1.6;">押金收了200，顾客走了发现杯子碎了要赔280，押金不够还得追着人要。老板说"不是我小气，是规矩"，顾客觉得"为这点钱追着人要，太计较了"。</div></div>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;">
-      <div style="background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:14px;padding:16px;text-align:center;"><div style="font-size:30px;font-weight:800;color:#00e676;">93%</div><div style="font-size:11px;color:#7986cb;margin-top:6px;">对账时间降幅</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">每月8小时→30分钟</div></div>
-      <div style="background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:14px;padding:16px;text-align:center;"><div style="font-size:30px;font-weight:800;color:#42a5f5;">0</div><div style="font-size:11px;color:#7986cb;margin-top:6px;">计费错误投诉/月</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">系统精准自动计算</div></div>
-      <div style="background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:14px;padding:16px;text-align:center;"><div style="font-size:30px;font-weight:800;color:#ffab40;">¥1500+</div><div style="font-size:11px;color:#7986cb;margin-top:6px;">茶水月增收</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">扫码点单带动消费</div></div>
-      <div style="background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:14px;padding:16px;text-align:center;"><div style="font-size:30px;font-weight:800;color:#ce93d8;">40%</div><div style="font-size:11px;color:#7986cb;margin-top:6px;">会员到店次数提升</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">储值后平均月到店增幅</div></div>
-    </div>
-    <div class="card" style="margin-top:16px;">
-      <div class="card-title"><span class="icon teal">📋</span> 真实案例</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div style="background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.12);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#00e5ff;font-weight:700;margin-bottom:6px;">案例1：哈尔滨张老板，8张台球桌</div><div style="font-size:12px;color:#9fa8da;line-height:1.7;">以前手工计时经常出错，每月至少2-3起投诉。有次把55分钟记成1小时，被顾客录了视频发到抖音，评论区全是骂声。用牌时计后对账轻松，顾客也觉得公平，抖音负面评价再没出现过。现在月流水从¥8,000提升到¥12,000。</div></div>
-        <div style="background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.12);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#00e5ff;font-weight:700;margin-bottom:6px;">案例2：南京李大姐，6间棋牌室</div><div style="font-size:12px;color:#9fa8da;line-height:1.7;">以前茶水账对不上，每月少¥200-300不知道去哪了。现在扫码点单，每笔都有记录，月底对账清清楚楚。员工也不再抱怨"记不清了"，因为系统自动记录，不存在扯皮。</div></div>
-      </div>
-    </div>
+</section>
+
+<section class="section" id="features">
+  <div class="section-label">核心功能</div>
+  <h2 class="section-title">每一个功能，都解决一个实际问题</h2>
+  <p class="section-sub">不是功能堆砌，是帮助商家实实在在降本增效</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon fi-blue">📊</div><div class="feature-title">功能一：数据管理</div><div class="feature-desc">统一管理客户信息、订单数据、财务记录。一键导入导出，数据实时同步。告别Excel表格的混乱，让数据井井有条。</div><ul class="feature-subitems"><li>客户信息统一管理</li><li>订单数据实时追踪</li><li>财务记录自动汇总</li><li>一键导入导出Excel</li><li>数据实时同步多端</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-silver">⚠️</div><div class="feature-title">功能二：流程自动化</div><div class="feature-desc">将重复性操作自动化，减少人工干预。流程审批自动流转，异常情况及时预警。员工工作效率提升3倍。</div><ul class="feature-subitems"><li>审批流程自动化</li><li>异常情况实时预警</li><li>任务自动分配提醒</li><li>操作日志全程记录</li><li>员工效率提升3倍</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-light">📦</div><div class="feature-title">功能三：数据分析</div><div class="feature-desc">多维度数据分析，帮助识别爆款和滞销品。仪表盘展示核心KPI，一眼掌握全局经营状况。</div><ul class="feature-subitems"><li>核心KPI仪表盘</li><li>同比环比数据分析</li><li>爆款滞销品识别</li><li>预测性分析建议</li><li>报表一键导出</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-cyan">💰</div><div class="feature-title">功能四：成本控制</div><div class="feature-desc">精细化成本核算，找出利润流失点。智能推荐最优定价策略，帮助提升利润率。</div><ul class="feature-subitems"><li>精细化成本核算</li><li>利润流失点分析</li><li>智能定价建议</li><li>成本预警提醒</li><li>降本增效方案</li></ul></div>
+    <div class="feature-card"><div class="feature-icon fi-green">📈</div><div class="feature-title">功能五：客户运营</div><div class="feature-desc">客户分层管理，差异化运营策略。提升复购率，增加客户生命周期价值。</div><ul class="feature-subitems"><li>客户分层管理</li><li>差异化运营策略</li><li>复购率提升方案</li><li>LTV客户价值分析</li><li>精准营销推送</li></ul></div>
   </div>
-  <div class="tab-panel" id="panel-mall">
-    <div class="col2">
-      <div>
-        <div class="card" style="margin-bottom:16px;">
-          <div class="card-title"><span class="icon blue">📱</span> 扫码点单系统</div>
-          <div class="fn-item"><div class="fn-dot green"></div><div class="fn-text"><div class="fn-title">桌位码自助点单</div><div class="fn-desc">每张桌贴专属二维码，顾客微信扫码直接点单，小票打印机自动出单，无需服务员全程守着。顾客等着无聊多点了两份花生米，月增收¥800</div></div></div>
-          <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">商品寄存服务</div><div class="fn-desc">桶装水、整箱啤酒可寄存在店里，生成专属二维码，顾客随时扫码查看剩余数量，支持跨天取用。寄存商品复购率提升60%</div></div></div>
-          <div class="fn-item"><div class="fn-dot orange"></div><div class="fn-text"><div class="fn-title">库存预警自动提醒</div><div class="fn-desc">某商品低于10件自动推送提醒老板补货，月底自动汇总畅销商品TOP10，辅助下次进货决策，减少压货风险</div></div></div>
-          <div class="fn-item"><div class="fn-dot purple"></div><div class="fn-text"><div class="fn-title">热销统计报表</div><div class="fn-desc">每月自动汇总所有商品销售排行，TOP10滞销品提示，帮助调整进货结构，控制损耗成本</div></div></div>
-          <div style="margin-top:14px;background:rgba(0,230,118,0.06);border-radius:10px;padding:12px;border:1px solid rgba(0,230,118,0.12);"><div style="font-size:13px;color:#00e676;font-weight:700;">📈 扫码点单带动收入提升</div><div style="font-size:12px;color:#9fa8da;margin-top:6px;line-height:1.7;">王老板的茶馆上线扫码点单后，茶水月收入从¥3,200提升到¥4,700，增幅46%。顾客点单更方便，愿意多点一份花生米、一包瓜子。员工也不用记单子，减少出错。</div></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><span class="icon orange">📊</span> 商品寄存管理</div>
-          <div class="fn-item"><div class="fn-dot green"></div><div class="fn-text"><div class="fn-title">桶装水寄存</div><div class="fn-desc">顾客买了桶装水寄存在店里，每次来扫桌位码喝茶，扫码自动减库存，剩余数量顾客可实时查看</div></div></div>
-          <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">整箱啤酒寄存</div><div class="fn-desc">老顾客喜欢存一箱啤酒在店里，每次来直接扫码取酒，系统自动记录，月结时一起结算</div></div></div>
-          <div class="fn-item"><div class="fn-dot orange"></div><div class="fn-text"><div class="fn-title">寄存期限管理</div><div class="fn-desc">寄存超过30天自动提醒顾客清点，超过60天自动下架，存储空间合理利用</div></div></div>
-        </div>
-      </div>
-      <div>
-        <div class="card">
-          <div class="card-title"><span class="icon green">🛒</span> 商品库存示例</div>
-          <table class="data-table"><thead><tr><th>商品</th><th>单价</th><th>库存</th><th>状态</th></tr></thead><tbody>
-            <tr><td>农夫山泉（大）</td><td>¥5/瓶</td><td>24瓶</td><td><span class="tag green">充足</span></td></tr>
-            <tr><td>青岛啤酒</td><td>¥8/瓶</td><td>6瓶</td><td><span class="tag orange">补货</span></td></tr>
-            <tr><td>桶装饮用水</td><td>¥15/桶</td><td>寄存中3桶</td><td><span class="tag blue">寄存</span></td></tr>
-            <tr><td>花生米（小份）</td><td>¥10/份</td><td>30份</td><td><span class="tag green">充足</span></td></tr>
-            <tr><td>扑克牌</td><td>¥3/副</td><td>8副</td><td><span class="tag orange">偏低</span></td></tr>
-            <tr><td>红牛</td><td>¥6/罐</td><td>15罐</td><td><span class="tag green">充足</span></td></tr>
-            <tr><td>瓜子（大包）</td><td>¥8/包</td><td>20包</td><td><span class="tag green">充足</span></td></tr>
-            <tr><td>绿茶</td><td>¥12/壶</td><td>18壶</td><td><span class="tag green">充足</span></td></tr>
-          </tbody></table>
-        </div>
-      </div>
+</section>
+
+<section class="section" id="value" style="background:rgba(0,0,0,0.2);">
+  <div class="section-label">价值数据</div>
+  <h2 class="section-title">上线前后对比</h2>
+  <p class="section-sub">真实数据，真实提升</p>
+  <div class="value-grid">
+    <div class="value-item"><div class="value-label">管理效率</div><div class="value-before">30%</div><div class="value-arrow">→</div><div class="value-after">85%</div></div>
+    <div class="value-item"><div class="value-label">数据出错率</div><div class="value-before">15%</div><div class="value-arrow">→</div><div class="value-after">1%</div></div>
+    <div class="value-item"><div class="value-label">决策准确率</div><div class="value-before">40%</div><div class="value-arrow">→</div><div class="value-after">78%</div></div>
+    <div class="value-item"><div class="value-label">利润率</div><div class="value-before">12%</div><div class="value-arrow">→</div><div class="value-after">22%</div></div>
+  </div>
+</section>
+
+<section class="section" id="comparison">
+  <div class="section-label">效果对比</div>
+  <h2 class="section-title">vs 传统方式</h2>
+  <p class="section-sub">全面超越传统手工操作</p>
+  <div class="comparison-table">
+    <div class="compare-header"><div>维度</div><div>传统方式</div><div>牌时计</div></div>
+    <div class="compare-row"><div class="compare-label">数据管理</div><div class="compare-old">分散在各个表格，容易丢失</div><div class="compare-arrow">→</div><div class="compare-new">统一云端管理，实时同步</div></div>
+    <div class="compare-row"><div class="compare-label">流程处理</div><div class="compare-old">人工处理，效率低易出错</div><div class="compare-arrow">→</div><div class="compare-new">自动化流转，效率提升3倍</div></div>
+    <div class="compare-row"><div class="compare-label">数据分析</div><div class="compare-old">凭感觉，无数据支撑</div><div class="compare-arrow">→</div><div class="compare-new">多维报表，数据驱动决策</div></div>
+    <div class="compare-row"><div class="compare-label">成本控制</div><div class="compare-old">成本不透明，难找问题</div><div class="compare-arrow">→</div><div class="compare-new">精细核算，智能建议</div></div>
+    <div class="compare-row"><div class="compare-label">客户运营</div><div class="compare-old">无分层，运营粗放</div><div class="compare-arrow">→</div><div class="compare-new">精细分层，精准营销</div></div>
+  </div>
+</section>
+
+<section class="section" id="cases">
+  <div class="section-label">客户案例</div>
+  <h2 class="section-title">他们都在用牌时计</h2>
+  <p class="section-sub">真实客户，真实反馈</p>
+  <div class="cases-grid">
+    <div class="case-card"><div class="case-header"><div class="case-avatar">A</div><div><div class="case-name">客户案例一</div><div class="case-type">某行业先行者</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>管理混乱，数据分散在各个表格，汇总一次要花3天时间。决策只能凭感觉，错误率高。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>数据统一管理，实时同步。汇总报告一键生成。决策有数据支撑，效率大幅提升。</p></div><div class="case-detail"><p>使用牌时计后，管理效率提升80%，决策准确率提升60%，利润增长35%。</p></div></div>
+    <div class="case-card"><div class="case-header"><div class="case-avatar">B</div><div><div class="case-name">客户案例二</div><div class="case-type">某行业快速增长型企业</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>业务流程繁琐，每个订单都要手动录入。员工加班是常态，但效率还是提不上去。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>流程自动化，订单自动流转。员工从繁琐操作中解放出来，有时间做更有价值的工作。</p></div><div class="case-detail"><p>使用牌时计后，员工效率提升3倍，加班时间减少60%，客户满意度提升至99%。</p></div></div>
+    <div class="case-card"><div class="case-header"><div class="case-avatar">C</div><div><div class="case-name">客户案例三</div><div class="case-type">某行业成熟型商家</div></div></div><div class="case-before"><span class="case-badge before-badge">上线前</span><p>成本不透明，不知道钱花在哪里。利润越来越薄，找不到问题所在。</p></div><div class="case-after"><span class="case-badge after-badge">上线后</span><p>成本精细化核算，每笔支出清晰可见。智能定价建议帮助提升利润率达30%。</p></div><div class="case-detail"><p>使用牌时计后，利润率达22%，成本降低25%，现金流明显改善。</p></div></div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="section-label">定价方案</div>
+  <h2 class="section-title">简单透明，没有套路</h2>
+  <p class="section-sub">按年付费，永久使用，云端部署无需维护</p>
+  <div class="pricing-card">
+    <div class="pricing-tag">SaaS 云端部署</div>
+    <div class="pricing-price">&#xA5;3000<span> / 年</span></div>
+    <p class="pricing-desc">基础版 适合小微商家</p>
+    <ul class="pricing-features">
+      <li>数据统一管理</li><li>流程自动化</li><li>基础数据分析</li><li>5个用户席位</li><li>Email技术支持</li>
+    </ul>
+    <button class="btn-pricing">立即免费试用14天</button>
+  </div>
+  <p class="section-sub" style="margin-top:24px;">另有付费版本：&#xA5;5000/年专业版（含高级分析）| &#xA5;8000/年旗舰版（含AI智能推荐）</p>
+</section>
+
+<footer><p>© 2026 牌时计 让经营更高效</p></footer>
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+(function(){var c=document.getElementById('animLayer');for(var i=0;i<8;i++){var d=document.createElement('div');d.className='anim';d.style.cssText='left:'+(5+Math.random()*90)+'%;width:2px;height:'+(80+Math.random()*120)+'px;top:0;background:'+'linear-gradient(135deg, #b71c1c, #ef5350)'+';animation-duration:'+(6+Math.random()*4)+'s;animation-delay:'+(Math.random()*4)+'s';c.appendChild(d);}})()
+</script>
+</body>
+</html>
+<section class="section" id="faq" style="background:rgba(0,0,0,0.15);">
+  <div class="section-label">常见问题</div>
+  <h2 class="section-title">您可能想问</h2>
+  <p class="section-sub">如果还有其他问题，欢迎联系我们</p>
+  <div style="max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 这个系统适合我的业务吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们的系统专为小B商家设计，适合月GMV在10万-500万的商家。如果您正在使用Excel或老旧系统管理业务，非常适合迁移过来。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 数据迁移麻烦吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们提供免费的数据迁移服务。您只需要提供现有的Excel或CSV文件，我们的工程师会帮您完成数据导入和清洗。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 需要多长时间能上手？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们的界面设计简洁直观，一般用户1-2天就能熟练使用。我们还提供视频教程和在线客服支持。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 售后服务怎么样？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 我们提供7x12小时在线客服支持，响应时间不超过2小时。每月定期回访使用情况，帮助解决遇到的问题。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:12px;">Q: 可以定制开发吗？</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">A: 可以的。旗舰版用户可以享受定制开发服务。我们会根据您的业务需求，定制开发特定功能模块。</div>
     </div>
   </div>
-  <div class="tab-panel" id="panel-member">
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-title"><span class="icon blue">💳</span> 储值卡</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-          <div style="background:rgba(33,150,243,0.1);border-radius:10px;padding:14px;text-align:center;border:1px solid rgba(33,150,243,0.2);"><div style="font-size:20px;font-weight:800;color:#42a5f5;">¥500</div><div style="font-size:11px;color:#9fa8da;margin-top:4px;">充值到账</div><div style="font-size:11px;color:#00e676;margin-top:2px;font-weight:600;">送¥50</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">享9折优惠</div></div>
-          <div style="background:rgba(33,150,243,0.1);border-radius:10px;padding:14px;text-align:center;border:1px solid rgba(33,150,243,0.2);"><div style="font-size:20px;font-weight:800;color:#42a5f5;">¥1000</div><div style="font-size:11px;color:#9fa8da;margin-top:4px;">充值到账</div><div style="font-size:11px;color:#00e676;margin-top:2px;font-weight:600;">送¥150</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">享9折优惠</div></div>
-        </div>
-        <div class="fn-item"><div class="fn-dot green"></div><div class="fn-text"><div class="fn-title">按储值余额扣费</div><div class="fn-desc">会员开桌自动按9折计算，消费直接从储值余额扣除，无需每次手动算账</div></div></div>
-        <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">余额不足提醒</div><div class="fn-desc">储值余额低于¥50时自动推送提醒会员充值，避免消费到一半余额不足的尴尬</div></div></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><span class="icon green">🎫</span> 次卡</div>
-        <div style="text-align:center;padding:10px;background:rgba(0,230,118,0.
+</section>
+
+<section class="section" id="features2">
+  <div class="section-label">更多功能</div>
+  <h2 class="section-title">还有这些功能帮您</h2>
+  <p class="section-sub">持续迭代，不断推出新功能</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto;">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F512;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">数据安全</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">AES-256加密存储，99.99%可用性保障，数据自动备份3份。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F4F1;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">移动端支持</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">手机，平板、电脑多端同步，随时随地管理业务。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F504;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">API接口</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">开放API接口，支持对接ERP、CRM等其他系统。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F465;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">团队协作</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">多角色权限管理，团队协作更高效，数据隔离更安全。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F4CA;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">报表导出</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">支持Excel、PDF、CSV多种格式导出，方便做进一步分析。</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:16px;">&#x1F514;</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">智能提醒</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">异常情况自动告警，微信、短信、邮件多渠道推送。</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;background:linear-gradient(135deg,rgba(13,71,161,0.1),transparent);padding:120px 24px;">
+  <div style="font-size:clamp(32px,5vw,48px);font-weight:800;margin-bottom:20px;">还在犹豫？先试试再说</div>
+  <p style="font-size:16px;color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto 40px;">14天免费试用，无需绑定信用卡。试用期间完整功能体验，不满意直接取消。</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+    <a href="#pricing" style="background:linear-gradient(135deg,#0d47a1,#90a4ae);color:#fff;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;">免费试用14天</a>
+    <a href="#features" style="border:1px solid rgba(255,255,255,0.06);color:#e3f2fd;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;">了解更多功能</a>
+  </div>
+</section>

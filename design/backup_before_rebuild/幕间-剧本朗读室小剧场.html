@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幕间 - 剧本朗读室小剧场管理系统 | 排期·票务·观众CRM</title>
+    <style>
+
+:root {
+    --bg-primary: #1a1215;
+    --bg-secondary: #23191d;
+    --bg-card: #2d1f24;
+    --accent-red: #c0392b;
+    --accent-gold: #d4a853;
+    --accent-light: #e8dcc8;
+    --text-primary: #f0ebe4;
+    --text-secondary: #9a8e8a;
+    --border-color: #3d2a30;
+    --shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "PingFang SC", "Microsoft YaHei", serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.hero { background: linear-gradient(135deg, #1a1215 0%, #23191d 50%, #1a1215 100%); padding: 80px 0 60px; position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(192,57,43,0.15) 0%, transparent 65%); animation: spotlight 5s ease-in-out infinite; }
+.hero::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(0deg, var(--bg-primary), transparent); }
+@keyframes spotlight { 0%,100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 1; transform: translate(-50%,-50%) scale(1.1); } }
+.hero-badge { display: inline-block; background: linear-gradient(90deg, var(--accent-red), #8b2020); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; text-transform: uppercase; position: relative; z-index: 1; border: 1px solid rgba(192,57,43,0.4); }
+.hero h1 { font-size: 48px; font-weight: 800; background: linear-gradient(90deg, var(--accent-light) 0%, var(--accent-gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px; position: relative; z-index: 1; }
+.hero-sub { font-size: 18px; color: var(--text-secondary); max-width: 640px; margin-bottom: 36px; position: relative; z-index: 1; }
+.hero-stats { display: flex; gap: 40px; flex-wrap: wrap; position: relative; z-index: 1; }
+.hero-stat { text-align: left; }
+.hero-stat .num { font-size: 36px; font-weight: 800; color: var(--accent-gold); }
+.hero-stat .label { font-size: 13px; color: var(--text-secondary); }
+.nav-bar { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+.nav-inner { display: flex; gap: 8px; overflow-x: auto; padding: 0 20px; }
+.nav-item { padding: 16px 20px; color: var(--text-secondary); font-size: 14px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.3s; cursor: pointer; }
+.nav-item:hover, .nav-item.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+.section { padding: 70px 0; }
+.section-title { text-align: center; margin-bottom: 50px; }
+.section-title h2 { font-size: 32px; font-weight: 700; color: var(--accent-light); margin-bottom: 12px; }
+.section-title p { font-size: 15px; color: var(--text-secondary); }
+.section-title .tag { display: inline-block; width: 40px; height: 3px; background: linear-gradient(90deg, var(--accent-red), var(--accent-gold)); border-radius: 2px; margin-bottom: 16px; }
+.pain-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.pain-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 28px; position: relative; overflow: hidden; transition: all 0.3s; }
+.pain-card:hover { border-color: var(--accent-red); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(192,57,43,0.15); }
+.pain-card::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--accent-red), var(--accent-gold)); }
+.pain-icon { width: 44px; height: 44px; background: rgba(192,57,43,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+.pain-card h3 { font-size: 16px; font-weight: 600; color: var(--accent-light); margin-bottom: 10px; }
+.pain-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+.feat-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.feat-block { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; transition: all 0.3s; }
+.feat-block:hover { border-color: var(--accent-gold); box-shadow: 0 8px 32px rgba(212,168,83,0.1); }
+.feat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.feat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.fi-red { background: rgba(192,57,43,0.15); }
+.fi-gold { background: rgba(212,168,83,0.15); }
+.fi-dark { background: rgba(60,40,50,0.5); }
+.fi-light { background: rgba(240,235,228,0.08); }
+.feat-title h3 { font-size: 18px; font-weight: 700; color: var(--accent-light); }
+.feat-title span { font-size: 12px; color: var(--text-secondary); }
+.sub-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.sub-item:last-child { border-bottom: none; }
+.sub-item::before { content: "▸"; color: var(--accent-gold); font-size: 12px; margin-top: 3px; flex-shrink: 0; }
+.sub-item strong { color: var(--accent-gold); font-size: 14px; }
+.sub-item span { font-size: 14px; color: var(--text-secondary); }
+.schedule-section { background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary)); padding: 70px 0; }
+.schedule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.schedule-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; transition: all 0.3s; }
+.schedule-card:hover { border-color: var(--accent-gold); }
+.schedule-card .date { font-size: 12px; color: var(--accent-gold); font-weight: 600; margin-bottom: 8px; }
+.schedule-card h4 { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+.schedule-card .meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+.schedule-card .status { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.status-confirmed { background: rgba(39,174,96,0.15); color: #27ae60; }
+.status-pending { background: rgba(241,196,15,0.15); color: #f1c40f; }
+.status-conflict { background: rgba(192,57,43,0.15); color: #e74c3c; }
+.value-section { background: linear-gradient(135deg, #141011, #1a1215); padding: 70px 0; }
+.value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.value-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px 20px; text-align: center; position: relative; overflow: hidden; }
+.value-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent-red), var(--accent-gold)); }
+.value-card .number { font-size: 40px; font-weight: 800; background: linear-gradient(90deg, var(--accent-gold), #e8c068); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+.value-card .desc { font-size: 14px; color: var(--text-secondary); }
+.compare-section { padding: 70px 0; }
+.compare-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 16px; overflow: hidden; }
+.compare-table thead th { background: var(--bg-secondary); padding: 16px 20px; font-size: 14px; font-weight: 600; color: var(--accent-light); text-align: left; border-bottom: 1px solid var(--border-color); }
+.compare-table tbody td { padding: 14px 20px; font-size: 14px; color: var(--text-secondary); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table tbody tr:hover td { background: rgba(192,57,43,0.05); }
+.compare-table .check { color: var(--accent-gold); font-weight: 700; }
+.compare-table .cross { color: var(--accent-red); font-weight: 700; }
+.case-section { background: var(--bg-secondary); padding: 70px 0; }
+.case-card { background: linear-gradient(135deg, var(--bg-card), #1e1518); border: 1px solid var(--border-color); border-radius: 20px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.case-avatar { width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent-red), var(--accent-gold)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 20px; }
+.case-name { font-size: 20px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; }
+.case-location { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+.case-quote { font-size: 16px; color: var(--text-secondary); line-height: 1.9; font-style: italic; }
+.case-result { background: var(--bg-secondary); border-radius: 16px; padding: 28px; }
+.case-result h4 { font-size: 14px; font-weight: 600; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.case-result-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.case-result-item:last-child { border-bottom: none; }
+.case-result-item .label { font-size: 14px; color: var(--text-secondary); }
+.case-result-item .value { font-size: 14px; font-weight: 700; color: var(--accent-gold); }
+.case-result-item .value.old { color: var(--text-secondary); text-decoration: line-through; }
+.cta-section { background: linear-gradient(135deg, #140d0f, #1a1215); padding: 80px 0; text-align: center; }
+.cta-section h2 { font-size: 36px; font-weight: 700; color: var(--accent-light); margin-bottom: 16px; }
+.cta-section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 36px; }
+.cta-btn { display: inline-block; background: linear-gradient(90deg, var(--accent-red), var(--accent-gold)); color: #fff; font-size: 16px; font-weight: 700; padding: 16px 48px; border-radius: 12px; text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; }
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(192,57,43,0.4); }
+.footer { background: var(--bg-secondary); padding: 30px 0; text-align: center; font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--border-color); }
+@media (max-width: 768px) { .hero h1 { font-size: 32px; } .pain-grid, .feat-layout, .case-card { grid-template-columns: 1fr; } .value-grid { grid-template-columns: repeat(2, 1fr); } .hero-stats { gap: 20px; } .schedule-grid { grid-template-columns: 1fr; } }
+
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="hero-badge">剧本朗读室 · 专业管理系统</div>
+            <h1>幕间 · 剧本朗读室小剧场管理系统</h1>
+            <p class="hero-sub">
+                排期不再撞车，票务不再出错，观众CRM让回头客越来越多。
+                幕间为剧本朗读室和小剧场打造专业管理系统，让每一场演出都顺利圆满。
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="num">90%</div>
+                    <div class="label">排期冲突降低</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">80%</div>
+                    <div class="label">票务分发效率提升</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">35%</div>
+                    <div class="label">观众复购率提升</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">2个+</div>
+                    <div class="label">剧场同时管理</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <div class="nav-inner">
+            <div class="nav-item active">概述</div>
+            <div class="nav-item">行业痛点</div>
+            <div class="nav-item">核心功能</div>
+            <div class="nav-item">剧目排期</div>
+            <div class="nav-item">价值数据</div>
+            <div class="nav-item">对比表格</div>
+            <div class="nav-item">客户案例</div>
+        </div>
+    </div>
+
+    <!-- Pain Points Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>行业痛点</h2>
+                <p>剧本朗读室看着文艺，经营起来却充满"鸡毛蒜皮"的琐碎问题</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="pain-icon">📋</div>
+                    <h3>3个剧组同时排练，撞在一起了</h3>
+                    <p>赵店长在上海经营一家剧本朗读室，3个剧组同时在这里排练。
+                    排期全靠脑子记，某天排期本上写着"A剧组下午2点来"，结果B剧组也约了下午2点。
+                    赵店长两边协调，这个推迟到4点，那个推迟到6点，两个剧组都有意见，
+                    店长成了受气包。排期冲突，几乎每周都要上演一次。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">🎫</div>
+                    <h3>票务手写出错，座位重号2人门口吵</h3>
+                    <p>周末有一场公开朗读会，50个观众同时入场。票务用的是手写票，
+                    座位号由人工写在票上。结果有2张票写的都是"A10"，两个观众到了门口才发现重号。
+                    店长只能临时协调，加座、赔礼道歉，场面一度尴尬。这件事之后，
+                    赵店长下定决心：不能再靠手写票了。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">❤️</div>
+                    <h3>老观众生日想给惊喜，认不出来</h3>
+                    <p>刘阿姨是剧场的老观众，来过十几次，每次都坐同一排中间的位置。
+                    赵店长想在她生日那天送一份小心意，但观众CRM是空白的——不知道她叫什么名字，
+                    更不知道她的生日是哪天。惊喜没造成，反而因为接待时态度略有怠慢，刘阿姨好几个月没来。
+                    有了观众CRM，这样的遗憾不会再有。</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">⏱️</div>
+                    <h3>2小时55分钟，按3小时还是2小时收费</h3>
+                    <p>剧本朗读按小时收费。李先生的场次从下午3点用到5点55分，
+                    共计2小时55分钟。按3小时算，李先生觉得被多收；按2小时算，
+                    店长觉得亏了。规则没有提前说清楚，双方各执一词，最后不欢而散。
+                    这样的争议，一场就是一位回头客的流失。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Features Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>核心功能</h2>
+                <p>幕间为剧本朗读室和小剧场量身打造，每一个功能都直击经营核心问题</p>
+            </div>
+            <div class="feat-layout">
+                <!-- Feature 1: 排期管理 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-red">📅</div>
+                        <div class="feat-title">
+                            <h3>排期管理</h3>
+                            <span>剧组/剧目/场次/时间多维管理</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>多维排期管理</strong>
+                        <span>系统支持按剧组、剧目、场次、时间四个维度管理排期。
+                        每个剧组可创建多个排期计划，每个计划包含日期、时间、剧场、时长和负责人，信息一目了然。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>冲突自动检测</strong>
+                        <span>当创建新排期时，系统自动检测该剧场在选定时间段是否已有其他安排。
+                        如有冲突，立即弹出警告并显示冲突详情，从源头避免排期撞车。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>排期模板</strong>
+                        <span>支持创建常用排期模板（如"每周六下午排练"），一键应用到多个日期，
+                        减少重复操作。定期排练的剧组再也不需要一个一个日期单独创建。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>变更通知</strong>
+                        <span>排期有任何变更（时间调整、剧场更换、取消），系统自动通过微信推送通知相关剧组联系人。
+                        信息传达及时准确，避免剧组到了没场地的情况。</span>
+                    </div>
+                </div>
+                <!-- Feature 2: 票务系统 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-gold">🎫</div>
+                        <div class="feat-title">
+                            <h3>票务系统</h3>
+                            <span>选座可视化，电子票无纸化</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>选座可视化</strong>
+                        <span>观众在微信小程序上查看剧场座位图，以颜色区分已售/可选座位，
+                        点击座位即可选定并下单。选座过程透明，无人工干预，从根本上杜绝重号问题。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>电子票推送</strong>
+                        <span>购票成功后，系统自动向观众微信推送电子票（包含座位号、二维码、演出信息）。
+                        观众截图保存或直接打开小程序出示电子票即可入场，无需打印纸质票。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>扫码入场</strong>
+                        <span>剧场入口放置验票设备（或工作人员手机），扫描观众电子票二维码，系统自动核销并语音播报座位号。
+                        验票速度达每秒1张，高峰期50人入场5分钟内完成。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>预订票（预付50元锁定）</strong>
+                        <span>对于热门场次，观众可预付50元预订座位，48小时内补齐尾款即完成购票。
+                        逾期未补全，预订自动释放，座位释放给其他观众。预付金抵扣票款，不退款。</span>
+                    </div>
+                </div>
+                <!-- Feature 3: 观众CRM -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-dark">👥</div>
+                        <div class="feat-title">
+                            <h3>观众CRM</h3>
+                            <span>认识你的观众，留住回头客</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>观众等级制度</strong>
+                        <span>系统将观众分为普通、银卡、金卡三个等级。普通观众累计购票5次升银卡，
+                        银卡观众累计购票15次升金卡。不同等级享有不同折扣和专属权益，激励复购。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>观看历史记录</strong>
+                        <span>系统记录每位观众的观看历史，包括观看的剧目名称、场次日期、所坐座位。
+                        当观众再次购票时，店员可查看其历史偏好，推荐类似风格的剧目。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>生日提醒</strong>
+                        <span>观众在购票时可填写生日日期。系统在其生日前3天自动提醒店长，
+                        店长可决定是否准备小礼品或贺卡，给观众一个惊喜。细节服务创造情感连接。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>消费偏好标签</strong>
+                        <span>根据观看历史，系统自动为观众打上偏好标签，如"喜剧爱好者"、"悬疑剧常客"。
+                        新剧目上线时，可向对应偏好的观众定向推送，提升上座率。</span>
+                    </div>
+                </div>
+                <!-- Feature 4: 场地管理 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-light">🏛️</div>
+                        <div class="feat-title">
+                            <h3>场地管理</h3>
+                            <span>多剧场支持，包场拼场模式</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>多剧场支持</strong>
+                        <span>系统支持同时管理多个剧场，如"第一剧场50座"和"第二剧场80座"。
+                        每个剧场的座位布局、设备配置可独立设置，排期和票务按剧场分开管理。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>包场模式</strong>
+                        <span>剧组可包场整个剧场，系统自动锁定该剧场所有座位，支持自定义包场票价。
+                        包场订单独立管理，不与其他散票冲突。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>拼场模式</strong>
+                        <span>多个剧组共用一个剧场时，系统按时间段自动分配座位组。
+                        例如A剧组排练前半部分，B剧组排练后半部分，各占剧场一半座位，互不干扰。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>设备管理</strong>
+                        <span>记录每个剧场的设备清单（麦克风、音响、投影仪等），支持设置定期检修提醒。
+                        演出前检查清单自动推送给店长，确保设备状态正常再开门迎客。</span>
+                    </div>
+                </div>
+                <!-- Feature 5: 衍生品管理 -->
+                <div class="feat-block">
+                    <div class="feat-header">
+                        <div class="feat-icon fi-red">🎁</div>
+                        <div class="feat-title">
+                            <h3>衍生品管理</h3>
+                            <span>剧本/周边/茶点，扫码即点</span>
+                        </div>
+                    </div>
+                    <div class="sub-item">
+                        <strong>剧本与周边销售</strong>
+                        <span>系统支持销售演出剧本、周边产品（剧目T恤、道具复刻品、纪念品等）。
+                        每个商品设置价格、库存，售完自动下架，支持扫码购买。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>茶点销售</strong>
+                        <span>观众可在小程序内提前订购茶点（咖啡、茶饮、小点心），剧场内扫码取单。
+                        减少现场排队等待时间，也提升了人均消费额。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>库存预警</strong>
+                        <span>每个衍生品设置最低库存警戒线，低于警戒线时系统自动告警。
+                        店长可在后台一键查看哪些商品需要补货，及时补货避免热卖品断货。</span>
+                    </div>
+                    <div class="sub-item">
+                        <strong>扫码点单</strong>
+                        <span>座位上贴有商品二维码，观众落座后扫码即可浏览菜单并下单。
+                        系统通知工作人员配送，全程无需起身，适合剧场安静氛围。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Section -->
+    <div class="schedule-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>剧目排期</h2>
+                <p>多剧场管理，冲突自动检测，排期一目了然</p>
+            </div>
+            <div class="schedule-grid">
+                <div class="schedule-card">
+                    <div class="date">周一 · 第一剧场</div>
+                    <h4>《城市边缘》A组排练</h4>
+                    <div class="meta">14:00-17:00 · 3小时 · 负责人：王导</div>
+                    <span class="status status-confirmed">✓ 已确认</span>
+                </div>
+                <div class="schedule-card">
+                    <div class="date">周一 · 第一剧场</div>
+                    <h4>《城市边缘》B组排练</h4>
+                    <div class="meta">19:00-22:00 · 3小时 · 负责人：李导</div>
+                    <span class="status status-confirmed">✓ 已确认</span>
+                </div>
+                <div class="schedule-card">
+                    <div class="date">周二 · 第二剧场</div>
+                    <h4>《最后一天》朗读会</h4>
+                    <div class="meta">14:00-17:00 · 3小时 · 负责人：赵店长</div>
+                    <span class="status status-confirmed">✓ 已确认</span>
+                </div>
+                <div class="schedule-card">
+                    <div class="date">周三 · 第一剧场</div>
+                    <h4>《城市边缘》C组排练</h4>
+                    <div class="meta">10:00-13:00 · 3小时 · 负责人：陈导</div>
+                    <span class="status status-pending">⏳ 待确认</span>
+                </div>
+                <div class="schedule-card">
+                    <div class="date">周三 · 第一剧场</div>
+                    <h4>《城市边缘》A组排练</h4>
+                    <div class="meta">14:00-17:00 · 3小时 · 负责人：王导</div>
+                    <span class="status status-conflict">⚠ 冲突</span>
+                </div>
+                <div class="schedule-card">
+                    <div class="date">周四 · 第二剧场</div>
+                    <h4>《沉默的证人》首演</h4>
+                    <div class="meta">19:30-22:00 · 对外公开 · 80座已售76座</div>
+                    <span class="status status-confirmed">✓ 即将满座</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Value Data Section -->
+    <div class="value-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>价值数据</h2>
+                <p>用数字验证效果，让每一步改变都有迹可循</p>
+            </div>
+            <div class="value-grid">
+                <div class="value-card">
+                    <div class="number">90%</div>
+                    <div class="desc">排期冲突降低</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">80%</div>
+                    <div class="desc">票务分发效率提升</div>
+                </div>
+                <div class="value-card">
+                    <div class="number">35%</div>
+                    <div class="desc">观众复购率提升</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Table Section -->
+    <div class="compare-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>对比表格</h2>
+                <p>幕间 vs 传统管理方式，全面超越</p>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>功能项</th>
+                        <th>传统方式（白板+人工）</th>
+                        <th>幕间管理系统</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>排期管理</td>
+                        <td><span class="cross">✗ 靠脑子记，经常撞车</span></td>
+                        <td><span class="check">✓ 系统自动检测冲突</span></td>
+                    </tr>
+                    <tr>
+                        <td>票务分发</td>
+                        <td><span class="cross">✗ 手写票，经常重号</span></td>
+                        <td><span class="check">✓ 电子票+选座，重号绝迹</span></td>
+                    </tr>
+                    <tr>
+                        <td>观众CRM</td>
+                        <td><span class="cross">✗ 空白，不认识回头客</span></td>
+                        <td><span class="check">✓ 等级+历史+生日提醒</span></td>
+                    </tr>
+                    <tr>
+                        <td>多剧场管理</td>
+                        <td><span class="cross">✗ 多个剧场难以协调</span></td>
+                        <td><span class="check">✓ 一套系统管多个剧场</span></td>
+                    </tr>
+                    <tr>
+                        <td>衍生品销售</td>
+                        <td><span class="cross">✗ 人工销售，无法统计</span></td>
+                        <td><span class="check">✓ 扫码点单，自动库存</span></td>
+                    </tr>
+                    <tr>
+                        <td>验票效率</td>
+                        <td><span class="cross">✗ 人工手检，50人需15分钟</span></td>
+                        <td><span class="check">✓ 扫码核销，50人5分钟</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Case Study Section -->
+    <div class="case-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>客户案例</h2>
+                <p>上海赵店长，3个剧场的数字化升级之路</p>
+            </div>
+            <div class="case-card">
+                <div>
+                    <div class="case-avatar">🎭</div>
+                    <div class="case-name">赵店长</div>
+                    <div class="case-location">上海 · 剧本朗读室 · 3个剧场</div>
+                    <div class="case-quote">
+                        "我们3个剧场，5个剧组，每天排期冲突不断。用了幕间之后，系统自动检测冲突，
+                        再也没有撞车了。观众CRM让我们认识了老观众，刘阿姨生日那天我们送了一张贺卡，
+                        她感动得当场续费了年卡。现在票务也电子化了，高峰期50人入场5分钟搞定，
+                        我终于有时间坐下来喝杯茶了。"
+
+                    </div>
+                </div>
+                <div class="case-result">
+                    <h4>使用前后对比</h4>
+                    <div class="case-result-item">
+                        <span class="label">排期冲突次数</span>
+                        <div>
+                            <span class="value old">每周3-4次</span>
+                            <span class="value"> → 0次</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">票务重号次数</span>
+                        <div>
+                            <span class="value old">每年5-6次</span>
+                            <span class="value"> → 0次</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">验票入场时间</span>
+                        <div>
+                            <span class="value old">50人15分钟</span>
+                            <span class="value"> → 5分钟</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">观众复购率</span>
+                        <div>
+                            <span class="value old">约25%</span>
+                            <span class="value"> → 38%+</span>
+                        </div>
+                    </div>
+                    <div class="case-result-item">
+                        <span class="label">衍生品人均消费</span>
+                        <div>
+                            <span class="value old">¥0（无系统）</span>
+                            <span class="value"> → ¥28/人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <div class="container">
+            <h2>让您的剧场也升级为数字化运营</h2>
+            <p>专业团队实施，7天即可上线，支持多剧场管理</p>
+            <a href="#" class="cta-btn">立即咨询，获取方案</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>幕间 · 剧本朗读室小剧场管理系统 | 让每一场演出都顺利圆满</p>
+        </div>
+    </div>
+
+</body>
+</html>
+    <!-- Venue Seating Visualization -->
+    <div class="section" style="background:linear-gradient(180deg,var(--bg-primary),var(--bg-secondary));padding:70px 0;">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>座位可视化</h2>
+                <p>选座一目了然，电子票杜绝重号</p>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+                <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:24px;">
+                    <h4 style="font-size:15px;font-weight:600;color:var(--accent-light);margin-bottom:16px;">🏛️ 第一剧场 · 50座</h4>
+                    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;">
+<div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">A1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A5</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A7</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">A8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A10</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B4</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">B5</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B10</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C1</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">C2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C5</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C8</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">C9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C10</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D5</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">D6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D10</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E2</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">E3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E5</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E9</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">E10</div>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);"><div style="width:10px;height:10px;background:rgba(192,57,43,0.3);border:1px solid #c0392b;border-radius:2px;"></div>已售</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);"><div style="width:10px;height:10px;background:rgba(212,168,83,0.3);border:1px solid #d4a853;border-radius:2px;"></div>可选</div>
+                    </div>
+                </div>
+                <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:24px;">
+                    <h4 style="font-size:15px;font-weight:600;color:var(--accent-light);margin-bottom:16px;">🏛️ 第二剧场 · 80座</h4>
+                    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;">
+<div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">A1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">A6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">B1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">B6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">C1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">C6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">D1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">D6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">E1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">E6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">F1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">F6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">G1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">G6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">H1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">H6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H10</div>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);"><div style="width:10px;height:10px;background:rgba(107,159,212,0.3);border:1px solid #6b9fd4;border-radius:2px;"></div>已售</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);"><div style="width:10px;height:10px;background:rgba(212,168,83,0.3);border:1px solid #d4a853;border-radius:2px;"></div>可选</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Venue Seating Visualization -->
+    <div class="section" style="background:linear-gradient(180deg,var(--bg-primary),var(--bg-secondary));padding:70px 0;">
+        <div class="container">
+            <div class="section-title">
+                <div class="tag"></div>
+                <h2>座位可视化</h2>
+                <p>选座一目了然，电子票杜绝重号</p>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+                <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:24px;">
+                    <h4 style="font-size:15px;font-weight:600;color:var(--accent-light);margin-bottom:16px;">第一剧场 · 50座</h4>
+                    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;">
+<div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">A1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A5</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A7</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">A8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A10</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B4</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">B5</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B10</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C1</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">C2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C5</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C8</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">C9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C10</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D5</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">D6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D10</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E2</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">E3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E5</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E9</div><div style="aspect-ratio:1;background:rgba(192,57,43,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #c0392b;">E10</div>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);"><div style="width:10px;height:10px;background:rgba(192,57,43,0.3);border:1px solid #c0392b;border-radius:2px;"></div>已售</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);"><div style="width:10px;height:10px;background:rgba(212,168,83,0.3);border:1px solid #d4a853;border-radius:2px;"></div>可选</div>
+                    </div>
+                </div>
+                <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:24px;">
+                    <h4 style="font-size:15px;font-weight:600;color:var(--accent-light);margin-bottom:16px;">第二剧场 · 80座</h4>
+                    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;">
+<div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">A1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">A6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">A10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">B1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">B6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">B10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">C1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">C6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">C10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">D1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">D6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">D10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">E1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">E6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">E10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">F1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">F6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">F10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">G1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">G6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">G10</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">H1</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H2</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H3</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H4</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H5</div><div style="aspect-ratio:1;background:rgba(107,159,212,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #6b9fd4;">H6</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H7</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H8</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H9</div><div style="aspect-ratio:1;background:rgba(212,168,83,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-secondary);border:1px solid #d4a853;">H10</div>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);"><div style="width:10px;height:10px;background:rgba(107,159,212,0.3);border:1px solid #6b9fd4;border-radius:2px;"></div>已售</div>
+                        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);"><div style="width:10px;height:10px;background:rgba(212,168,83,0.3);border:1px solid #d4a853;border-radius:2px;"></div>可选</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

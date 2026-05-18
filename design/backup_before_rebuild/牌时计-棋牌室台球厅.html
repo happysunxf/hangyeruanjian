@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>牌时计 - 棋牌室台球厅智能计时系统</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#0a0e27;color:#e8eaf6;min-height:100vh}
+.top-bar{background:linear-gradient(135deg,#1a1f4e 0%,#0d1235 100%);border-bottom:1px solid rgba(100,150,255,0.15);padding:0;display:flex;align-items:stretch;min-height:70px}
+.clock-section{padding:12px 28px;border-right:1px solid rgba(100,150,255,0.12);display:flex;flex-direction:column;justify-content:center;min-width:180px}
+.clock-time{font-size:28px;font-weight:700;color:#00e5ff;letter-spacing:2px;font-variant-numeric:tabular-nums}
+.clock-date{font-size:12px;color:#7986cb;margin-top:2px}
+.stats-row{display:flex;align-items:center;flex:1}
+.stat-pill{padding:10px 24px;border-right:1px solid rgba(100,150,255,0.1);display:flex;flex-direction:column;justify-content:center}
+.stat-pill .label{font-size:11px;color:#5c6bc0;text-transform:uppercase;letter-spacing:1px}
+.stat-pill .value{font-size:20px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.stat-pill .value.green{color:#00e676}
+.stat-pill .value.orange{color:#ffab40}
+.table-status-bar{display:flex;align-items:center;gap:8px;padding:0 20px;overflow-x:auto}
+.table-status-bar::-webkit-scrollbar{height:0}
+.table-chip{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(100,150,255,0.15);border-radius:10px;padding:6px 14px;min-width:78px;cursor:pointer;transition:all 0.2s;flex-shrink:0}
+.table-chip:hover{background:rgba(100,150,255,0.15)}
+.table-chip .tnum{font-size:11px;color:#9fa8da;font-weight:600}
+.table-chip .tstatus{font-size:13px;font-weight:700;margin-top:2px}
+.table-chip.idle .tstatus{color:#546e7a}
+.table-chip.active .tstatus{color:#00e676}
+.table-chip.soon .tstatus{color:#ffab40}
+.table-chip .tcnt{font-size:10px;color:#5c6bc0;margin-top:2px}
+.main-content{padding:20px}
+.tabs{display:flex;gap:4px;margin-bottom:20px;background:rgba(255,255,255,0.03);padding:6px;border-radius:14px;width:fit-content}
+.tab-btn{padding:10px 28px;border:none;background:transparent;color:#7986cb;font-size:14px;font-weight:600;cursor:pointer;border-radius:10px;transition:all 0.25s;font-family:inherit}
+.tab-btn:hover{color:#c5cae9}
+.tab-btn.active{background:linear-gradient(135deg,#3949ab,#5c6bc0);color:#fff;box-shadow:0 4px 15px rgba(63,81,181,0.4)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:16px;padding:20px;backdrop-filter:blur(8px)}
+.card-title{font-size:13px;font-weight:700;color:#9fa8da;margin-bottom:14px;display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:0.5px}
+.card-title .icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.card-title .icon.blue{background:rgba(33,150,243,0.2);color:#42a5f5}
+.card-title .icon.green{background:rgba(0,230,118,0.2);color:#00e676}
+.card-title .icon.orange{background:rgba(255,171,64,0.2);color:#ffab40}
+.card-title .icon.purple{background:rgba(156,39,176,0.2);color:#ce93d8}
+.card-title .icon.red{background:rgba(255,82,82,0.2);color:#ff5252}
+.card-title .icon.teal{background:rgba(0,188,212,0.2);color:#00e5ff}
+.fn-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(100,150,255,0.07)}
+.fn-item:last-child{border-bottom:none}
+.fn-dot{width:7px;height:7px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.fn-dot.blue{background:#42a5f5;box-shadow:0 0 6px #42a5f5}
+.fn-dot.green{background:#00e676;box-shadow:0 0 6px #00e676}
+.fn-dot.orange{background:#ffab40;box-shadow:0 0 6px #ffab40}
+.fn-dot.red{background:#ff5252;box-shadow:0 0 6px #ff5252}
+.fn-text .fn-title{font-size:13px;font-weight:600;color:#c5cae9}
+.fn-text .fn-desc{font-size:12px;color:#5c6bc0;margin-top:2px;line-height:1.5}
+.fn-text .fn-price{font-size:12px;color:#ffab40;margin-top:2px;font-weight:600}
+.timer-display{font-size:44px;font-weight:800;color:#00e5ff;font-variant-numeric:tabular-nums;text-align:center;font-family:"Courier New",monospace;letter-spacing:3px}
+.timer-label{font-size:12px;color:#7986cb;text-align:center;margin-top:4px}
+.progress-bar-wrap{margin-top:10px;height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:3px;transition:width 0.5s}
+.progress-bar-fill.blue{background:linear-gradient(90deg,#1565c0,#42a5f5)}
+.sub-num{font-size:11px;color:#5c6bc0;margin-top:4px}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{background:rgba(63,81,181,0.3);color:#9fa8da;padding:8px 12px;text-align:left;font-weight:600;border-bottom:1px solid rgba(100,150,255,0.1)}
+.data-table td{padding:8px 12px;color:#c5cae9;border-bottom:1px solid rgba(100,150,255,0.06)}
+.data-table tr:hover td{background:rgba(100,150,255,0.05)}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.tag.green{background:rgba(0,230,118,0.15);color:#00e676}
+.tag.orange{background:rgba(255,171,64,0.15);color:#ffab40}
+.tag.blue{background:rgba(33,150,243,0.15);color:#42a5f5}
+.tag.red{background:rgba(255,82,82,0.15);color:#ff5252}
+.tag.purple{background:rgba(156,39,176,0.15);color:#ce93d8}
+.col2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div class="clock-section">
+    <div class="clock-time" id="clock">--:--:--</div>
+    <div class="clock-date" id="dateStr">----年--月--日 周--</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-pill"><div class="label">营业中</div><div class="value green">4<span style="font-size:13px;color:#7986cb;"> 桌</span></div></div>
+    <div class="stat-pill"><div class="label">即将到期</div><div class="value orange">2<span style="font-size:13px;color:#7986cb;"> 桌</span></div></div>
+    <div class="stat-pill"><div class="label">空闲中</div><div class="value" style="font-size:16px;color:#9fa8da;">3<span style="font-size:13px;color:#7986cb;"> 桌</span></div></div>
+    <div class="stat-pill"><div class="label">今日营收</div><div class="value">¥1,284</div></div>
+    <div class="stat-pill"><div class="label">当前时段</div><div class="value" style="font-size:14px;color:#ffab40;">晚高峰 ¥25/h</div></div>
+  </div>
+  <div class="table-status-bar" id="tableBar"></div>
+</div>
+<div class="main-content">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('timing')">计时管理</button>
+    <button class="tab-btn" onclick="switchTab('mall')">商城管理</button>
+    <button class="tab-btn" onclick="switchTab('member')">会员管理</button>
+    <button class="tab-btn" onclick="switchTab('report')">经营报表</button>
+  </div>
+  <div class="tab-panel active" id="panel-timing">
+    <div class="col2">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title"><span class="icon blue">⏱</span> 实时计时看板</div>
+          <div class="timer-display" id="mainTimer">02:34:18</div>
+          <div class="timer-label">当前选中桌 — 台球桌3号</div>
+          <div style="display:flex;justify-content:center;gap:10px;margin-top:12px;">
+            <span class="tag green">计时中</span>
+            <span class="tag blue">时段价 ¥25/h</span>
+            <span class="tag orange">距到期 27分钟</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px;">
+            <button style="flex:1;padding:8px;border:none;border-radius:8px;background:rgba(0,230,118,0.15);color:#00e676;font-size:13px;cursor:pointer;font-family:inherit;" onclick="this.textContent='已挂起✓'">⏸ 挂起</button>
+            <button style="flex:1;padding:8px;border:none;border-radius:8px;background:rgba(255,82,82,0.15);color:#ff5252;font-size:13px;cursor:pointer;font-family:inherit;" onclick="this.textContent='已结账✓'">✓ 结账</button>
+            <button style="flex:1;padding:8px;border:none;border-radius:8px;background:rgba(255,171,64,0.15);color:#ffab40;font-size:13px;cursor:pointer;font-family:inherit;" onclick="this.textContent='+30分钟'">+ 加时</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon green">⚡</span> 时段计费规则</div>
+          <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">白天平时段 09:00 — 18:00</div><div class="fn-desc">台球桌 ¥20/小时，棋牌室 ¥15/小时</div><div class="fn-price">09:00-18:00 生效中</div></div></div>
+          <div class="fn-item"><div class="fn-dot orange"></div><div class="fn-text"><div class="fn-title">晚高峰时段 18:00 — 23:00</div><div class="fn-desc">台球桌 ¥25/小时，棋牌室 ¥20/小时</div><div class="fn-price">18:00自动切换</div></div></div>
+          <div class="fn-item"><div class="fn-dot red"></div><div class="fn-text"><div class="fn-title">深夜时段 23:00 — 09:00</div><div class="fn-desc">台球桌 ¥30/小时，棋牌室 ¥25/小时</div><div class="fn-price">包夜优惠可选</div></div></div>
+          <div style="margin-top:12px;padding:10px;background:rgba(255,171,64,0.1);border-radius:8px;border:1px solid rgba(255,171,64,0.2);">
+            <div style="font-size:12px;color:#ffab40;font-weight:600;">💡 跨时段分段计算示例</div>
+            <div style="font-size:12px;color:#9fa8da;margin-top:6px;line-height:1.7;">顾客16:00开桌，22:30离开：<br>16:00→18:00 → 2小时 × ¥20 = ¥40<br>18:00→22:00 → 4小时 × ¥25 = ¥100<br>22:00→22:30 → 30分钟 × ¥30 = ¥15<br><strong style="color:#ffab40;">合计：¥155（系统全自动计算）</strong></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title"><span class="icon orange">🔔</span> 到期提醒配置</div>
+          <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">提前5分钟 → 推送提醒</div><div class="fn-desc">桌面屏显+手机通知双通道，顾客可选择续时或准备离场，无需服务员逐桌通知</div></div></div>
+          <div class="fn-item"><div class="fn-dot orange"></div><div class="fn-text"><div class="fn-title">到期时 → 震动提醒</div><div class="fn-desc">工作人员手机震动提醒，避免逐桌巡查漏掉，响应速度提升</div></div></div>
+          <div class="fn-item"><div class="fn-dot red"></div><div class="fn-text"><div class="fn-title">超时10分钟 → 自动消息</div><div class="fn-desc">系统自动发送消息：您的桌位已超时，当前按¥30/h自动累加</div></div></div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill blue" style="width:75%;"></div></div>
+          <div class="sub-num">延时加时规则：超时30分钟内自动顺延，超30分钟自动进入下一计费周期</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon purple">💰</span> 押金管理</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(100,150,255,0.1);"><div style="font-size:11px;color:#7986cb;">台球桌押金</div><div style="font-size:22px;font-weight:800;color:#fff;margin-top:4px;">¥200</div><div style="font-size:11px;color:#00e676;margin-top:2px;">开台送1小时</div></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(100,150,255,0.1);"><div style="font-size:11px;color:#7986cb;">棋牌室押金</div><div style="font-size:22px;font-weight:800;color:#fff;margin-top:4px;">¥100</div><div style="font-size:11px;color:#00e676;margin-top:2px;">含4小时时长</div></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;text-align:center;border:1px solid rgba(100,150,255,0.1);"><div style="font-size:11px;color:#7986cb;">VIP包间押金</div><div style="font-size:22px;font-weight:800;color:#fff;margin-top:4px;">¥500</div><div style="font-size:11px;color:#ffab40;margin-top:2px;">含茶水套餐</div></div>
+          </div>
+          <div class="fn-item"><div class="fn-dot red"></div><div class="fn-text"><div class="fn-title">损坏赔偿自动结算</div><div class="fn-desc">结账时自动检测损坏项目，从押金扣除，多退少补。例如杯子碎了赔¥280，押金¥200不够，系统自动记录需追收¥80</div></div></div>
+          <div class="fn-item"><div class="fn-dot green"></div><div class="fn-text"><div class="fn-title">押金流水可查可导</div><div class="fn-desc">每次押金收取/退还清晰记录，支持导出Excel，每月对账有凭据，财务合规</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title"><span class="icon red">⚠</span> 行业痛点真实场景</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+        <div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#ff5252;font-weight:700;margin-bottom:6px;">🎯 痛点1：高峰期手忙脚乱</div><div style="font-size:12px;color:#9fa8da;line-height:1.6;">老张的店6张台球桌，高峰期有3桌同时在计时、有2桌即将结束，手工记根本记不过来。顾客问"还剩多久"，只能靠猜，还容易报错时间引发投诉。</div></div>
+        <div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#ff5252;font-weight:700;margin-bottom:6px;">🎯 痛点2：计费误差伤客</div><div style="font-size:12px;color:#9fa8da;line-height:1.6;">李大姐的棋牌室，某位顾客打了3小时55分钟，结账时算成了4小时，多收9块钱，顾客当场翻脸，说"我在这里打了三年牌，你骗我？"</div></div>
+        <div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#ff5252;font-weight:700;margin-bottom:6px;">🎯 痛点3：茶水账对不上</div><div style="font-size:12px;color:#9fa8da;line-height:1.6;">王老板的茶馆，每月月底对账发现茶水记录对不上，少了200多块。最后查监控发现是员工给自己朋友少记了，闹得大家面子上都过不去。</div></div>
+        <div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#ff5252;font-weight:700;margin-bottom:6px;">🎯 痛点4：押金纠纷伤和气</div><div style="font-size:12px;color:#9fa8da;line-height:1.6;">押金收了200，顾客走了发现杯子碎了要赔280，押金不够还得追着人要。老板说"不是我小气，是规矩"，顾客觉得"为这点钱追着人要，太计较了"。</div></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;">
+      <div style="background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:14px;padding:16px;text-align:center;"><div style="font-size:30px;font-weight:800;color:#00e676;">93%</div><div style="font-size:11px;color:#7986cb;margin-top:6px;">对账时间降幅</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">每月8小时→30分钟</div></div>
+      <div style="background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:14px;padding:16px;text-align:center;"><div style="font-size:30px;font-weight:800;color:#42a5f5;">0</div><div style="font-size:11px;color:#7986cb;margin-top:6px;">计费错误投诉/月</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">系统精准自动计算</div></div>
+      <div style="background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:14px;padding:16px;text-align:center;"><div style="font-size:30px;font-weight:800;color:#ffab40;">¥1500+</div><div style="font-size:11px;color:#7986cb;margin-top:6px;">茶水月增收</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">扫码点单带动消费</div></div>
+      <div style="background:linear-gradient(145deg,rgba(30,41,107,0.6),rgba(20,28,70,0.8));border:1px solid rgba(100,150,255,0.12);border-radius:14px;padding:16px;text-align:center;"><div style="font-size:30px;font-weight:800;color:#ce93d8;">40%</div><div style="font-size:11px;color:#7986cb;margin-top:6px;">会员到店次数提升</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">储值后平均月到店增幅</div></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title"><span class="icon teal">📋</span> 真实案例</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.12);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#00e5ff;font-weight:700;margin-bottom:6px;">案例1：哈尔滨张老板，8张台球桌</div><div style="font-size:12px;color:#9fa8da;line-height:1.7;">以前手工计时经常出错，每月至少2-3起投诉。有次把55分钟记成1小时，被顾客录了视频发到抖音，评论区全是骂声。用牌时计后对账轻松，顾客也觉得公平，抖音负面评价再没出现过。现在月流水从¥8,000提升到¥12,000。</div></div>
+        <div style="background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.12);border-radius:12px;padding:14px;"><div style="font-size:12px;color:#00e5ff;font-weight:700;margin-bottom:6px;">案例2：南京李大姐，6间棋牌室</div><div style="font-size:12px;color:#9fa8da;line-height:1.7;">以前茶水账对不上，每月少¥200-300不知道去哪了。现在扫码点单，每笔都有记录，月底对账清清楚楚。员工也不再抱怨"记不清了"，因为系统自动记录，不存在扯皮。</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="panel-mall">
+    <div class="col2">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title"><span class="icon blue">📱</span> 扫码点单系统</div>
+          <div class="fn-item"><div class="fn-dot green"></div><div class="fn-text"><div class="fn-title">桌位码自助点单</div><div class="fn-desc">每张桌贴专属二维码，顾客微信扫码直接点单，小票打印机自动出单，无需服务员全程守着。顾客等着无聊多点了两份花生米，月增收¥800</div></div></div>
+          <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">商品寄存服务</div><div class="fn-desc">桶装水、整箱啤酒可寄存在店里，生成专属二维码，顾客随时扫码查看剩余数量，支持跨天取用。寄存商品复购率提升60%</div></div></div>
+          <div class="fn-item"><div class="fn-dot orange"></div><div class="fn-text"><div class="fn-title">库存预警自动提醒</div><div class="fn-desc">某商品低于10件自动推送提醒老板补货，月底自动汇总畅销商品TOP10，辅助下次进货决策，减少压货风险</div></div></div>
+          <div class="fn-item"><div class="fn-dot purple"></div><div class="fn-text"><div class="fn-title">热销统计报表</div><div class="fn-desc">每月自动汇总所有商品销售排行，TOP10滞销品提示，帮助调整进货结构，控制损耗成本</div></div></div>
+          <div style="margin-top:14px;background:rgba(0,230,118,0.06);border-radius:10px;padding:12px;border:1px solid rgba(0,230,118,0.12);"><div style="font-size:13px;color:#00e676;font-weight:700;">📈 扫码点单带动收入提升</div><div style="font-size:12px;color:#9fa8da;margin-top:6px;line-height:1.7;">王老板的茶馆上线扫码点单后，茶水月收入从¥3,200提升到¥4,700，增幅46%。顾客点单更方便，愿意多点一份花生米、一包瓜子。员工也不用记单子，减少出错。</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon orange">📊</span> 商品寄存管理</div>
+          <div class="fn-item"><div class="fn-dot green"></div><div class="fn-text"><div class="fn-title">桶装水寄存</div><div class="fn-desc">顾客买了桶装水寄存在店里，每次来扫桌位码喝茶，扫码自动减库存，剩余数量顾客可实时查看</div></div></div>
+          <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">整箱啤酒寄存</div><div class="fn-desc">老顾客喜欢存一箱啤酒在店里，每次来直接扫码取酒，系统自动记录，月结时一起结算</div></div></div>
+          <div class="fn-item"><div class="fn-dot orange"></div><div class="fn-text"><div class="fn-title">寄存期限管理</div><div class="fn-desc">寄存超过30天自动提醒顾客清点，超过60天自动下架，存储空间合理利用</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title"><span class="icon green">🛒</span> 商品库存示例</div>
+          <table class="data-table"><thead><tr><th>商品</th><th>单价</th><th>库存</th><th>状态</th></tr></thead><tbody>
+            <tr><td>农夫山泉（大）</td><td>¥5/瓶</td><td>24瓶</td><td><span class="tag green">充足</span></td></tr>
+            <tr><td>青岛啤酒</td><td>¥8/瓶</td><td>6瓶</td><td><span class="tag orange">补货</span></td></tr>
+            <tr><td>桶装饮用水</td><td>¥15/桶</td><td>寄存中3桶</td><td><span class="tag blue">寄存</span></td></tr>
+            <tr><td>花生米（小份）</td><td>¥10/份</td><td>30份</td><td><span class="tag green">充足</span></td></tr>
+            <tr><td>扑克牌</td><td>¥3/副</td><td>8副</td><td><span class="tag orange">偏低</span></td></tr>
+            <tr><td>红牛</td><td>¥6/罐</td><td>15罐</td><td><span class="tag green">充足</span></td></tr>
+            <tr><td>瓜子（大包）</td><td>¥8/包</td><td>20包</td><td><span class="tag green">充足</span></td></tr>
+            <tr><td>绿茶</td><td>¥12/壶</td><td>18壶</td><td><span class="tag green">充足</span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="panel-member">
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title"><span class="icon blue">💳</span> 储值卡</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div style="background:rgba(33,150,243,0.1);border-radius:10px;padding:14px;text-align:center;border:1px solid rgba(33,150,243,0.2);"><div style="font-size:20px;font-weight:800;color:#42a5f5;">¥500</div><div style="font-size:11px;color:#9fa8da;margin-top:4px;">充值到账</div><div style="font-size:11px;color:#00e676;margin-top:2px;font-weight:600;">送¥50</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">享9折优惠</div></div>
+          <div style="background:rgba(33,150,243,0.1);border-radius:10px;padding:14px;text-align:center;border:1px solid rgba(33,150,243,0.2);"><div style="font-size:20px;font-weight:800;color:#42a5f5;">¥1000</div><div style="font-size:11px;color:#9fa8da;margin-top:4px;">充值到账</div><div style="font-size:11px;color:#00e676;margin-top:2px;font-weight:600;">送¥150</div><div style="font-size:11px;color:#5c6bc0;margin-top:4px;">享9折优惠</div></div>
+        </div>
+        <div class="fn-item"><div class="fn-dot green"></div><div class="fn-text"><div class="fn-title">按储值余额扣费</div><div class="fn-desc">会员开桌自动按9折计算，消费直接从储值余额扣除，无需每次手动算账</div></div></div>
+        <div class="fn-item"><div class="fn-dot blue"></div><div class="fn-text"><div class="fn-title">余额不足提醒</div><div class="fn-desc">储值余额低于¥50时自动推送提醒会员充值，避免消费到一半余额不足的尴尬</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon green">🎫</span> 次卡</div>
+        <div style="text-align:center;padding:10px;background:rgba(0,230,118,0.
