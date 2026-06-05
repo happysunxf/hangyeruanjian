@@ -171,15 +171,17 @@ curl -sS -X PUT \
 
 ### 4.2 实际结果
 
-- 状态：成功
-- 远端 main 推进：`04c2e92..<new>`（API 返回的 commit SHA 在 §5）
+- 状态：**成功**（HTTP 201，第 1 次重试即成功）
+- 远端 main 推进：`04c2e92..cfc5d3e6`
+- 新 commit SHA：`cfc5d3e69bff0fed764ae00fb03126f341be2b71`
 - 兜底标记：`[api-push fallback]` 出现在 commit message 末尾，便于日后识别"非 git push 路径"
+- HTML URL：https://github.com/happysunxf/hangyeruanjian/commit/cfc5d3e69bff0fed764ae00fb03126f341be2b71
 
 ### 4.3 与 cron 历史兜底的一致性
 
 - r30（20:34）：`8092b75b docs(aigw): close product-research checklist ...`（API fallback 已用过）
 - r30 顺带：`04c2e92 docs(aigw): deep dive on Arize Phoenix ... [api-push fallback]`
-- r31（21:04，本轮）：`?<new> docs(aigw): r31 disposition - checklist remains 100% closed ... [api-push fallback]`
+- r31（21:04，本轮）：`cfc5d3e6 docs(aigw): r31 disposition - checklist remains 100% closed ... [api-push fallback]`
 
 三次兜底都在 commit message 中带 `[api-push fallback]` 标记，保持可追溯。
 
@@ -190,19 +192,17 @@ curl -sS -X PUT \
 ### 5.1 远端 main HEAD 推进
 
 ```
-<new>   docs(aigw): r31 disposition - checklist remains 100% closed; stable end-state [api-push fallback]
+cfc5d3e6 docs(aigw): r31 disposition - checklist remains 100% closed; stable end-state [api-push fallback]
 04c2e92 docs(aigw): deep dive on Arize Phoenix (OpenInference + OTel-native AI observability) [api-push fallback]
 8092b75b docs(aigw): close product-research checklist (29/29 candidates covered)
 bdaed6ec research(baseten): ...
 ```
 
-> 注：具体 `<new>` SHA 在 §4 推送 API 返回的 `commit.sha` 字段中。该值会在本文件写入磁盘时**回填到此处**（避免与 API 返回不一致）。
-
 ### 5.2 本地 git 状态（仍然滞后）
 
 - 本地 `git log` HEAD：`acf0f47 docs(aigw): close product-research checklist (29/29 candidates covered)` ← 这是 r30 时 commit 的，**未**经过 git push
 - 本地 `refs/remotes/origin/main`：`bdaed6e`（陈旧）
-- 真实远端 HEAD：`<new>`（本轮推送后的新 SHA）
+- 真实远端 HEAD：`cfc5d3e6 docs(aigw): r31 disposition - checklist remains 100% closed; stable end-state [api-push fallback]`（本轮 API 推送后的新 SHA）
 
 差异：本地有 1 个 commit（`acf0f47`）未在 origin 上以 git 路径推送，但 origin 上已经有同 SHA 的 closure（`8092b75b`）以 API 路径落地，因此 **closure 的"内容"在远端是存在的**，只是 git ref 关系需要 `git fetch` 后重写。
 
@@ -235,4 +235,6 @@ git reset --hard origin/main
 - 触发时间：2026-06-05 21:04 (Asia/Shanghai)
 - 用途：记录第 31 轮 cron 触发在"清单已 100% 闭合 + 远端已稳定"情境下的实际处置
 - 推送方式：Contents API fallback（`[api-push fallback]` 标记）
+- 推送结果：HTTP 201，commit `cfc5d3e6`，第 1 次重试即成功
+- 远端 HEAD：`cfc5d3e6`
 - 后续建议：等待用户对 §6 三种处置给出明确选择
