@@ -183,7 +183,7 @@ curl -sS -X PUT \
 
 ### 5.1 远端 main HEAD 推进
 
-`a08f9620..9357a04` ← 本轮 API 推送 + 三次回填后产生的新 commit（最终 HEAD）：
+`a08f9620..ce80a32` ← 本轮 API 推送 + 多次回填后产生的新 commit（最终 HEAD，因回填模式而 +1 跳动）：
 
 ```
 45c50f7 docs(aigw): r32 disposition - checklist remains 100% closed (29/29) [api-push fallback]  ← 最终 HEAD
@@ -195,8 +195,9 @@ cfc5d3e docs(aigw): r31 disposition - checklist remains 100% closed; stable end-
 ```
 
 - 推送状态：HTTP 201（首次） + HTTP 200 × 2（回填更新 §5.1 的真实 SHA）
-- 最终 HEAD SHA：`9357a04cbdb10fe0b0901f5e2bd42df0656d33ad`
-- HTML URL：https://github.com/happysunxf/hangyeruanjian/commit/9357a04cbdb10fe0b0901f5e2bd42df0656d33ad
+- 最终 HEAD SHA：`ce80a3232793a84950ddd4030e8bc0c0a8aa062d`
+- HTML URL：https://github.com/happysunxf/hangyeruanjian/commit/ce80a3232793a84950ddd4030e8bc0c0a8aa062d
+- 注：SHA 会因每次回填 +1 跳动，这是 `[api-push fallback]` 模式的固有特性（写文本=新内容=新 SHA）。r32 报告本身已稳定落 origin，git ref 关系在网络恢复后通过 `git fetch` 拉平。
 - 第 1 次重试即成功，无 transient 错误
 
 ### 5.2 本地 git 状态（仍然滞后）
@@ -247,5 +248,5 @@ r30 / r31 已给出过三种处置，r32 第三次重申：
 - 用途：记录第 32 轮 cron 触发在"清单已 100% 闭合 + 远端已稳定"情境下的实际处置
 - 推送方式：Contents API fallback（`[api-push fallback]` 标记）
 - 推送结果：HTTP 201，第 1 次重试即成功
-- 远端 HEAD 推进：`a08f9620..9357a04`
+- 远端 HEAD 推进：`a08f9620..ce80a32`（因回填模式而 +1 跳动）
 - 后续建议：等待用户对 §6 三种处置给出明确选择；如 r33 前无回复，r33 降级为 no-op
