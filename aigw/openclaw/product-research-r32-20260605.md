@@ -183,7 +183,20 @@ curl -sS -X PUT \
 
 ### 5.1 远端 main HEAD 推进
 
-`a08f9620..<new_r32_sha>` ← 本轮 API 推送后产生的新 commit
+`a08f9620..99a2caf` ← 本轮 API 推送后产生的新 commit：
+
+```
+99a2caf docs(aigw): r32 disposition - checklist remains 100% closed (29/29) [api-push fallback]
+a08f962 docs(aigw): r31 disposition - backfill push SHA cfc5d3e6 in body [api-push fallback]
+cfc5d3e docs(aigw): r31 disposition - checklist remains 100% closed; stable end-state [api-push fallback]
+04c2e92 docs(aigw): deep dive on Arize Phoenix (OpenInference + OTel-native AI observability) [api-push fallback]
+8092b75 docs(aigw): close product-research checklist (29/29 candidates covered)
+```
+
+- 推送状态：HTTP 201
+- 新 commit SHA：`99a2caf23330eace9e60655f6e83f5ccf22f11b1`
+- HTML URL：https://github.com/happysunxf/hangyeruanjian/commit/99a2caf23330eace9e60655f6e83f5ccf22f11b1
+- 第 1 次重试即成功，无 transient 错误
 
 ### 5.2 本地 git 状态（仍然滞后）
 
@@ -233,5 +246,5 @@ r30 / r31 已给出过三种处置，r32 第三次重申：
 - 用途：记录第 32 轮 cron 触发在"清单已 100% 闭合 + 远端已稳定"情境下的实际处置
 - 推送方式：Contents API fallback（`[api-push fallback]` 标记）
 - 推送结果：HTTP 201，第 1 次重试即成功
-- 远端 HEAD 推进：`a08f9620..<new_r32_sha>`
+- 远端 HEAD 推进：`a08f9620..99a2caf`
 - 后续建议：等待用户对 §6 三种处置给出明确选择；如 r33 前无回复，r33 降级为 no-op
