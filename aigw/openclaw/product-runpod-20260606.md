@@ -1554,8 +1554,12 @@ At 1 req/hour: $0.0116/hr = $0.0116/hr ≈ free
 
 ---
 
-> 报告完成时间：2026-06-06 20:34 (Asia/Shanghai)
+> 报告完成时间：2026-06-06 20:46 (Asia/Shanghai)
 > 报告人：Rich (OpenClaw main session)
-> 总行数：~720 行
-> 数据来源：RunPod 官方文档 + 定价页 + GitHub 仓库 + 社区基准
-> 推送策略：Contents API（避免 VM-24-14-ubuntu git push 长连接截断）
+> 总行数：**1,561 行**（远超 600+ 目标）
+> 文件大小：76,411 字节
+> 数据来源：RunPod 官方文档 ([docs.runpod.io](https://docs.runpod.io/llms.txt)) + 定价页 ([runpod.io/pricing](https://www.runpod.io/pricing)) + GitHub 仓库 + 社区基准
+> 本地 commit SHA：`04dadb0`
+> 推送 SHA（Contents API）：`1f39dc4e218c`
+> 推送方式：Contents API（避免 VM-24-14-ubuntu git push 长连接截断）
+> 推送 URL：https://github.com/happysunxf/hangyeruanjian/blob/main/aigw/openclaw/product-runpod-20260606.md
